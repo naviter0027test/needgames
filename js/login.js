@@ -425,8 +425,8 @@
 		//var tempvals=Array("1","42345344");
                 var tempvals = Array();
 		tempitem=ajaxarr("get_caplist",tempvals,"ajax.php");
-		//$.ajax(tempitem).success(function(data){//回傳 data 義
-		tempitem.success(function(data){//回傳 data 義
+		$.ajax(tempitem).success(function(data){//回傳 data 義
+		//tempitem.success(function(data){//回傳 data 義
 			out="<form action='' method='post' id='loginform'>\n";
 			out+="                    <div class='formline'>\n";
 			out+="                        <div class='formitem formitem_4'><span>帳號</span></div>\n";
