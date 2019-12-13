@@ -78,29 +78,29 @@ ini_set('short_open_tag', 'on');
 		$conf['fcm_key'] ='AAAAk-Oj24Y:APA91bF7lv8Cs50Ld4tWPwynOvTv13QcFWH6Q60d-t5i8e4RM_V06JNeghWIO1E6L0mQxJIVM_a9564JFGNOblbcu-T2hDtECzAJt6vZ7IyAhkvg-6yVGYgePbYZW56N27T2srVWe3_N';
 		//會員
 		$conf['dbhost_m'] = 'localhost';
-		$conf['dbuser_m'] = 'needgam3_user';
+		$conf['dbuser_m'] = 'kyomonwa_user';
 		$conf['dbpass_m'] = 'sitegrou';
-		$conf['dbname_m'] = 'needgam3_m';
+		$conf['dbname_m'] = 'kyomonwa_m';
 		//點數
 		$conf['dbhost_p'] = 'localhost';
-		$conf['dbuser_p'] = 'needgam3_user';
+		$conf['dbuser_p'] = 'kyomonwa_user';
 		$conf['dbpass_p'] = 'sitegrou';
-		$conf['dbname_p'] = 'needgam3_p';
+		$conf['dbname_p'] = 'kyomonwa_p';
 		//顯示
 		$conf['dbhost_d'] = 'localhost';
-		$conf['dbuser_d'] = 'needgam3_user';
+		$conf['dbuser_d'] = 'kyomonwa_user';
 		$conf['dbpass_d'] = 'sitegrou';
-		$conf['dbname_d'] = 'needgam3_d';
+		$conf['dbname_d'] = 'kyomonwa_d';
 		//商店
 		$conf['dbhost_s'] = 'localhost';
-		$conf['dbuser_s'] = 'needgam3_user';
+		$conf['dbuser_s'] = 'kyomonwa_user';
 		$conf['dbpass_s'] = 'sitegrou';
-		$conf['dbname_s'] = 'needgam3_s';
+		$conf['dbname_s'] = 'kyomonwa_s';
 		//聊天
 		$conf['dbhost_c'] = 'localhost';
-		$conf['dbuser_c'] = 'needgam3_user';
+		$conf['dbuser_c'] = 'kyomonwa_user';
 		$conf['dbpass_c'] = 'sitegrou';
-		$conf['dbname_c'] = 'needgam3_c';
+		$conf['dbname_c'] = 'kyomonwa_c';
 		$conf['db_encode'] = 'utf8';
 	}
 
