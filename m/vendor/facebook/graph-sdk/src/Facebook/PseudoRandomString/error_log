@@ -1,0 +1,1 @@
+[10-Dec-2017 10:37:47 UTC] PHP Fatal error:  Interface 'Facebook\PseudoRandomString\PseudoRandomStringGeneratorInterface' not found in /home/zhangzhi/public_html/vendor/facebook/graph-sdk/src/Facebook/PseudoRandomString/RandomBytesPseudoRandomStringGenerator.php on line 29

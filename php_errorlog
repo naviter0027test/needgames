@@ -1,0 +1,22 @@
+[20-Sep-2019 01:39:20 CST6CDT] PHP Parse error:  syntax error, unexpected '[' in /home/needgam3/public_html/ajax.php on line 607
+[21-Sep-2019 21:49:36 CST6CDT] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection timed out in /home/needgam3/public_html/pdo.php:5
+Stack trace:
+#0 /home/needgam3/public_html/pdo.php(5): PDO->__construct('mysql:host=10.1...', 'gamer', '12345678')
+#1 {main}
+  thrown in /home/needgam3/public_html/pdo.php on line 5
+[21-Sep-2019 21:50:07 CST6CDT] PHP Fatal error:  Uncaught Error: Call to a member function fetchAll() on boolean in /home/needgam3/public_html/pdo.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/needgam3/public_html/pdo.php on line 7
+[21-Sep-2019 21:52:27 CST6CDT] PHP Fatal error:  Uncaught Error: Call to a member function fetchAll() on boolean in /home/needgam3/public_html/pdo.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/needgam3/public_html/pdo.php on line 7
+[21-Sep-2019 21:52:31 CST6CDT] PHP Fatal error:  Uncaught Error: Call to a member function fetchAll() on boolean in /home/needgam3/public_html/pdo.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/needgam3/public_html/pdo.php on line 7
+[21-Sep-2019 22:05:28 CST6CDT] PHP Fatal error:  Uncaught Error: Call to a member function fetchAll() on boolean in /home/needgam3/public_html/pdo.php:26
+Stack trace:
+#0 {main}
+  thrown in /home/needgam3/public_html/pdo.php on line 26

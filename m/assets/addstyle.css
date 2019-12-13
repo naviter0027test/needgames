@@ -1,0 +1,397 @@
+@charset "UTF-8";
+.fixbody{height:100vh;overflow:hidden;position:fixed;width:100%;visibility: hidden;}/*20181031 Pman 修正滾動穿透的問題 position:absolute ==> position:fixed*//*20181119 Pman 修正功能頁上下兩條會亂動的問題，height:100% ==> height:100vh*//*20190114 Pman 新增display:none;將底下的body藏掉*//*20190121 Pman 將display換成visibility，因為會出現寬度遺失的情況*/
+.applebtn,.btn{cursor:pointer;}
+.relay{position:relative;}
+.popframe{-webkit-overflow-scrolling: touch;}
+.hideme{display:none!important;}
+textarea {min-height:200px;}
+#pop{position:fixed;top:0;left:0;width:100%;height:100%;z-index:9998;display:none;overflow:hidden;background:url(../img/b70.png);}
+#popu{position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;display:none;overflow:hidden;background:url(../img/b70.png);}
+.nocontent{font-size:16px;padding:30px;text-align:center;color:#fff;line-height:30px;}
+#popin,#popinu{
+	background: #fccf00;
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    width: 84%;
+    padding: 25px 3%;
+    border-radius: 5px;
+    text-align: center;
+    position: fixed;
+    left: 5%;
+    top:20%;
+    margin-top: -500px;
+    overflow: hidden;
+	z-index:10;
+}
+#popin h2,#popinu h2 {
+    color: #575757;
+    font-size: 30px;
+    text-align: center;
+    font-weight: 600;
+    text-transform: none;
+    position: relative;
+    margin: 0 0 25px 0;
+    padding: 0;
+    line-height: 40px;
+    display: block;
+}
+.bgcolor_lc{background:#e54c00!important;color:#fff!important;}/*紅色按鍵*/
+.slidein{position:relative;}
+.slidein img{position:relative;z-index:1;}
+.slidecover{position:absolute;width:100%;height:100%;top:0;left:0;z-index:9;background:rgba(0,0,0,0.5);}
+.slidecover span{position:absolute;top:50%;left:0;width:100%;height:20vw;display:block;margin-top:-10vw;color:#fff;font-size:20vw;text-align:center;line-height:20vw;}
+div.home{/*padding:50px 0;position:absolute !important;height:calc(100vh - 100px);top:50px;*/}/*20181119 Pman 修正功能頁上下兩條會亂動的問題，新增position:absolute !important;*//*20190114 Pman 為修正ios上的問題，分析後，這個css應該是可以不用了*/
+.sweet-alert{z-index:99999999;}
+.sweet-overlay{z-index:99999998;}
+#popfullq{position:fixed;top:0;left:0;width:100%;height:100%;z-index:800;display:none;overflow-x:hidden;overflow-y:auto;background:#333;}
+#popfull{position:relative;top:0;left:0;width:100%;height: calc(100vh - 60px);z-index:810;display:none;/*overflow-x:hidden;overflow-y:auto;*/background:#333;} /*20181017 Pman 處理「重新綁定Email」的圖層被壓住的問題，將Z-Index從810改成1100，這個CSS有其他地方用到，所以還不確定會不會有其他影響*//*確定會有其他影響，所以改回810*//*20190123 Pman 去掉overflow-x:hidden;overflow-y:auto;，以避免下方區塊在往上拉時，會被遮掉*/
+/*20190426 Pman 修正height的值，改用vh去計算
+#popfullu{position:fixed;top:0;left:0;width:100%;height:100%;z-index:820;display:none;overflow-x:hidden;overflow-y:auto;background:#333;}
+#popfullu2{position:fixed;top:0;left:0;width:100%;height:100%;z-index:830;display:none;overflow-x:hidden;overflow-y:auto;background:#333;}
+
+#popuser{position:relative;top:0;left:0;width:100%;height:100%;z-index:990;display:none;overflow-x:hidden;overflow-y:auto;background:#333;}/*20190123 Pman 修正上方會飄動*/
+#popuseru{position:fixed;top:0;left:0;width:100%;height:100%;z-index:991;display:none;overflow-x:hidden;overflow-y:auto;background:#333;}
+#popuseru2{position:fixed;top:0;left:0;width:100%;height:100%;z-index:992;display:none;overflow-x:hidden;overflow-y:auto;background:#333;}
+/*
+#popfullq{position:fixed;top:0;left:0;width:100%;height:100%;z-index:996;display:none;overflow-x:hidden;overflow-y:auto;background:#333;}
+#popfull{position:fixed;top:0;left:0;width:100%;height:100%;z-index:997;display:none;overflow-x:hidden;overflow-y:auto;background:#333;}
+#popfullu{position:fixed;top:0;left:0;width:100%;height:100%;z-index:998;display:none;overflow-x:hidden;overflow-y:auto;background:#333;}
+#popfullu2{position:fixed;top:0;left:0;width:100%;height:100%;z-index:999;display:none;overflow-x:hidden;overflow-y:auto;background:#333;}
+*/
+#popfullt{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1100;display:none;overflow-x:hidden;overflow-y:auto;background:#333;}
+#popfullart{position:relative;top:0;left:0;width:100%;height:100%;z-index:995;display:none;overflow-x:hidden;overflow-y:auto;background:#333;}/*20190123 Pman 修正上方會飄動*/
+#popfullartu{position:fixed;top:0;left:0;width:100%;height:100%;z-index:996;display:none;overflow-x:hidden;overflow-y:auto;background:#333;}
+#popchatfull{position:relative;/*top:0;left:0;width:100%;height:100%;z-index:992;display:none;overflow-x:hidden;overflow-y:auto;background:#333;*/}/*20190123 Pman 修正聊天室上方下方會飄動*/
+#popchatfullu{position:fixed;top:0;left:0;width:100%;height:100%;z-index:993;display:none;overflow-x:hidden;overflow-y:auto;background:#333;}
+#popchatfullu2{position:fixed;top:0;left:0;width:100%;height:100%;z-index:994;display:none;overflow-x:hidden;overflow-y:auto;background:#333;}
+.allpopup{position: relative;
+    /*top: 0px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 100px);
+    z-index: 555;
+    display: none;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: #fff;*/}/*20190114 Pman 為修正ios上的問題，分析後，這個css只留position設定，其他應該可以不用了*/
+.popclosebg{position:absolute;top:0px;left:0px;width:100%;height:100%;z-index:0;display:block;}
+.popclosebtn{position:absolute;top:0px;right:0px;z-index:9;display:block;font-size:24px;color:#fccf00;line-height:30px;width:30px;height:30px;text-align:center;padding:5px;}
+#popu{position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999999;display:none;overflow:hidden;background:url(../img/b70.png);}
+#popinu{position:absolute;top:50px;left:3%;width:94%;min-height:80px;margin-top:-600px;z-index:199999;}
+#popheadu{width:60%;margin-left:20%;height:40px;text-align:center;font-size:18px;color:#000;line-height:40px;font-weight:bold;background:#fccf00;-webkit-border-top-left-radius: 10px;-webkit-border-top-right-radius: 10px;-moz-border-radius-topleft: 10px;-moz-border-radius-topright: 10px;border-top-left-radius: 10px;border-top-right-radius: 10px;}
+#popbodyu{width:100%;padding:30px 5%;background:#fccf00;-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;max-height:400px;overflow-y:auto;overflow-x:hidden;text-align:center;}
+#allpopimgwrap{position:absolute;width:100%;height:100%;top:0;left:0;overflow:hidden;z-index:99;}
+#allpopimgwrap .touchimg{position:absolute;z-index:1;width:100%;top:0;left:0;}
+#allpopimgwrap .popimgclick{position:absolute;top: 46%;z-index:33;width: 10vw;height:10vw;background:rgba(0,0,0,0.5);bottom:15vw;font-size: 6vw;line-height:10vw;color:#fff;text-align:center;border-radius: 15vw;-moz-border-radius: 15vw;-webkit-border-radius: 15vw;}/*20181026 Pman 點開多張圖時，將左右箭頭的形狀改為圓形*/
+
+#allpopimgwrap .popimgclick.right{right:0;}
+#allpopimgwrap .popimgclick.left{left:0;}
+#allpopimgwrap .popfullcloset{position:absolute;z-index:33;width:10vw;height:10vw;background:rgba(0,0,0,0.5);top:0vw;right:0;font-size:8vw;line-height:10vw;color:#fff;text-align:center;}
+
+.formline{position:relative;min-height:30px;margin:5px 0;}
+.formitem{position:relative;float:left;font-size:14px; line-height:30px;color:#fccf00;min-height:44px;}/*這個2017/3/1修改*/
+.formitem_3:first-child{width:30%;text-align:right;margin-right:2%;font-size:14px;color:#333333;font-weight:bold;}
+.formitem_3.dtext{font-size:14px;color:#333333;}
+.formitem_3:nth-child(2){width:68%;}
+.formitem_3 .span1{display:inline-block;width:35%;font-size:12px;color:#333333;}
+.formitem_3 .span2{display:inline-block;width:10%;font-size:12px;color:#333333;margin-right:2%;}
+.formitem_3 .span3{display:inline-block;width:22%;font-size:12px;color:#333333;}
+.formitem_3 .span4{display:inline-block;width:25%;font-size:12px;color:#333333;}
+.formitem_3 span.w2{position:absolute;top:0;left:0;letter-spacing:53px;margin-right:-60px;}
+.formitem_3 span.w3{position:absolute;top:0;left:0;letter-spacing:19px;margin-right:-30px;}
+.formitem_3 span.w4{position:absolute;top:0;left:0;letter-spacing:8px;margin-right:-20px;}
+.formitem_3 span.w5{position:absolute;top:0;left:0;letter-spacing:3px;margin-right:-20px;}
+.formitem_3 span.w6{position:absolute;top:0;left:0;letter-spacing:0px;margin-right:-20px;}
+
+.formitem_3 input[type=text],.formitem_3 input[type=password]{font-size:14px;color:#333333;line-height:26px;margin:2px 0;width:95%;background:#fff;}
+.formitem_3 .inblock input[type=text]{font-size:14px;color:#333333;line-height:26px;margin:2px auto;width:90%;background:#fff;}/*驗證碼*/
+.formitem_3 .submitclick{font-size:16px;color:#fff;line-height:30px;width:40%;float:right;height:30px;margin-right:50px;background:#e54c00;text-align:center;-webkit-appearance: none;-moz-appearance: none;appearance: none;}
+.border5{
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+}
+input{ margin: 0; padding: 0;border: none; word-wrap: break-word;}
+.formbtn{display:inline-block;font-size:16px; line-height:30px;width:80%;text-align:center;color:#fff;background:#e54c00;height:30px;padding:0 10px;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;margin-left:10px;}
+
+
+.popclosebg{position:absolute;top:0px;left:0px;width:100%;height:100%;z-index:0;display:block;}
+.popbtn{display:inline-block;font-size:17px;color:#fccf00;line-height:20px;padding:5px 10px;text-align:center;   background: #FF6500 !important;    color: #fff !important;border-radius:5px;}
+#maincontentbox{padding-bottom:100px;}
+.wallinsertimg{width:100%;margin: 5px 0 -5px 0;}/*20190315 Pman 調整動態牆上的廣告間距*/
+.sub.on {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 20px;
+    color: #339;
+    width: 21px;
+}
+.loaderbox{position:absolute;top:0;left:0;bottom:0;right:0;margin:auto;text-align:center;height:100px;}
+.loaderbox img{width:25%;}
+/*20181012 Pman 新增一個新的CSS「loaderboxRe」，用以修正回文時，上傳圖片的轉圈圖位置有誤*/
+.label .loaderboxRe{display: inline-block;
+    vertical-align: middle;
+    width: 100%;
+    margin: 3px;
+    position: relative;}/*20190123 Pman 為了快速預覽，修正結構*/
+.loaderboxRe{display: inline-block;
+    vertical-align: middle;
+    width: calc(33% - 9px);
+    margin: 3px;
+    position: relative;}/*20190123 Pman 為了快速預覽，修正結構*/
+.loaderboxRe img{width:100%;}/*20190123 Pman 為了快速預覽，修正結構*/
+/* game tag select */
+.stagcover{position:absolute;top:0;left:0;margin:0;padding:0;width:100%;height:100%;z-index:1;}
+/* chat */
+.chatinputwrap{position:relative;width:29px;height:30px;float:left;overflow:hidden;}
+.chatinputwrap form{position:relative;width:100%;height:100%;}
+.chatinputwrap form input{position:absolute;top:0;left:0;;width:100%;height:100%;padding:0;margin:0;float:none;border-radius: 0px;-webkit-border-radius: 0px;-moz-border-radius: 0px;}
+#dialog-windows{padding-bottom:50px;}
+/*
+.replytonamebox{position:relative;display:inline-block;font-size:13px!important;color:#666!important;line-height:17px!important;background:#ccc;-webkit-border-radius: 3px;-moz-border-radius: 3px;border-radius: 3px;margin:1px 6px 1px 0;padding:0 6px;}
+*/
+header .link .btn {
+    border-collapse:collapse;
+	border:0;
+}
+.fileupload {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    opacity: 0;
+   /* width: 100%!important; */
+   /* height: 100%!important; */
+    z-index: 99;
+    cursor: pointer;
+}
+.newsfilebox{max-width:100%;}
+.newsfilebox img{max-width:100%;}
+.replytonamebox{
+	position:relative;display:inline-block;
+    background: #fccf00;
+    padding: 0 10px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+.popclick,.submitclick,.pageclick,.aboutclick{cursor:pointer;}
+/*發送簡訊*/
+.bgcolor_lb{background:#cccccc!important;color:#777777!important;}
+
+footer .slides li.on:after {
+    content: "";
+    width: 60%;
+    height: 5px;
+    background: #FF6500;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0px auto;
+}
+
+#maincontentbox .search {
+    width: 60%;
+    margin:10px auto;
+    position: relative;
+}
+#maincontentbox .search input {
+    width: 100%;
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border: 0;
+    text-align: center;
+}
+#maincontentbox .search button {
+    color: #aaa;
+    position: absolute;
+    right: 10px;
+    top: 0px;
+    font-size: 20px;
+    background: none;
+    border: 0;
+}
+#popcontentbox .search {
+    width: 60%;
+    margin:10px auto;
+    position: relative;
+}
+#popcontentbox .search input {
+    width: 100%;
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border: 0;
+    text-align: center;
+}
+#popcontentbox .search button {
+    color: #aaa;
+    position: absolute;
+    right: 10px;
+    top: 0px;
+    font-size: 20px;
+    background: none;
+    border: 0;
+}
+
+.wall{position:relative;}
+.wall .post.page .select label input[type=file] {
+    position: absolute;
+	top:10px;
+    left: 70px!important;
+	right:auto;
+    width: calc(100% - 70px);
+    height: 30px;
+    opacity: 0;
+	padding:0!important;
+}
+.wall .post.page .select label {
+    padding: 10px 5px;
+    display: block;
+    color: #555;
+    border-top: 2px solid #555;
+    line-height: 30px;
+    position: relative;
+}
+
+.wall .post.page .select label select,
+.wall .post.page .select label .upload {
+    background: #fccf00;
+    height: 30px;
+    border: 0;
+    color: #555;
+    width: calc(100% - 70px);
+    float: right;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    padding: 0 10px;
+}
+
+.wall .post.page .select .label input[type=file] {
+    position: absolute;
+    top:0;
+	left:0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.wall .post.page .select .label .img {
+    width: calc(100% - 70px);
+    float: right;
+    margin-top: 5px;
+    padding-bottom: 10px;
+}
+
+.wall .post.page .select .label .img .s-img {
+    display: inline-block;
+    vertical-align: middle;
+    width: calc(33% - 9px);
+    margin: 3px;
+    position: relative;
+}
+
+.wall .post.page .select .label .img .s-img img {
+    width: 100%;
+    display: block;
+}
+
+.wall .post.page .select .label .img .s-img .fa {
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: #fff;
+    font-size: 20px;
+    background: #000;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    border-radius: 20px;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+}
+
+.wall .img .fa {
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: #fff;
+    font-size: 20px;
+    background: #000;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    border-radius: 20px;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+}
+
+.button .link.t3{width:33%!important;}
+.button .link.t2{width:49%!important;}
+.button .link.t1{width:100%!important;}
+#codepagew{
+	position:relative;
+	height:30px;
+	width:150px;
+	background:#fff;
+	margin:0px 10px;
+	float:left;
+	background:url(../capw/bg.jpg);
+}#codepagew img {
+	position:relative;
+    float:left;
+	padding:0 5px 0 5px;
+}
+.wall.qa + .alert li .right-icon.fa.ok {
+    color: #777777;
+}
+.wall.qa + .alert li .right-icon.fa.qnapoff {
+    color: #FF6500;
+}
+.alert li .point{ position:absolute;   color: #FF6500;    right:8px;top:0px;    font-size: 25px;    line-height: 35px;width:50px;height:35px;text-align:right;}
+.alert li .point span{color: #FF6500;font-size: 25px;    line-height: 35px;}
+.alert li .point i{position:absolute;top:0;right:-38px;top:0;bottom:auto;}
+.alert.message {padding-bottom: 51px;padding-top:0px;}/*20190114 Pman 為修正ios上的問題，新加入css*/
+.alert,.friend,.dialog {padding-top:50px;}/*20190114 Pman 為修正ios上的問題，新加入css*//*20190114 Pman 補上.dialog*/
+#noticewrap ~ .alert {padding-top: 0px;} /*20190123 Pman 修正右上角三個點開後的內容，太下去的問題*/
+body > div.popframe:first-of-type { display:block !important; }/*20190118 Pman 當多個popframe出現時，只留第一個，其他都藏掉，避免觸控捲動時的誤判*/
+body > div.popframe { display:none !important; }/*20190118 Pman 當多個popframe出現時，只留第一個，其他都藏掉，避免觸控捲動時的誤判*/
+#popfull .friend {padding-top: 10px;}/*20190123 Pman 調整配對也面的搜尋框位置*/
+
+/*20190426 Pman 調整輸入邀請訊息對話框的樣式*//*20190509 Pman 調整輸入邀請訊息對話框的背景顏色*/
+.add-friend {
+    background: #fccf00 !important;
+}
+
+.add-friend #popheadu {
+    background: #fccf00 !important;
+}
+
+.add-friend #popbodyu {
+    background: #fccf00 !important;
+    padding: 0 !important;
+}
+
+.add-friend .formitem_3:first-child {
+    display: none !important;
+}
+
+.add-friend .formitem_3:nth-child(2) {
+    width: 100% !important;
+}
+
+.add-friend .formbtn {
+    margin-left: 0 !important;
+    width: 100% !important;
+}
+
+.add-friend .addfriendtext {
+    background: #fccf00 !important;
+}
+/*===========================================*/

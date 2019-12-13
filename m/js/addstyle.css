@@ -1,0 +1,26 @@
+body{
+	-webkit-user-select: none;
+}
+
+.wall .article .main .slides .slidein:not(:first-of-type) img {
+    display: none;
+}/*20181221 Pman 為了讓動態牆上，多張圖的貼文，不會將圖攤開後，再收合，這個在style.css裡有加過，但是Sam沒包進APP裡，所以在這邊再加一次*/
+
+.wall .article .main .slides.slick-slider .slidein:not(:first-of-type) img {
+    display: block;
+}/*20181221 Pman 為了讓動態牆上，多張圖的貼文，不會將圖攤開後，再收合，這個在style.css裡有加過，但是Sam沒包進APP裡，所以在這邊再加一次*/
+
+.top{z-index:1;}
+
+.wallinsertimg{width:100%;margin: 5px 0 -6px 0;}/*20190701Pman 調整動態牆上的廣告間距，會強制蓋掉/m/assets/addstyle.css裡的設定*/
+
+#qatitle{
+	width: calc(100% - 80px);
+    margin-left: 10px;
+    float: left;
+    line-height: 20px;
+}/*20190710 Pman 新增給QA的標題使用*/
+
+.wall.qa .tab span {
+	width:30%;
+}/*20190710 Pman 修正QA頁面，Tab的寬度，避免換行*/

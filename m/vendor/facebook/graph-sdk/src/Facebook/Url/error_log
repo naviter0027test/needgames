@@ -1,0 +1,4 @@
+[23-Dec-2017 06:39:33 UTC] PHP Fatal error:  Interface 'Facebook\Url\UrlDetectionInterface' not found in /home/zhangzhi/public_html/vendor/facebook/graph-sdk/src/Facebook/Url/FacebookUrlDetectionHandler.php on line 32
+[23-Dec-2017 06:40:34 UTC] PHP Fatal error:  Interface 'Facebook\Url\UrlDetectionInterface' not found in /home/zhangzhi/public_html/vendor/facebook/graph-sdk/src/Facebook/Url/FacebookUrlDetectionHandler.php on line 32
+[23-Dec-2017 06:41:34 UTC] PHP Fatal error:  Interface 'Facebook\Url\UrlDetectionInterface' not found in /home/zhangzhi/public_html/vendor/facebook/graph-sdk/src/Facebook/Url/FacebookUrlDetectionHandler.php on line 32
+[23-Dec-2017 06:42:35 UTC] PHP Fatal error:  Interface 'Facebook\Url\UrlDetectionInterface' not found in /home/zhangzhi/public_html/vendor/facebook/graph-sdk/src/Facebook/Url/FacebookUrlDetectionHandler.php on line 32

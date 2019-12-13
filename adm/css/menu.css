@@ -1,0 +1,59 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+.sharestorebgcolor{background:#60a2d5!important;}
+.sharestorecolor{color:#60a2d5!important;}
+.sharestoreword{color:#fff;}
+
+
+
+/*通用*/
+.operate{ height:auto; width: 200px; background-color:#FFF;}
+.operate ul li .nav { padding-left:15px; cursor:pointer; display:block; width:185px; height:33px; font-size:15px; color:#5c5c5c; font-weight:bold; line-height:33px;}
+.operate ul li .nolsit{ padding-left:15px; cursor:pointer; display:block; width:185px; height:33px; font-size:15px; color:#5c5c5c; font-weight:bold; line-height:33px;}
+
+.operate li .list-item {position:relative; width:200px; height:auto; zoom:1;}
+
+
+
+
+
+
+.am01{ padding-left:30px; height:33px; border-bottom:1px solid #d3d3d3; border-left:1px solid #d3d3d3; border-right:1px solid #d3d3d3;}
+.am01 p{ line-height:33px; color:#5c5c5c; font-size:15px; }
+.am01 a{ color:#5c5c5c; text-decoration:none; }
+.am01-select{ background-color:#d0e7ef;}
+.am01:hover{ background-color:#e0f7ff;}
+
+
+
+
+
+/**/
+
+
+.menuheader{  color:#FFF; background:url(../img/nav-sub-noselect.jpg) repeat-x;}
+.menuheader:hover{ color:#FFF; background:url(../img/nav-sub-select.jpg) repeat-x;}
+.operate ul li.selected .menuheader { color:#FFF; background:url(../img/nav-sub-select.jpg) repeat-x;}
+table.forms {
+	min-width:700px;
+	max-width:960px;
+	border:1px solid #fff;
+	margin-bottom:50px;
+}
+
+table.forms td,table.forms th{
+	text-align: center ; 
+	position:relative;
+	border-right:1px solid #fff;
+	vertical-align:top;
+}
+.formtable{ margin-top:20px; margin-bottom:40px; border:1px double #d5d5d5;}
+.formtable th{ height:26px; background-color:#44b5df; font-size:15px; line-height:26px; padding:5px 0; color:#FFF;text-align:center;}
+.formtable th select{ padding-left:5px; border:1px solid #cccccc; height:26px; min-width:80px;background:#fff;}
+.formtable td{ height:26px; font-size:15px; line-height:26px; padding:5px 0; text-align:center;border-bottom:1px dotted #ccccee;}
+.formtable th input[type=text]{ padding-left:5px; border:1px solid #cccccc; height:26px; width:90%;background:#fff;}
+.formtable td input[type=text]{ padding-left:5px; border:1px solid #cccccc; height:26px; width:90%;background:#fff;}
+.formtable td select{ padding-left:5px; border:1px solid #cccccc; height:26px; min-width:60px;background:#fff;}
+.lineclick{display:block;height:24px; background-color:#fff; font-size:15px; line-height:24px; color:#44b5df; width:24px;text-align:center;border:1px solid #2495bf;float:left; margin:0 10px;}

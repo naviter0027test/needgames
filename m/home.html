@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-86296436-2"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'UA-86296436-2');
+	</script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>NEEDGAMES</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="Ken Huang">
+	<meta property="og:image" content="http://www.coinpayments.tw/logo_fb.png" /> <!--20190320 Pman 調整成正式站的資料-->
+	<meta property="og:url" content="http://www.coinpayments.tw/" /> <!--20190320 Pman 調整成正式站的資料-->
+	<meta property="og:title" content="NEEEDGAMES" />
+	<meta property="og:description" content="NEEEDGAMES" >
+    <!--Mobile Only -->
+    <meta name="HandheldFriendly" content="true">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+     <meta name="viewport" content="viewport-fit=cover, initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width" />
+    <!--Mobile Only -->
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" type="text/css" href="assets/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+    <link rel="stylesheet" type="text/css" href="assets/js/slick.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/style.css?V4">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/addstyle.css">
+	  <script src="js/jquery-1.11.1.min.js"></script>
+	  <script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="assets/js/slick.min.js"></script>
+    <!-- <script src="assets/js/lg-zoom.min.js"></script> --><!-- 20180918 Pman 沒用上先mark掉 -->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.5/jquery.mobile.min.js"></script>-->
+	  <script type="text/javascript" src="js/sweetalert.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+	<script src="js/func.js"></script>
+</head>
+<body>
+<div id="fb-root"></div>
+<header id='mainheader' class='blurto'>
+        <div class="logo" onClick="javascript:location.href='home.html?page=wallpage'">
+            <img src="assets/img/logo-s.png">
+        </div>
+        <div class="search fpageselect applebtn" data-type='match'>
+            <input type="text" class='headsearch'  placeholder="找朋友..." disabled="disabled">
+            <button ><i class="fa fa-search" aria-hidden="true"></i></button>
+            <div style='position:absolute;width:100%;height:100%;z-index:1;top:0;left:0;'></div>
+        </div>
+        <div class="link htitle  applebtn" data-type="popnoticbell">
+            <i class="fa fa-bell" aria-hidden="true"></i>
+            <i class="alert" id="hnoticeqty"></i>
+        </div>
+        <div class="link htitle  applebtn" data-type="popnoticuser">
+            <i class="fa fa-user-plus" aria-hidden="true"></i>
+            <i class="alert" id="haddfriendqty"></i>
+        </div>
+        <div class="link htitle applebtn" data-type="popnoticcomment" >
+            <i class="fa fa-commenting" aria-hidden="true"></i>
+            <i class="alert" id="hchatqty"></i>
+        </div>
+        <br clear="both">
+</header>
+<div id='mainwrap'>
+</div>
+<footer>
+    <div class="user popclick" data-type="mypage" data-val="1" data-id=""></div>
+    <label class='menu applebtn'>
+            <i class="fa fa-bars" aria-hidden="true"></i>
+			      <div class="menu-list">
+                <span class='applebtn submenuclick applebtn' data-val='2'>我的貢獻值</span>
+                <span class='applebtn submenuclick applebtn' data-val='3'>會員條款</span>
+                <span class='applebtn submenuclick applebtn applebtn' data-val='4'>隱私權聲明</span>
+                <span class='applebtn popclick applebtn' data-type='mypage' data-val='2' >修改個人資料</span>
+                <span class='applebtn submenuclick applebtn'  data-val='5'>聯絡我們</span>
+                <span class='applebtn submenuclick applebtn logoff' data-val='6' >登出</span>
+                <img src="assets/img/logo.png" class="pageclick logo applebtn"  data-type='wallpage'>
+            </div>
+            <div class="black"></div>
+    </label>
+    <ul class="slider">
+            <li class='pageclick applebtn' width='60%' data-type='wallpage'>動態消息</li>
+            <li class='pageclick applebtn' width='60%' data-type='articlepage'>攻略・創作</li>
+            <li class='pageclick applebtn' width='60%' data-type='rankpage'>排行榜</li>
+            <li class='pageclick applebtn' width='60%' data-type='qnapage'>Q&A</li>
+			<li class='pageclick applebtn' width='60%' data-type='actpage'>活動專區</li> <!--20190320 Pman 新增「活動專區」選項-->
+            <li class='pageclick applebtn' width='60%' data-type='shoppage'>榮耀商店</li>
+    </ul>
+		<div class="prev applebtn"><i class="fa fa-chevron-left" aria-hidden="true"></i></div>
+    <div class="next applebtn"><i class="fa fa-chevron-right" aria-hidden="true"></i></div>
+</footer>
+</body>
+<script>
+/* 貼圖tabs */
+
+$(document).ready(function() {
+
+
+});
+</script>
+
+</html>

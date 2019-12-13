@@ -1,0 +1,4 @@
+[10-Dec-2017 03:34:05 UTC] PHP Fatal error:  Class 'Facebook\GraphNodes\GraphNode' not found in /home/zhangzhi/public_html/vendor/facebook/graph-sdk/src/Facebook/GraphNodes/GraphPicture.php on line 32
+[10-Dec-2017 03:34:15 UTC] PHP Fatal error:  Class 'Facebook\GraphNodes\GraphNode' not found in /home/zhangzhi/public_html/vendor/facebook/graph-sdk/src/Facebook/GraphNodes/GraphApplication.php on line 33
+[10-Dec-2017 06:26:00 UTC] PHP Fatal error:  Class 'Facebook\GraphNodes\GraphNode' not found in /home/zhangzhi/public_html/vendor/facebook/graph-sdk/src/Facebook/GraphNodes/GraphAlbum.php on line 33
+[10-Dec-2017 16:37:43 UTC] PHP Fatal error:  Class 'Facebook\GraphNodes\Collection' not found in /home/zhangzhi/public_html/vendor/facebook/graph-sdk/src/Facebook/GraphNodes/GraphNode.php on line 32

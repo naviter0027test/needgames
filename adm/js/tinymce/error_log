@@ -1,0 +1,4 @@
+[29-Jun-2015 07:09:41 Asia/Taipei] PHP Warning:  opendir(../../../uploadfile): failed to open dir: No such file or directory in /home/cptjdygy/public_html/miller/adm/js/tinymce/getfile.php on line 4
+[29-Jun-2015 07:14:51 Asia/Taipei] PHP Notice:  Undefined variable: rootcompanyname in /home/cptjdygy/public_html/miller/adm/js/tinymce/upload.php on line 5
+[29-Jun-2015 07:14:51 Asia/Taipei] PHP Notice:  Undefined variable: job in /home/cptjdygy/public_html/miller/adm/js/tinymce/upload.php on line 29
+[29-Jun-2015 07:15:04 Asia/Taipei] PHP Notice:  Undefined variable: rootcompanyname in /home/cptjdygy/public_html/miller/adm/js/tinymce/upload.php on line 5

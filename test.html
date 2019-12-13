@@ -1,0 +1,185 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<link href="css/global.css" type="text/css" rel="stylesheet">
+    <link href="css/ui-lightness/jquery-ui-1.10.3.custom.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="css/jquery.rollbar.css" media="screen" />
+    <link href="css/chosen.min.css" type="text/css" rel="stylesheet">
+	<link href="css/all.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ 	<meta http-equiv="cache-control" content="no-cache">
+ 	<meta http-equiv="pragma" content="no-cache">
+ 	<meta http-equiv="expires" content="0">
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/sharenew.js"></script>
+    <script>
+    $(document).ready(function(){  
+				var tempvals=Array('2','2');// 類別,ID
+				tempitem=ajaxarr("returnok",tempvals,"ajax.php");
+				tempitem.success(function(data){//回傳 data 義	
+					alert(data[0]);
+				});					   
+	});  
+ 
+	</script>
+    <title></title>
+</head>
+<body>
+<div id="fb-root"></div>
+<div id='headeroutwrap'>
+    <!--TOP AD -->
+    <div id='topad'>
+        <div id='topadimg'>
+            <!--<img src='img/temptopad.jpg' id='topadimgimg'  />-->
+            <img src='img/close2.png' id='topadimgclick' />
+        </div>
+    </div>
+    <!-- TOP AD END -->
+    <!--header-->
+    <div id='headerwrap' class='bgcolor_t'>
+        <!--wraper-->
+        <div class='centerwrap'>
+            <!--LEFT-->
+            <DIV CLASS='leftwrap'>
+            	<a href='' class='pageclick topnavclick' data-type='wallpage'>
+                <img src='img/logo.png' style='margin:3px 0 0 5px;float:left;'/>
+                </a>
+                <!--搜尋-->
+                <div id='headsearchwrap'>
+                    <input type=text id='headsearch' placeholder='搜尋暱稱或ID' />
+                    <input type=submit id='headsearchsubmit' value=''/>
+                    <div class='clr'></div>
+                </div>
+                <!--搜尋 END -->                
+            </DIV>
+            <!--MID-->
+            <DIV class='midwrap'>
+                <!--換頁  NAV-->
+                <div id='headnavwrap' >
+                    <a href='' class='pageclick topnavclick' data-type='matchpage'>配對好友</a>
+                    <a href='' class='pageclick topnavclick' data-type='wallpage'>動態消息</a>
+                    <a href='' class='pageclick topnavclick' data-type='articlepage'>攻略專區</a>
+                    <a href='' class='pageclick topnavclick' data-type='rankpage'>排行榜</a>
+                    <a href='' class='pageclick topnavclick' data-type='qnapage'>Q&A </a>
+                    <a href='' class='pageclick topnavclick' data-type='actpage'>活動專區 </a>
+                    <a href='' class='pageclick topnavclick' data-type='shoppage'><img src='img/nav_shop.png' style='margin-top:-5px' /></a>
+                    <div class='clr'></div>
+                </div>
+                <!--換頁  NAV END -->
+                <!--以下靠右-->
+                <!--通知-->
+                <div id='hnoticewrap' class='hwrap fR'>
+                    <div id='hnoticetitle' class='htitle poptitles' data-type='notice'>
+                            <img src='img/hnoticetitle.png' class='htitleimg' />
+                            <span class="fa-stack" id='hnoticeqty'></span>
+                    </div>
+                    <div id='hnoticelist' class='hlist headpop'>
+                      <div id='hnoticelistcontent' class='headpopwrap'>
+                          <div class='formdiv headdiv' id='hnoticekeywordwrap'>
+                          </div>
+                      </div>
+                   </div>
+                </div>
+                <!--通知 END -->
+                <!--chat-->
+                <div id='hchatwrap' class='hwrap fR'>
+                    <div id='hchattitle' class='htitle poptitles' data-type='chat'>
+                        <img src='img/hchattitle.png' class='htitleimg' />
+                        <span class="fa-stack" id='hchatqty'></span>
+                    </div>
+                    <div id='hchatlist' class='hlist headpop'>
+                      <div id='hchatlistcontent' class='headpopwrap'>
+                            <div class='formdiv headdiv' id='hchatkeywordwrap'>
+                            </div>
+                        </div>
+                     </div>
+                </div>
+                <!--chat END -->
+                <!--addfriend-->
+                <div id='haddfriendwrap' class='hwrap fR'>
+                      <div id='haddfriendtitle' class='htitle poptitles' data-type='addfriend'>
+                      	<img src='img/haddfriendtitle.png' class='htitleimg' />
+                        <span class="fa-stack" id='haddfriendqty'></span>
+                      </div>
+                      <div id='haddfriendlist' class='hlist headpop'>
+                          <div id='haddfriendlistcontent' class='headpopwrap'>
+                              <div class='formdiv headdiv' id='haddfriendkeywordwrap'>
+                              </div>
+                          </div>
+                      </div>
+               </div>
+               <!--addfriend END -->
+            </div>
+            <!-- mid end-->
+            <DIV CLASS='rightwrap'>
+            </DIV>
+            <div id='showmenu' class=' btn'>
+            	<span class='showrightmenu'>
+            	<i class="fa fa-bars"></i><i class="fachanger fa fa-caret-down s "></i>
+                </span>
+                <div id='rightmenuwrap' class='headpop'>
+                </div>
+            </div>
+            <div class='clr'></div>
+        </div>
+        <!--wraper end-->
+    </div>
+	<!--header end -->
+</div>
+<!--headeroutwrap end-->
+<!--LEFT-->
+<DIV id='mainleft' CLASS='leftwrap'>
+    <div id='mainlefttopchanger'>
+    </div>
+	<div id='mainleftin'  class='scrollable'>
+    	<DIV id='mainleftinbox'>
+        	<!--LEFT /可變選單  -->
+        	<div id='leftfunctionbox'>
+			</div>
+        	<!--可變選單 end-->
+            <!--LEFT inside end  -->
+    	</DIV>
+	</div>
+</DIV>
+<!--LEFT END-->
+<!--main -->
+<div id='mainwrap'>
+	<div class='centerwrap'>
+    	<!--MID-->
+  		<DIV id='mainmid' class='midwrap'>
+        	<div class='midwrapin' id='mainmidwrapin'>
+                <div class='clr'></div>  
+            </div>
+        </DIV>
+        <div class='clr'></div>  
+	</div>
+</div>
+<!--RIGHT -->
+<DIV id='mainright' CLASS='rightwrap'>
+		<div id='rightarrow'><i class='fa fa-chevron-left'></i></div>
+        <div id='mainrightin' class='scrollable'>
+        	<div id='friendlist'>
+        	</div>
+        </div>
+        <!--表格-->
+        <div id='friendsearchbox'>
+        	<input type='text' id='friendsearch' placeholder='搜尋好友' />
+            <div id='fsearchresult'>
+            </div>
+  		</div>
+        <!--表格 END-->
+</DIV>
+<!--right end-->
+<!--main end-->
+<!--chatroom-->
+<div id='iconbox'>
+	<div id='iconboxin' class='border10 shadow2'>
+        <div id='icontypelist'>
+        </div>
+    </div>
+    <img src='img/chatbottom.png' id='iconboxbottom'/>
+</div>
+<!--charroomend-->
+</body>
+</html>
