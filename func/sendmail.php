@@ -36,6 +36,7 @@
 	}
 	function phpmail($receiver,$receivername,$subject,$contents){
 		global $frommail;
+		global $mailuser;
 		global $frompass;
 		global $mailhost;
 		global $mailport;
@@ -49,13 +50,14 @@
 		$mail->IsSMTP();
 		$mail->SMTPAuth = true;
 		if($mailssl==1){
-			$mail->SMTPSecure = "ssl";
+			//$mail->SMTPSecure = "ssl";
+			$mail->SMTPSecure = "tls";
 		}
 		$mail->Host = $mailhost;
 		$mail->Port = $mailport;
 		$mail->CharSet = "utf-8";
 		$mail->Encoding = "base64";
-		$mail->Username = $frommail;
+		$mail->Username = $mailuser;
 		$mail->Password = $frompass;
 		$mail->FromName = $frommail;
 		$mail->From = $frommail;
