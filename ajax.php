@@ -450,6 +450,7 @@
 	function show_mypage2($x){
 		global $conf;
 		global $horo1,$horo2,$horon;
+                $out = array();
 		$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 		$pdom -> exec("set names ".$conf['db_encode']);
 		$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
@@ -463,9 +464,11 @@
 				share_update($pdom,"mem_","refurl='".$t['refurl']."'","memberid='".$t['memberid']."'");
 			}
 			$out[0]="OK";
+                        $out[1] = array();
 			$out[1]['id']=$x[0];
 			$out[1]['showid']=10000000000000+$x[0]*13;
 			$out[1]['name']=$t['nickname'];
+			$out[1]['email']=$t['email'];
 			$out[1]['score']=$t['score'];
 			$out[1]['headpic']=$t['headpic'];
 			if($t['email_v']==1 || $_SESSION['userid']==$x[0]){
@@ -1476,7 +1479,7 @@
 	function get_shop_list($x){
 		if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key']){//確認資格
 			global $conf;
-			$out="";
+			$out=array();
 			$pdos = new PDO('mysql:host='.$conf['dbhost_s'].';dbname='.$conf['dbname_s'], $conf['dbuser_s'], $conf['dbpass_s']);
 			$pdos -> exec("set names ".$conf['db_encode']);
 			$ins="ORDER BY productid ASC"; //20190329 Pman 調整預設商品排序
@@ -1498,7 +1501,7 @@
 			}
 			if($list){
 				$out[0]="OK";
-				$listb="";
+				$listb=array();
 				$a=0;
 				foreach($list as $t){
 					$listb[$a]['thisid']=$t['productid'];

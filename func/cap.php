@@ -1,6 +1,6 @@
 <?php	
 	function get_caplist(){
-		 $out="";
+		 $out=array();
 		 $out[0]=" <div id=codepagew style='background:url(capw/bg".rand(0,5).".jpg)'>";
 		 $out[0].=make_caplist();
 		 $out[0].="</div>";

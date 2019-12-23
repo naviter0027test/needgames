@@ -128,9 +128,9 @@
 	}
 	//存入註冊後詳細資料
 	function mem_actsave($x){
-		$out="";
+		$out=array();
 		global $conf;
-		if($_SESSION['key']==$x[0]){
+		//if($_SESSION['key']==$x[0]){
 			$basp=get_awain(1);
 			if($x[5] && $x[11]){
 				$basp=$basp+get_awain(2);
@@ -206,10 +206,12 @@
 
 			//$out[0]="ERR";
 			//$out[1]="錯誤測試1";
-		}else{
-				$out[0]="ERR";
-				$out[1]=$errText['reopen'];
-		}
+		//}else{
+				//$out[0]="ERR";
+				//$out[1]=$errText['reopen'];
+                                //$out[2] = $_SESSION['key'];
+                                //$out[3] = $x[0];
+		//}
 
 		echo json_encode($out);
 
@@ -233,7 +235,7 @@
 	}
 	function mem_getpoint($x){
 		global $conf;
-		$out="";
+		$out=array();
 		$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 		$pdom -> exec("set names ".$conf['db_encode']);
 		$pdop = new PDO('mysql:host='.$conf['dbhost_p'].';dbname='.$conf['dbname_p'], $conf['dbuser_p'], $conf['dbpass_p']);
@@ -256,7 +258,7 @@
 	//驗證 檢查會員存在--
 	function mem_chkmem($x){
 		global $conf;
-		$out="";
+		$out=array();
 		$pdo = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 		$pdo -> exec("set names ".$conf['db_encode']);
 		$t=share_getinfo($pdo ,"mem_","actcode",$x[1]);
@@ -362,10 +364,11 @@
                                 $sql = "select * from mem_ where email = '$email' and password = '$pass'";
                                 $result = $pdo->query($sql);
 
-                                $out = array();
+                                $out=array();
                                 $out[0]="ERR";
                                 if($t = $result->fetch(PDO::FETCH_ASSOC)) {
                                     $_SESSION['userid']=$t['memberid'];
+                                    $_SESSION['isver']=$t['phonev'];
                                     $out[0]="OK";
                                     $out[1]=$t;
                                     $out[2]=$_SESSION['userid'];
@@ -772,7 +775,7 @@
 	function mem_reg($x){
 		global $conf;
 		global $mrr;
-		$out="";
+		$out=array();
 		//$test=test_capcodesub($x[1]);
 		if($x[0]=="2"){//fb快速註冊
 			$pdo = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
@@ -816,7 +819,19 @@
 					$out[1]="FB帳號已使用在其他帳號上";
 				}else if($x[3]==$x[4]){
 					$temp=$mrr[rand(0,21)].$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].$mrr[rand(0,21)].$mrr[rand(0,21)];
-					if(share_insert($pdo ,"mem_","email,password,actcode,fbid,fbname,fbmail,fbbirth","'".$x[2]."','".$x[3]."','".$temp."','".$x[6]."','".$x[7]."','".$x[8]."','".$x[9]."'")){
+                                        $input = array(
+                                            ':email' => $x[2],
+                                            ':password' => $x[3],
+                                            ':actcode' => $temp,
+                                            ':fbid' => $x[6],
+                                            ':fbname' => $x[7],
+                                            ':fbmail' => $x[8],
+                                            ':fbbirth' => $x[9]
+                                        );
+                                        $insertSql = "insert into `mem_` (email,password,actcode,fbid,fbname,fbmail,fbbirth) value (:email, :password, :actcode, :fbid, :fbname, :fbmail, :fbbirth)";
+                                        $statm = $pdo->prepare($insertSql);
+					//if(share_insert($pdo ,"mem_","email,password,actcode,fbid,fbname,fbmail,fbbirth","'".$x[2]."','".$x[3]."','".$temp."','".$x[6]."','".$x[7]."','".$x[8]."','".$x[9]."'"))
+                                        if($statm->execute($input)){
 						//$out[1]="INSERT INTO mem_(email,password,actcode) VALUES('".$x[2]."','".$x[3]."','".$temp."')";
 						//送入介紹
 						if($x[5]){//有人介紹
@@ -836,6 +851,7 @@
 					}else{
 						$out[0]="ERR";
 						$out[1]="存入錯誤,請稍後在試";
+                                                $out[2]=$pdo->errorInfo();
 					}
 				}else{
 					$out[0]="ERR";
@@ -873,7 +889,7 @@
 	//pop memberform--剛加入時的會員資料表
 	function get_memberform($x){
 		global $conf;
-		$out="";
+		$out=array();
 		$pdo = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 		$pdo -> exec("set names ".$conf['db_encode']);
 		$out[0]=share_gettable($pdo ,"gam_");//gametag
@@ -885,9 +901,9 @@
 		$pdo= null;
 		echo json_encode($out);
 	}
-	/*
 	function mem_update($x){
 		global $conf;
+                $out=array();
 		if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key']){//確認資格
 			$out[0]="OK";
 			$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
@@ -906,5 +922,4 @@
 		}
 		echo json_encode($out);
 	}
-	*/
 ?>
