@@ -337,7 +337,11 @@
 			sessionStorage.setItem("toprank",JSON.stringify(data[5]));//更新
 			sessionStorage.setItem("chatpic",JSON.stringify(data[6]));//更新
 			//sessionStorage.setItem("tagtype",JSON.stringify(data[8]));
-		});
+		}).
+                error(function(data) {
+                    console.log('err');
+                    console.log(data);
+                });
 	}
 
 	resetchatroom=function(minx){

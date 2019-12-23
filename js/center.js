@@ -1714,7 +1714,11 @@ get_centershoplist=function(x,y){//x==分類  y==順位
 						getmoreboard($("#mainitemlast").data("select"));
 				}
 			}
-	});
+	})
+    .error(function(data) {
+        console.log('err');
+        console.log(data);
+    });
 }
 show_product=function(x){
 	$("#mainmidwrapin").html("<div class='loaderbox'><img src='img/loaderd.gif'></div>");

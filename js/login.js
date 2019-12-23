@@ -96,6 +96,7 @@
 			out+="								<input type='hidden' class='formfield' name='f4' value='"+((typeof b=="undefined")?"":b)+"'>";
 			out+="                             <input type='submit'  name='submit' value='送出' class='submitclick border5' data-type='regform'>\n";
 			out+="                    </div>\n";
+			/*
 			out+="                    <div class='formline'>\n";
 			out+="                        <div class='formitem formitem_4' style='line-height:50px;'>快速註冊</div>\n";
 			out+="                        <div class='formitem formitem_4 formitemstext tcenter'>\n";
@@ -104,7 +105,6 @@
 			out+="                        </div>\n";
 			out+="                        <div class='clr'></div>\n";
 			out+="                    </div>\n";
-			/*
 			out+="                    <div class='fbwrap'>\n";
 			out+="							<span>快速註冊</span>";
 			out+="							<span><div class='fbclick fbbtn btn' data-type='rlink'><span>FaceBook</span> 註冊</div></span>";
@@ -492,8 +492,8 @@
 			//out+="							<span><div class='fbclick fbbtn2 btn' data-type='login'><span>Facebook</span> 登入</div></span>";
 			//out+="							<span class='fbclick fbbtn2 btn' data-type='link'>FB原有帳號綁定</div>"
 			//out+="                    </div>\n";
+                        //popbase_2("會員登入",out,'y');
                         $('#loginTemplate').load('template/login.html', function(tem) {
-                            //popbase_2("會員登入",out,'y');
                             popbase_2("會員登入",tem,'y');
                             setTimeout(function() {
                                 $('#loginform .submitclick').on('click', function() {
