@@ -43,7 +43,7 @@
 		global $mailssl;
 		global $conf;
 		mb_internal_encoding('UTF-8');    // 內部預設編碼改為UTF-8
-		require 'PHPMailerAutoload.php';
+		require __DIR__. '/PHPMailerAutoload.php';
 		//require("class.phpmailer.php");
 		//$mail = new PHPMailer();
 		$mail = new PHPMailer;

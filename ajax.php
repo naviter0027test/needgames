@@ -1043,6 +1043,7 @@
 				}else{
 					$openme=1;//算數量
 				}
+                                $ts = share_getinfo($pdos,"setting_","skey", "pointLimit");
 				if($openme==1){
 					//檢查限量
 					//$lim=0;
@@ -1069,6 +1070,7 @@
 						}
 						$tb=share_getinfo($pdos,"cat_","catid",$t['catid']);
 						$out[1]['catname']=$tb['catname'];
+                                                $out[1]['pointLimit']=isset($ts['sval']) ? $ts['sval'] : '-1';
 
 					//}
 				}else{
@@ -1099,6 +1101,7 @@
 			if($t=share_getinfo($pdom,"mem_","memberid",$_SESSION['userid'])){
 				//if($x[2]==$t['password']){
 					if($p=share_getinfo($pdos,"pro_","productid",$x[3])){//1220 修改 表格位置
+                                                $cate = share_getinfo($pdos, "cat_", "catid", $p["catid"]);
 						$left=0;//檢查剩餘量
 						$lim=0;//檢查限量
 						$ema=0;
@@ -1138,22 +1141,47 @@
 							$out[1]="Email地址不相同";
 						}else{//開始結帳
 							$id=rand(123,987).date('Yndhms').rand(123,987);
-							if($r=add_point($_SESSION['userid'],"-".$p['dispoints'],$id,"製作配方",$x[3])){//最後一個改成商品號
+                                                        $r=false;
+                                                        if($cate['catname'] == '虛擬卡') {//若商品為虛擬卡則要準備金流
+                                                            $discount = isset($x[10]) ? $x[10] : 0;
+                                                            $r=add_point($_SESSION['userid'],"-".$discount,$id,"製作配方",$x[3]);
+                                                        } else {
+                                                            $r=add_point($_SESSION['userid'],"-".$p['dispoints'],$id,"製作配方",$x[3]);
+                                                        }
+							if($r){//最後一個改成商品號
 								if($p['vir']=="1"){
 									if($z=share_insert($pdos,"ord_","orderid,memberid,productid,dispoints,email,statusid,name,telephone","'".$id."','".$_SESSION['userid']."','".$x[3]."','".$p['dispoints']."','".$x[6]."','3','".$x[4]."','".$x[5]."'")){
 										$ser="";
+                                                                                $virnumber="";
 										$sendmail=$x[6];
 										if($p['virnumber']){//共用序號
 											share_update($pdos,"pro_","qty=qty-1","productid='".$x[3]."'");
 											$ser=$p['productname']."序號:".$p['virnumber']."<BR>";
+                                                                                        $virnumber = $p['virnumber'];
 										}else{
 											$temp=share_getfree($pdos,"SELECT * FROM gift_".$p['productid']." WHERE memberid is null limit 1")[0];
 											$temp2=share_update($pdos,"gift_".$p['productid'],"memberid='".$_SESSION['userid']."'","giftid='".$temp['giftid']."'");
 											$ser=$p['productname']."序號:".$temp['giftcode']."<BR>";
+                                                                                        $virnumber = $temp['giftcode'];
 										}
 										//寄信去給客人
-										sendmail(4,$sendmail,$ser);
+                                                                                if($cate['catname'] != '虛擬卡') {
+                                                                                    sendmail(4,$sendmail,$ser);
+                                                                                }
 										$out[0]="OK";
+                                                                                if($cate['catname'] == '虛擬卡') {//若商品為虛擬卡則要準備金流
+                                                                                    $_SESSION['orderid'] = $id;
+                                                                                    $_SESSION['product'] = $p;
+                                                                                    $discount = isset($x[10]) ? $x[10] : 0;
+                                                                                    $_SESSION['discount'] = $discount;
+                                                                                    $_SESSION['virnumber'] = $virnumber;
+
+											                                                                        share_update($pdos,"ord_","payment='opay'","orderid='$id'");
+											                                                                        share_update($pdos,"ord_","price=". $p['dispoints'],"orderid='$id'");
+											                                                                        share_update($pdos,"ord_","dispoints=". $discount,"orderid='$id'");
+											                                                                        share_update($pdos,"ord_","statusid=1","orderid='$id'");
+											                                                                        share_update($pdos,"ord_","note='$virnumber'","orderid='$id'");
+                                                                                }
 									}else{
 										$out[0]="ERR";
 										$out[1]="訂單存入錯誤";

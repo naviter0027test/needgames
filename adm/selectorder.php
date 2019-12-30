@@ -52,6 +52,7 @@ if($job=="addfunc"){
 	$pdom -> exec("set names ".$conf['db_encode']);	
 	$row=share_getinfo($pdos,"ord_","thisid",$GLOBALS["thisid"]);
 	$pro=share_getinfo($pdos,"pro_","productid",$row["productid"]);
+	$cat=share_getinfo($pdos,"cat_","catid",$pro["catid"]);
 	$mem=share_getinfo($pdom,"mem_","memberid",$row["memberid"]);
 	echo "<style>.ord_ td{padding:5px;border:1px solid #ddd;border-collapse:collapse;background:#ddd;}.ord_ th{padding:5px;border:1px solid #ddd;border-collapse:collapse;}</style>";
 	echo"<a href='index.php?tf=selectorder&p=".$GLOBALS['p']."' class='blue-btn' style='width:200px;'>回列表頁</a><BR>";
@@ -65,7 +66,12 @@ if($job=="addfunc"){
 	echo "<tr><TD>最後更新時間</td><td>".$row['changedate']."</td></tr>";
 	echo " <tr><Th colspan=2 style='background:#666;color:#fff;padding:5px 0;' >商品資料</Th></tr>";
 	echo " <tr><TD>商品名稱</td><td>".$pro['productname']."</td></tr>";
-	echo " <tr><TD>貨物幣額</td><td>NT.".$row['dispoints']."</td></tr>";
+        if($cat['catname'] != '虛擬卡') {
+            echo " <tr><TD>貨物幣額</td><td>NT.".$row['dispoints']."</td></tr>";
+        } else {
+            echo " <tr><TD>折扣</td><td>NT.".$row['dispoints']."</td></tr>";
+            echo " <tr><TD>貨物幣額</td><td>NT.".$row['price']."</td></tr>";
+        }
 	echo "<tr><Th colspan=2 style='background:#666;color:#fff;padding:5px 0;'>運送方式</Th></tr>";
 	echo "<tr><TD>是否自取</td><td>".($row['ispick']==1?"是":"否")."</td></tr>";
 	echo "<tr><Th colspan=2 style='background:#666;color:#fff;padding:5px 0;'>訂購人資料</Th></tr>";

@@ -202,6 +202,7 @@ function upopen($mytable,$myid,$mypage){
 			if($GLOBALS['id']){
 				$ex="修改";
 				$rtn=share_update($pdos,"pro_","productname='".$GLOBALS["productname"]."',catid='".$GLOBALS["catid"]."',dispoints='".$GLOBALS["dispoints"]."',qty='".$qty."',des1='".$GLOBALS['des1']."',des2='".$GLOBALS['des2']."',isopen=".$isopen.",lim='".$lim."',vir='".$vir."',virnumber='".$GLOBALS['virnumber']."'" ,"productid=".$GLOBALS['id']);
+                                unset($GLOBALS['id']);
 			}else{
 				$ex="新增";
 				$rtn=share_insert($pdos,"pro_","productname,catid,dispoints,qty,des1,des2,isopen,lim,vir,virnumber","'".$GLOBALS["productname"]."','".$GLOBALS["catid"]."','".$GLOBALS["dispoints"]."','".$qty."','".$GLOBALS["des1"]."','".$GLOBALS['des2']."',".$isopen.",'".$lim."','".$vir."','".$GLOBALS['virnumber']."'");

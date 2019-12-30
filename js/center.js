@@ -1788,7 +1788,19 @@ show_product=function(x){
 		*/
 		out+="					  <input type=hidden name='password' value='暫無作用'  class='formfield'>\n";
 		out+="					  <input type=hidden name='pid' value='"+data[1]['pid']+"'  class='formfield'>\n";
+            console.log(data);
 		if(data[1]['vir']==1){
+                    if(data[1]['catname'] == '虛擬卡') {
+                        var pointLimit = parseInt(data[1]['pointLimit']);
+			out+="                    <div class='formline'>\n";
+			out+="                        <div class='formitem formitem_1 tleft'>折扣金額</div>\n";
+			out+="                        <div class='formitem formitem_1'>\n";
+			out+="                            <input type='text' class='formfield form-control' name='discount' value='0' pointLimit='"+ pointLimit+ "' />\n";
+			out+="                            <div class='formerr'>請填寫折扣</div>\n";
+			out+="                        </div>\n";
+			out+="                        <div class='clr'></div>\n";
+			out+="                    </div>\n";
+                    }
 			out+="                    <div class='formline'>\n";
 			out+="                        <div class='formitem formitem_1 tleft'>姓名</div>\n";
 			out+="                        <div class='formitem formitem_1'>\n";

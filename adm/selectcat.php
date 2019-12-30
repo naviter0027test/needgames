@@ -74,9 +74,13 @@ function upcontent($mytable,$myid,$mypage){
 	global $imgheight;
 	global $imgs;
 	global $pdos;
+        global $pointLimit;
     if( empty($GLOBALS["catname"]) ){
 		share_showerr("請確認填寫資料");
     }else{
+        if($GLOBALS["catname"] == '虛擬卡') {
+            share_update($pdos,'setting_',"sval='$pointLimit'","skey='pointLimit'");
+        }
 		  if($t=share_gettable($pdos,$mytable." WHERE catname='".$GLOBALS["catname"]."' AND ".$myid."<>".$GLOBALS["id"])){
 			  share_showerr("名稱已經存在,無法更新");
 		  }else{
@@ -202,6 +206,7 @@ function upcontent($mytable,$myid,$mypage){
 	 echo "<TR><th style='width:70px'>刪除</th><th class=req style='width:120px'>分類名稱(建議20個英數內)</th><th class=req style='width:120px'>背景圖</th><th>使用</th><th>更新</th><th>排序</th></TR>";
 	 $rows=share_gettable($pdos,$mytable." ORDER BY sorting DESC");
 	 $z=0;
+        $setting=share_getinfo($pdos,"setting_","skey","pointLimit");
      foreach($rows as $row){
 		     echo "<tr><FORM action='index.php?tf=".$mypage."&job=upcontent&id=".$row['catid']."' method='post'  enctype='multipart/form-data'><td><a href='index.php?tf=".$mypage."&job=delcontent&id=".$row['catid']."' class='blue-btn'>刪除</a></td>\n";
 			 echo "<td><input type=text name=catname value='".$row['catname']."'></TD>\n";
@@ -212,7 +217,11 @@ function upcontent($mytable,$myid,$mypage){
 				echo "<td class='imgwrap'><div class='filewrap'><input type='file' name='file'  class=fileupload ></div></td>";
 			}
 			if($row['isopen']=="1"){
+                            if($row['catname'] != '虛擬卡') {
 				echo "<td><input type=checkbox name=isopen value=1 checked>是</td>\n";
+                            }else{
+				echo "<td><input type=checkbox name=isopen value=1 checked>是, 折扣上限<input type='text' name='pointLimit' value='". $setting['sval']. "' style='width:50px;' /></td>\n";
+                            }
 			}else{
 				echo "<td><input type=checkbox name=isopen value=1>是</td>\n";
 			}

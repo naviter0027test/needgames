@@ -187,7 +187,6 @@ $(document).ready(function() {
 								cntss--;
 							});
 						}else{
-                                                    console.log('is here?');
 							sessionStorage.setItem("member","");
 							//sessionStorage.setItem("userid","");
 							sessionStorage.setItem("key","");
@@ -1206,21 +1205,66 @@ $(document).ready(function() {
 						}
 					}
 					radioval=$("#orderform input[name=pickup]:checked").val();
+
+                                        //確認是否為虛擬卡商品
+                                        var isVirtualCard = false;
+                                        if($('#orderform [name=discount]').length > 0) {
+                                            isVirtualCard = true;
+                                            var pointLimit = parseInt($('#orderform [name=discount]').attr('pointLimit'));
+                                            var discount = parseInt($('#orderform [name=discount]').val());
+                                            if(pointLimit != -1 && discount > pointLimit) {
+                                                alert('輸入的折扣點不得高於'+ pointLimit);
+                                                passme=0;
+                                            }
+                                            var price = parseInt($($('.storeitemlikes .fL')[0]).text());
+                                            if(discount >= price && passme == 1) {
+                                                alert('輸入的折扣點不得高於商品價格');
+                                                passme=0;
+                                            }
+                                            var playerPoints = parseInt($('#leftpeopleinfo .bgipoff').parent().text());
+                                            if(discount > playerPoints && passme == 1) {
+                                                alert('輸入的折扣點不得高於持有點數');
+                                                passme=0;
+                                            }
+                                            if(passme == 0)
+                                                return false;
+                                            radioval = 0;
+                                        }
 					if(passme==1){
 						me=$(this);
 						me.parents(".formitem").append("<div id='tempcover' style='position:absolute;top:0;left:0;width:100%;height:100%;z-index:99;text-align:center;'><img src='img/loaderys.gif' style='margin:5px auto;'></div>");
 						radioval=$("#orderform input[name=pickup]:checked").val();
 						mylistb=$(".formfield");
 						var tempvals=Array(sessionStorage.getItem("userid"),sessionStorage.getItem("key"),mylistb.eq(0).val(),mylistb.eq(1).val(),mylistb.eq(2).val(),mylistb.eq(3).val(),mylistb.eq(4).val(),radioval,mylistb.eq(5).val(),mylistb.eq(6).val());
+                                                //確認是否為虛擬卡商品
+                                                if($('#orderform [name=discount]').length > 0) {
+                                                    tempvals=Array(
+                                                        sessionStorage.getItem("userid"),
+                                                        sessionStorage.getItem("key"),
+                                                        mylistb.eq(0).val(),
+                                                        mylistb.eq(1).val(),
+                                                        mylistb.eq(3).val(),
+                                                        mylistb.eq(4).val(),
+                                                        mylistb.eq(5).val(),
+                                                        radioval,
+                                                        mylistb.eq(6).val(),
+                                                        mylistb.eq(7).val(),
+                                                        mylistb.eq(2).val(),
+                                                    );
+                                                }
 							tempitem=ajaxarr("saveorder",tempvals,"ajax.php");
 							tempitem.success(function(data){//回傳 data 義
+                                                            console.log(data);
 								$("#tempcover").remove();
 								if(data[0]=="ERR"){
 									popnotice(data[1]);
 								}else{
 									show_afterloginhead();
-									//$("#maincontentwrap").html("<div class='responsetext'>恭喜製作配方成功，您的訂單已送出</div>");
 									$("#maincontentwrap").html("<div class='responsetext'>商品已成功兌換，感謝您的貢獻</div>");//20190904 Pman 客戶要求修改
+                                                                        //確認是否為虛擬卡商品，並進行金流導向
+                                                                        if(isVirtualCard == true) {
+                                                                            location.href = '/func/jumpForm.php';
+                                                                        }
 
 								}
 							});
@@ -1342,6 +1386,7 @@ $(document).ready(function() {
 							var tempvals=Array(sessionStorage.getItem("key"),mylist.eq(0).val(),alllist.eq(1).val(),alllist.eq(2).val(),alllist.eq(3).val(),alllist.eq(4).val(),alllist.eq(5).val(),alllist.eq(6).val(),alllist.eq(7).val(),alllist.eq(8).val(),alllist.eq(9).val(),alllist.eq(10).val(),alllist.eq(11).val(),alllist.eq(12).val(),alllist.eq(13).val());
 							tempitem=ajaxarr("mem_actsave",tempvals,"ajax.php");
 							tempitem.success(function(data){//回傳 data 義
+                                                            console.log(data);
 								if(data[0]=="ERR"){
 									popnotice(data[1]);
 								}else{
@@ -1431,8 +1476,10 @@ $(document).ready(function() {
 							me.addClass("submitclicktemp");
 							me.val("請稍待...");
 							var tempvals=Array("1",mylist.eq(4).val(),mylist.eq(0).val(),mylist.eq(1).val(),mylist.eq(2).val(),mylistb.eq(5).val(),mylistb.eq(6).val(),mylistb.eq(7).val(),mylistb.eq(8).val(),mylistb.eq(9).val());
+                                                    console.log(tempvals);
 							tempitem=ajaxarr("mem_reg",tempvals,"ajax.php");
 							tempitem.success(function(data){//回傳 data 義
+                                                            console.log(data);
 								me.removeClass("submitclicktemp");
 								if(data[0]=="ERR"){
 									popnotice(data[1]);
@@ -1887,7 +1934,6 @@ $(document).ready(function() {
 						});
 					}
 				}
-				/*
 				else{//其他的
 					if($(this).hasClass("aboutclick")){
 						me=$(this);
@@ -1903,7 +1949,6 @@ $(document).ready(function() {
 						});
 					}
 				}
-				*/
 
 		});
 		// ##################  回復
