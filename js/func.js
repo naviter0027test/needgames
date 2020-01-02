@@ -3,7 +3,7 @@
 var blnSMenuOpen=0; //20190425 Pman 次選單是否開啟(新增參數)
 $(document).ready(function() {
 	//設定
-	var $company="NEEDS工作團隊";
+	var $company="KYOMONS工作團隊";
 	var chkfb=0;
 	var $window = $(window);
 	var windowHeight = 0;
@@ -1540,7 +1540,7 @@ $(document).ready(function() {
 									$("#codepagew").html(data[2]);
 								}else{
 									me.hide();
-									//$("#popbody").html("謝謝您對NEED的興趣<BR>相關人員會馬上與您聯繫<BR><BR>"+$company+"敬上");
+									//$("#popbody").html("謝謝您對KYOMON的興趣<BR>相關人員會馬上與您聯繫<BR><BR>"+$company+"敬上");
 									$("#popbody").html("您的需求已傳送,請等候相關人員與您聯繫"); //20180904 Pman 客戶要求修改
 								}
 							});
@@ -2093,7 +2093,7 @@ $(document).ready(function() {
 						}
 					});
 				}else{
-					popnotice("您尚未登入，請登入NEED，享用更完善功能");
+					popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 				}
 			}else{
 				popnotice("請輸入暱稱"); //20190424 Pman 調整文案
@@ -2129,7 +2129,7 @@ $(document).ready(function() {
 							}
 						});
 					}else{
-						popnotice("您尚未登入，請登入NEED，享用更完善功能");
+						popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 					}
 				}else{
 					popnotice("請填寫內容");
@@ -2638,7 +2638,7 @@ $(document).ready(function() {
 						}
 					});
 				}else{
-					popnotice("您尚未登入，請登入NEED，享用更完善功能");
+					popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 				}
 			}else{
 				$("#friendlist").show();
@@ -3136,7 +3136,7 @@ $(document).ready(function() {
 					show_centerarticle();//顯示中央動態牆
 					left_gameselectmenu();
 				}else{
-					popnotice("您尚未登入，請登入NEED，享用更完善功能");
+					popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 				}
 			}else if(curpage=="publishpage"){//發攻略
 				if(sessionStorage.getItem("userid") && sessionStorage.getItem("userid").length>0){//會員
@@ -3145,7 +3145,7 @@ $(document).ready(function() {
 					show_centerpublish(x);
 					left_empty();
 				}else{
-					popnotice("您尚未登入，請登入NEED，享用更完善功能");
+					popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 				}
 			}else if(curpage=="matchpage"){
 				if(sessionStorage.getItem("userid") && sessionStorage.getItem("userid").length>0){//會員
@@ -3155,7 +3155,7 @@ $(document).ready(function() {
 					//因為match 不帶參數...這裡把serch result帶進來
 					show_centermatch(y);
 				}else{
-					popnotice("您尚未登入，請登入NEED，享用更完善功能");
+					popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 				}
 			}else if(curpage=="friendpage"){
 				if(sessionStorage.getItem("userid") && sessionStorage.getItem("userid").length>0){//會員
@@ -3164,7 +3164,7 @@ $(document).ready(function() {
 					left_empty();
 					show_centerfriendlist();
 				}else{
-					popnotice("您尚未登入，請登入NEED，享用更完善功能");
+					popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 				}
 			}else if(curpage=="rankpage"){//排行榜
 				//if(sessionStorage.getItem("userid") && sessionStorage.getItem("userid").length>0){//會員
@@ -3173,7 +3173,7 @@ $(document).ready(function() {
 					left_rankselectmenu();
 					show_centerranklist(1);
 				//}else{
-				//	popnotice("您尚未登入，請登入NEED，享用更完善功能");
+				//	popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 				//}
 			}else if(curpage=="shoppage"){
 				if(sessionStorage.getItem("userid") && sessionStorage.getItem("userid").length>0){//會員
@@ -3182,7 +3182,7 @@ $(document).ready(function() {
 					left_shopselectmenu();
 					show_centershoplist();
 				}else{
-					popnotice("您尚未登入，請登入NEED，享用更完善功能");
+					popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 				}
 			}else if(curpage=="actpage"){
 				$("#mainmidwrapin").html("<div class='loaderbox'><img src='img/loaderd.gif'></div>");
@@ -3197,7 +3197,7 @@ $(document).ready(function() {
 					left_qnaselectmenu();
 					show_centerqna();
 				}else{
-					popnotice("您尚未登入，請登入NEED，享用更完善功能");
+					popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 				}
 			}else if(curpage=="artpage"){
 				if(sessionStorage.getItem("userid") && sessionStorage.getItem("userid").length>0){//會員
@@ -3206,7 +3206,7 @@ $(document).ready(function() {
 					left_empty();
 					show_centerartpage(x);
 				}else{
-					popnotice("您尚未登入，請登入NEED，享用更完善功能");
+					popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 				}
 			}else if(curpage=="arcpage"){
 				if(sessionStorage.getItem("userid") && sessionStorage.getItem("userid").length>0){//會員
@@ -3215,7 +3215,7 @@ $(document).ready(function() {
 					left_gameselectmenu();
 					show_centerartpagec(x);
 				}else{
-					popnotice("您尚未登入，請登入NEED，享用更完善功能");
+					popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 				}
 			}else if(curpage=="wallitem"){//單一動態強
 				if(sessionStorage.getItem("userid") && sessionStorage.getItem("userid").length>0){//會員
@@ -3223,7 +3223,7 @@ $(document).ready(function() {
 					left_empty();
 					get_centerwallone(x);
 				}else{
-					popnotice("您尚未登入，請登入NEED，享用更完善功能");
+					popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 				}
 			}else if(curpage=="qnaitem"){//單一QNA
 				if(sessionStorage.getItem("userid") && sessionStorage.getItem("userid").length>0){//會員
@@ -3231,7 +3231,7 @@ $(document).ready(function() {
 					left_empty();
 					show_centerqnaone(x);
 				}else{
-					popnotice("您尚未登入，請登入NEED，享用更完善功能");
+					popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 				}
 			}else if(curpage=="matchitem"){//單一交友邀請
 				if(sessionStorage.getItem("userid") && sessionStorage.getItem("userid").length>0){//會員
@@ -3239,7 +3239,7 @@ $(document).ready(function() {
 					left_empty();
 					show_centermatchone(x);
 				}else{
-					popnotice("您尚未登入，請登入NEED，享用更完善功能");
+					popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 				}
 			}else if(curpage=="mypage"){//單一交友邀請
 				if(sessionStorage.getItem("userid") && sessionStorage.getItem("userid").length>0){//會員
@@ -3248,7 +3248,7 @@ $(document).ready(function() {
 					left_empty();
 					show_mypageall(x,y);//center.js
 				}else{
-					popnotice("您尚未登入，請登入NEED，享用更完善功能");
+					popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 				}
 			}else if(curpage=="collectpage"){//收藏--進入收藏的第一畫面
 				if(sessionStorage.getItem("userid") && sessionStorage.getItem("userid").length>0){//會員
@@ -3256,7 +3256,7 @@ $(document).ready(function() {
 					left_gameselectmenu();
 					show_centerarc(1);//center.js
 				}else{
-					popnotice("您尚未登入，請登入NEED，享用更完善功能");
+					popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 				}
 			}
 		}

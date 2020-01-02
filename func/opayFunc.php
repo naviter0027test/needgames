@@ -4,16 +4,16 @@ function opayAllPayment($payment) {
 
     $obj = new AllInOne();
 
+    /*
     $obj->ServiceURL = 'https://payment-stage.opay.tw/Cashier/AioCheckOut/V5';
     $obj->HashKey       = '5294y06JbISpM5x9';
     $obj->HashIV        = 'v77hoKGq4kWxNNiS';
     $obj->MerchantID    = '2000132';
-    /*
+     */
     $obj->ServiceURL = 'https://payment.opay.tw/Cashier/AioCheckOut/V5';
     $obj->HashKey       = 'Q6HITLw1kRBrCPKP';
     $obj->HashIV        = 'WHNMudhgpY3Uex93';
     $obj->MerchantID    = '1084005';
-     */
 
     $obj->EncryptType   = '1';
 

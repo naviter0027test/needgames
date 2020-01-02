@@ -1672,10 +1672,10 @@ show_centershoplist=function(x,y){
 	out+="                    <span class='maincontentselect border15' data-val='dateadd DESC'>按上架日期\n";//20180906 Pman 降冪排序，新的在最前面
 	out+="                    </span>\n";
 	out+="                    <p class='spliter'></p>\n";
-	out+="                    <span class='maincontentselect border15' data-val='dispoints DESC'>貢獻值高到低\n";
+	out+="                    <span class='maincontentselect border15' data-val='dispoints DESC'>金額高到低\n";
 	out+="                    </span>\n";
 	out+="                    <p class='spliter'></p>\n";
-	out+="                    <span class='maincontentselect border15' data-val='dispoints'>貢獻值低到高\n";
+	out+="                    <span class='maincontentselect border15' data-val='dispoints'>金額低到高\n";
 	out+="                    </span>   \n";
 	out+="                </div>\n";
 	out+="                <!--選單 END-->\n";
