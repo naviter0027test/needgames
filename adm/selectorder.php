@@ -66,12 +66,14 @@ if($job=="addfunc"){
 	echo "<tr><TD>最後更新時間</td><td>".$row['changedate']."</td></tr>";
 	echo " <tr><Th colspan=2 style='background:#666;color:#fff;padding:5px 0;' >商品資料</Th></tr>";
 	echo " <tr><TD>商品名稱</td><td>".$pro['productname']."</td></tr>";
-        if($cat['catname'] != '虛擬卡') {
-            echo " <tr><TD>貨物幣額</td><td>NT.".$row['dispoints']."</td></tr>";
-        } else {
-            echo " <tr><TD>折扣</td><td>NT.".$row['dispoints']."</td></tr>";
-            echo " <tr><TD>貨物幣額</td><td>NT.".$row['price']."</td></tr>";
-        }
+
+        //20191231 dispoints顯示名稱調整為折扣
+        //echo " <tr><TD>貨物幣額</td><td>NT.".$row['dispoints']."</td></tr>";
+        echo " <tr><TD>折扣</td><td>NT.".$row['dispoints']."</td></tr>";
+        echo " <tr><TD>貨物幣額</td><td>NT.".$row['price']."</td></tr>";
+        $total = $row['price']-$row['dispoints'];
+        echo " <tr><td>支付金額</td><td>NT.". ($total > 0 ? $total : 0)."</td></tr>";
+
 	echo "<tr><Th colspan=2 style='background:#666;color:#fff;padding:5px 0;'>運送方式</Th></tr>";
 	echo "<tr><TD>是否自取</td><td>".($row['ispick']==1?"是":"否")."</td></tr>";
 	echo "<tr><Th colspan=2 style='background:#666;color:#fff;padding:5px 0;'>訂購人資料</Th></tr>";
@@ -162,7 +164,8 @@ if($job=="addfunc"){
 		echo "<td>".$row['orderid']."</td>";
 		echo "<td>".$row['name']."</td>";
 		echo "<td>".$pro['productname']."</td>";
-		echo "<td>P ".$row['dispoints']."</td>";
+		//echo "<td>P ".$row['dispoints']."</td>";
+                echo "<td>NTD ".$row['price']."</td>";
 		echo "<td>".$row['dateadd']."</td>";
 		echo "<td><select name=statusid>";
 		foreach($status as $st){

@@ -1406,13 +1406,13 @@
 			out+="                        	<img src='img/product/product"+data['thisid']+"_s.jpg'  />\n";
 		}
 		out+="                            <div class='storeitemtitle'>"+data['productname']+"</div>\n";
-		out+="                            <div class='storeitembody'>\n";
+		out+="                            <div class='storeitembody txtcenter'>\n";
 		if((data['vopen']=="2" && parseInt(data['qty'])>0) || data['vopen']=="1"){
-			out+="                            	<div class='btn storeitemclick fR' data-val='"+data['thisid']+"'>兌換商品</div>\n";
+			out+="                            	<div class='btn storeitemclick ' data-val='"+data['thisid']+"'>了解更多</div>\n";
 		}else{
-			out+="                            	<div class='btn storeitemclick emp fR' >缺貨中</div>\n";
+			out+="                            	<div class='btn storeitemclick emp ' >缺貨中</div>\n";
 		}
-		out+="                            	<P class='storeitemlikes'><SPAN class='fL'>"+data['dispoints']+"</SPAN> <span class='bgipdis fL'></span><div class='clr'></div></P>\n";
+		//out+="                            	<P class='storeitemlikes'><SPAN class='fL'>"+data['dispoints']+"</SPAN> <span class='bgipdis fL'></span><div class='clr'></div></P>\n";
 		out+="                            </div>\n";
 		out+="                        </div>\n";
 		out+="                        <!--item end-->\n";

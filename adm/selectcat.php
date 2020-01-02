@@ -27,7 +27,9 @@
 		 upcontent($mytable,$myid,$mypage);
 	}elseif($job=="delimg"){
 		delimg($GLOBALS['id']);
-	}
+        }elseif($job=="editpointlimit"){
+            editpointlimit($mytable, $myid, $mypage);
+        }
 	getcontent($mytable,$myid,$mypage);
 	$pdos=NULL;
 ################################
@@ -74,13 +76,9 @@ function upcontent($mytable,$myid,$mypage){
 	global $imgheight;
 	global $imgs;
 	global $pdos;
-        global $pointLimit;
     if( empty($GLOBALS["catname"]) ){
 		share_showerr("請確認填寫資料");
     }else{
-        if($GLOBALS["catname"] == '虛擬卡') {
-            share_update($pdos,'setting_',"sval='$pointLimit'","skey='pointLimit'");
-        }
 		  if($t=share_gettable($pdos,$mytable." WHERE catname='".$GLOBALS["catname"]."' AND ".$myid."<>".$GLOBALS["id"])){
 			  share_showerr("名稱已經存在,無法更新");
 		  }else{
@@ -188,8 +186,16 @@ function upcontent($mytable,$myid,$mypage){
      }
  }
 
+ function editpointlimit($mytable,$myid,$mypage){
+    global $pdos;
+    global $pointLimit;
+    share_update($pdos,'setting_',"sval='$pointLimit'","skey='pointLimit'");
+    share_showerr("資料更新成功");
+ }
+
  function getcontent($mytable,$myid,$mypage){
 	 global $pdos;
+        $setting=share_getinfo($pdos,"setting_","skey","pointLimit");
 	 echo "<h2>".$GLOBALS['mytitle']."分類設定</h2>\n";
 	 echo "<TABLE class=formtable width=800>";
 	 echo "<tr><FORM action='index.php?tf=".$mypage."&job=addcontent' method='post' id=addcontentform  enctype='multipart/form-data'>\n";
@@ -200,13 +206,20 @@ function upcontent($mytable,$myid,$mypage){
 	 echo "<td><input type=checkbox name=isopen value=1 checked>是</td>\n";
 	 echo "<td><input type=submit value='確定新增' class='gray-btn'></td>\n";
      echo "</form></tr>";
+	 echo "<TABLE class=formtable width=800>";
+	 echo "<tr><form action='index.php?tf=".$mypage."&job=editpointlimit' method='post' id=addcontentform  enctype='multipart/form-data'>\n";
+	 echo "<TR><th colspan=4>設定折扣限制</th></TR>\n";
+	 echo "<TR><th class=req style='width:120px'>折扣上限</th><th></th><th>修改</th></TR>\n";
+         echo "<td><input type='text' name='pointLimit' value='". $setting['sval']. "' style='width:50px;' /></td>\n";
+	 echo "<td></td>\n";
+	 echo "<td><input type=submit value='確定修改' class='gray-btn'></td>\n";
+     echo "</form></tr>";
 	 echo "</TABLE>\n";
 	 echo "<TABLE class=formtable width=800>";
 	 echo "<tr><th colspan=6>管理</TH></TR>\n";
 	 echo "<TR><th style='width:70px'>刪除</th><th class=req style='width:120px'>分類名稱(建議20個英數內)</th><th class=req style='width:120px'>背景圖</th><th>使用</th><th>更新</th><th>排序</th></TR>";
 	 $rows=share_gettable($pdos,$mytable." ORDER BY sorting DESC");
 	 $z=0;
-        $setting=share_getinfo($pdos,"setting_","skey","pointLimit");
      foreach($rows as $row){
 		     echo "<tr><FORM action='index.php?tf=".$mypage."&job=upcontent&id=".$row['catid']."' method='post'  enctype='multipart/form-data'><td><a href='index.php?tf=".$mypage."&job=delcontent&id=".$row['catid']."' class='blue-btn'>刪除</a></td>\n";
 			 echo "<td><input type=text name=catname value='".$row['catname']."'></TD>\n";
@@ -217,13 +230,9 @@ function upcontent($mytable,$myid,$mypage){
 				echo "<td class='imgwrap'><div class='filewrap'><input type='file' name='file'  class=fileupload ></div></td>";
 			}
 			if($row['isopen']=="1"){
-                            if($row['catname'] != '虛擬卡') {
-				echo "<td><input type=checkbox name=isopen value=1 checked>是</td>\n";
-                            }else{
-				echo "<td><input type=checkbox name=isopen value=1 checked>是, 折扣上限<input type='text' name='pointLimit' value='". $setting['sval']. "' style='width:50px;' /></td>\n";
-                            }
+                            echo "<td><input type=checkbox name=isopen value=1 checked>是</td>\n";
 			}else{
-				echo "<td><input type=checkbox name=isopen value=1>是</td>\n";
+                            echo "<td><input type=checkbox name=isopen value=1>是</td>\n";
 			}
 			echo "<td><input type=submit value='確定修改' class='gray-btn'></td></FORM>\n";
 			echo "<FORM action='index.php?tf=".$mypage."&job=changesorting&thisorting=".$row["sorting"]."&id=".$row['catid']."' method='post' ><td><select name=myorder class=changeselect>\n";

@@ -36,12 +36,19 @@ global $conf;
     //echo "<br />";
     //print_r($product);
     $sendTo = $order['email'];
-    sendmail(4, $sendTo, $virnumber);
     unset($_SESSION['orderid']);
     unset($_SESSION['product']);
-    unset($_SESSION['virnumber']);
-    echo "<script>";
-    echo "alert('虛擬卡已寄出，如有疑問再麻煩通知敝站管理者');";
-    echo "location.href='./';";
-    echo "</script>";
+    if($product['vir'] == 1) {
+        sendmail(4, $sendTo, $virnumber);
+        unset($_SESSION['virnumber']);
+        echo "<script>";
+        echo "alert('虛擬卡已寄出，如有疑問再麻煩通知敝站管理者');";
+        echo "location.href='./';";
+        echo "</script>";
+    }else{
+        echo "<script>";
+        echo "alert('商品購買結束，如有疑問再麻煩通知敝站管理者');";
+        echo "location.href='./';";
+        echo "</script>";
+    }
 //}

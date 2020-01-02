@@ -4114,6 +4114,8 @@ border-radius: 5px;
 .storeitemlikes {
     height: 20px;
     padding: 2px 0;
+    margin: 10px 0 10px 10px;
+
     color: #e54c00;
     font-size: 18px;
     line-height: 20px;
@@ -4127,6 +4129,14 @@ border-radius: 5px;
     font-size: 18px;
     line-height: 20px;
     font-weight: bold;
+}
+
+.moneyspan {
+    margin: 8px 0 8px 10px;
+
+    color: #fccf00;
+    font-weight: bold;
+    font-size: 18px;
 }
 
 .storeitemlikes2 {
@@ -5157,3 +5167,7 @@ border-radius: 5px;
 .mainitemtitletext div:nth-child(2){
     width:fit-content;
 } 
+
+.txtcenter {
+    text-align: center;
+}

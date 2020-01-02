@@ -1206,10 +1206,10 @@ $(document).ready(function() {
 					}
 					radioval=$("#orderform input[name=pickup]:checked").val();
 
-                                        //確認是否為虛擬卡商品
-                                        var isVirtualCard = false;
+                                        //確認是否要歐付寶支付
+                                        var isOpay = false;
                                         if($('#orderform [name=discount]').length > 0) {
-                                            isVirtualCard = true;
+                                            isOpay = true;
                                             var pointLimit = parseInt($('#orderform [name=discount]').attr('pointLimit'));
                                             var discount = parseInt($('#orderform [name=discount]').val());
                                             if(pointLimit != -1 && discount > pointLimit) {
@@ -1236,7 +1236,7 @@ $(document).ready(function() {
 						radioval=$("#orderform input[name=pickup]:checked").val();
 						mylistb=$(".formfield");
 						var tempvals=Array(sessionStorage.getItem("userid"),sessionStorage.getItem("key"),mylistb.eq(0).val(),mylistb.eq(1).val(),mylistb.eq(2).val(),mylistb.eq(3).val(),mylistb.eq(4).val(),radioval,mylistb.eq(5).val(),mylistb.eq(6).val());
-                                                //確認是否為虛擬卡商品
+                                                //改為所有的商品都要歐付寶支付
                                                 if($('#orderform [name=discount]').length > 0) {
                                                     tempvals=Array(
                                                         sessionStorage.getItem("userid"),
@@ -1260,9 +1260,9 @@ $(document).ready(function() {
 									popnotice(data[1]);
 								}else{
 									show_afterloginhead();
-									$("#maincontentwrap").html("<div class='responsetext'>商品已成功兌換，感謝您的貢獻</div>");//20190904 Pman 客戶要求修改
-                                                                        //確認是否為虛擬卡商品，並進行金流導向
-                                                                        if(isVirtualCard == true) {
+									$("#maincontentwrap").html("<div class='responsetext'>商品已成功下單，並導向支付頁面</div>");//20191231 要改為下單
+                                                                        //確認是否為opay，並進行金流導向
+                                                                        if(isOpay == true) {
                                                                             location.href = '/func/jumpForm.php';
                                                                         }
 
