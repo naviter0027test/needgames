@@ -22,7 +22,7 @@
 		}else if($x=="4"){
 			$receivername="非實體商品購買";
 			$subject="非實體商品序號，請妥善保存";
-			$contents="親愛的會員您好<BR>這是您在NEEDGAMES的榮耀商店所換取的非實體商品序號<BR>請妥善保存謝謝<BR>";//20190413 Pman 變更文案//20190524 Pman 變更文案去除逗號
+			$contents="親愛的會員您好<BR>這是您在KYOMON的榮耀商店所換取的非實體商品序號<BR>請妥善保存謝謝<BR>";//20190413 Pman 變更文案//20190524 Pman 變更文案去除逗號
 			$contents.=$z."<BR><BR>";
 			$contents.=$sign;
 		}else if($x=="5"){

@@ -1672,10 +1672,10 @@ show_centershoplist=function(x,y){
 	out+="                    <span class='maincontentselect border15' data-val='dateadd DESC'>按上架日期\n";//20180906 Pman 降冪排序，新的在最前面
 	out+="                    </span>\n";
 	out+="                    <p class='spliter'></p>\n";
-	out+="                    <span class='maincontentselect border15' data-val='dispoints DESC'>貢獻值高到低\n";
+	out+="                    <span class='maincontentselect border15' data-val='dispoints DESC'>金額高到低\n";
 	out+="                    </span>\n";
 	out+="                    <p class='spliter'></p>\n";
-	out+="                    <span class='maincontentselect border15' data-val='dispoints'>貢獻值低到高\n";
+	out+="                    <span class='maincontentselect border15' data-val='dispoints'>金額低到高\n";
 	out+="                    </span>   \n";
 	out+="                </div>\n";
 	out+="                <!--選單 END-->\n";
@@ -1746,17 +1746,19 @@ show_product=function(x){
 		out+="                            <div class='tagcontentbox on' style='display: block;'>\n"; //20190325 Pman 修正會顯示「注意事項」的問題
 		out+="                            "+nl2br(data[1]['des1'])+"\n";
 		out+="                            </div>\n";
-		out+="                            <div class='tagcontentbox' style='display: none;'>\n"; //20190325 Pman 修正會顯示「注意事項」的問題
-		out+="                            "+nl2br(data[1]['des2'])+"\n";
+		out+="                            <div class='tagcontentbox' >\n"; //20190325 Pman 修正會顯示「注意事項」的問題
+		out+="                    	<div class=''>\n";
+		out+="                    		<P class='storeitemlikes'><span class='fL'>"+data[1]['dispoints']+"</span> $ <!--<span class='bgipdis fL'></span>--></P>\n";
+		out+="                    	</div>\n";
+                out+="                              <div class='moneyspan'>現金可折抵: "+ data[1]['pointLimit']+ "</div>";
+                out+="                              <div class='moneyspan'>現金購買: "+ data[1]['dispoints']+ "</div>";
+		//out+="                            "+nl2br(data[1]['des2'])+"\n";
 		out+="                            </div>\n";
 		out+="                        </div>\n";
 		out+="                        <!--內容 END-->\n";
 		out+="                    </div>\n";
 		out+="                    <div class='clr'></div>\n";
 		out+="                    <div id='producttitlebox'>\n";
-		out+="                    	<span class='fR'>\n";
-		out+="                    		<P class='storeitemlikes'><span class='fL'>"+data[1]['dispoints']+"</span> <span class='bgipdis fL'></span></P>\n";
-		out+="                    	</span>\n";
 		out+="                    	"+data[1]['pname']+" \n";
 		if(data[1]['lim']>0){
 			out+=" <span style='font-size:13px;'>限量商品,每人限量:"+data[1]['lim']+"</span>";
@@ -1788,9 +1790,8 @@ show_product=function(x){
 		*/
 		out+="					  <input type=hidden name='password' value='暫無作用'  class='formfield'>\n";
 		out+="					  <input type=hidden name='pid' value='"+data[1]['pid']+"'  class='formfield'>\n";
-            console.log(data);
 		if(data[1]['vir']==1){
-                    if(data[1]['catname'] == '虛擬卡') {
+                    //if(data[1]['catname'] == '虛擬卡') {
                         var pointLimit = parseInt(data[1]['pointLimit']);
 			out+="                    <div class='formline'>\n";
 			out+="                        <div class='formitem formitem_1 tleft'>折扣金額</div>\n";
@@ -1800,7 +1801,7 @@ show_product=function(x){
 			out+="                        </div>\n";
 			out+="                        <div class='clr'></div>\n";
 			out+="                    </div>\n";
-                    }
+                    //}
 			out+="                    <div class='formline'>\n";
 			out+="                        <div class='formitem formitem_1 tleft'>姓名</div>\n";
 			out+="                        <div class='formitem formitem_1'>\n";
@@ -1834,6 +1835,17 @@ show_product=function(x){
 			out+="                        <div class='clr'></div>\n";
 			out+="                    </div>                    \n";
 		}else{
+                        var pointLimit = parseInt(data[1]['pointLimit']);
+			out+="                    <div class='formline'>\n";
+			out+="                        <div class='formitem formitem_1 tleft'>折扣金額</div>\n";
+			out+="                        <div class='formitem formitem_1'>\n";
+			out+="                            <input type='text' class='formfield form-control' name='discount' value='0' pointLimit='"+ pointLimit+ "' />\n";
+			out+="                            <div class='formerr'>請填寫折扣</div>\n";
+			out+="                        </div>\n";
+			out+="                        <div class='clr'></div>\n";
+			out+="                    </div>\n";
+
+
 			out+="                    <div class='formline'>\n";
 			out+="                        <div class='formitem formitem_1 tleft'>姓名</div>\n";
 			out+="                        <div class='formitem formitem_1'>\n";

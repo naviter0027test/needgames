@@ -1133,21 +1133,22 @@
 						}else if($left==0){
 							$out[0]="ERR";
 							$out[1]="商品數量不足";
-						}else if($t['points']<$p['dispoints']){
+						}/*else if($t['points']<$p['dispoints']){
 							$out[0]="ERR";
 							$out[1]="剩餘貢獻值不足";
-						}else if($p['vir']=="1" && $ema==0){// $x[7] 在這裡空掉了
+                                                }*/else if($p['vir']=="1" && $ema==0){// $x[7] 在這裡空掉了
 							$out[0]="ERR";
 							$out[1]="Email地址不相同";
 						}else{//開始結帳
 							$id=rand(123,987).date('Yndhms').rand(123,987);
                                                         $r=false;
-                                                        if($cate['catname'] == '虛擬卡') {//若商品為虛擬卡則要準備金流
-                                                            $discount = isset($x[10]) ? $x[10] : 0;
-                                                            $r=add_point($_SESSION['userid'],"-".$discount,$id,"製作配方",$x[3]);
-                                                        } else {
-                                                            $r=add_point($_SESSION['userid'],"-".$p['dispoints'],$id,"製作配方",$x[3]);
-                                                        }
+                                                        //if($cate['catname'] == '虛擬卡') {//若商品為虛擬卡則要準備金流
+                                                        //所有商品加上歐付寶金流
+                                                        $discount = isset($x[10]) ? $x[10] : 0;
+                                                        $r=add_point($_SESSION['userid'],"-".$discount,$id,"製作配方",$x[3]);
+                                                        //} else {
+                                                            //$r=add_point($_SESSION['userid'],"-".$p['dispoints'],$id,"製作配方",$x[3]);
+                                                        //}
 							if($r){//最後一個改成商品號
 								if($p['vir']=="1"){
 									if($z=share_insert($pdos,"ord_","orderid,memberid,productid,dispoints,email,statusid,name,telephone","'".$id."','".$_SESSION['userid']."','".$x[3]."','".$p['dispoints']."','".$x[6]."','3','".$x[4]."','".$x[5]."'")){
@@ -1164,31 +1165,41 @@
 											$ser=$p['productname']."序號:".$temp['giftcode']."<BR>";
                                                                                         $virnumber = $temp['giftcode'];
 										}
-										//寄信去給客人
-                                                                                if($cate['catname'] != '虛擬卡') {
-                                                                                    sendmail(4,$sendmail,$ser);
-                                                                                }
+										//寄信去給客人，改為付完款再寄出
+                                                                                //sendmail(4,$sendmail,$ser);
 										$out[0]="OK";
-                                                                                if($cate['catname'] == '虛擬卡') {//若商品為虛擬卡則要準備金流
-                                                                                    $_SESSION['orderid'] = $id;
-                                                                                    $_SESSION['product'] = $p;
-                                                                                    $discount = isset($x[10]) ? $x[10] : 0;
-                                                                                    $_SESSION['discount'] = $discount;
-                                                                                    $_SESSION['virnumber'] = $virnumber;
+                                                                                //if($cate['catname'] == '虛擬卡') {
+                                                                                //歐付寶的前置準備
+                                                                                $_SESSION['orderid'] = $id;
+                                                                                $_SESSION['product'] = $p;
+                                                                                $discount = isset($x[10]) ? $x[10] : 0;
+                                                                                $_SESSION['discount'] = $discount;
+                                                                                $_SESSION['virnumber'] = $virnumber;
 
-											                                                                        share_update($pdos,"ord_","payment='opay'","orderid='$id'");
-											                                                                        share_update($pdos,"ord_","price=". $p['dispoints'],"orderid='$id'");
-											                                                                        share_update($pdos,"ord_","dispoints=". $discount,"orderid='$id'");
-											                                                                        share_update($pdos,"ord_","statusid=1","orderid='$id'");
-											                                                                        share_update($pdos,"ord_","note='$virnumber'","orderid='$id'");
-                                                                                }
+                                                                                share_update($pdos,"ord_","payment='opay'","orderid='$id'");
+                                                                                share_update($pdos,"ord_","price=". $p['dispoints'],"orderid='$id'");
+                                                                                share_update($pdos,"ord_","dispoints=". $discount,"orderid='$id'");
+                                                                                share_update($pdos,"ord_","statusid=1","orderid='$id'");
+                                                                                share_update($pdos,"ord_","note='$virnumber'","orderid='$id'");
+                                                                                //}
 									}else{
 										$out[0]="ERR";
 										$out[1]="訂單存入錯誤";
 									}
 								}else{
-									//if($z=share_insert($pdos,"ord_","orderid,memberid,productid,dispoints,name,email,telephone,address,ispick,note","'".$id."','".$_SESSION['userid']."','".$x[3]."','".$p['dispoints']."','".$x[4]."','".$x[7]."','".$x[5]."','".$x[6]."','".$x[8]."','".$x[9]."'")){
-										if($z=share_insert($pdos,"ord_","orderid,memberid,productid,dispoints,name,email,telephone,address,ispick,note","'".$id."','".$_SESSION['userid']."','".$x[3]."','".$p['dispoints']."','".$x[4]."','".$x[8]."','".$x[5]."','".$x[6]."','".$x[7]."','".$x[9]."'")){
+                                                                        if($z=share_insert($pdos,"ord_","orderid,memberid,productid,dispoints,name,email,telephone,address,ispick,note","'".$id."','".$_SESSION['userid']."','".$x[3]."','".$p['dispoints']."','".$x[4]."','".$x[8]."','".$x[5]."','".$x[6]."','".$x[7]."','".$x[9]."'")){
+                                                                                //歐付寶的前置準備 start
+                                                                                $_SESSION['orderid'] = $id;
+                                                                                $_SESSION['product'] = $p;
+                                                                                $discount = isset($x[10]) ? $x[10] : 0;
+                                                                                $_SESSION['discount'] = $discount;
+
+                                                                                share_update($pdos,"ord_","payment='opay'","orderid='$id'");
+                                                                                share_update($pdos,"ord_","price=". $p['dispoints'],"orderid='$id'");
+                                                                                share_update($pdos,"ord_","dispoints=". $discount,"orderid='$id'");
+                                                                                share_update($pdos,"ord_","statusid=1","orderid='$id'");
+                                                                                //歐付寶的前置準備 end
+
 										share_update($pdos,"pro_","qty=qty-1","productid='".$x[3]."'");
 										$out[0]="OK";
 									}else{

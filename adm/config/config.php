@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 ini_set('short_open_tag', 'on');
 //	###	本網頁為基礎設定頁	###		//
 	//公司名稱
-	$rootcompanyname="NEED";
+	$rootcompanyname="KYOMON";
 	//設定共用
 	$s_ar=array("DASDSADFAFSADADAD","JOFIHUIQOIWJE","DHAUSKWEGDUASK","AJIOHUIJRONREIJOI","QNJJHIHDISDHISUAHD","CNIUGRIWHIEWNBNBDJA");//0-5
 	$s_br=array("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","!","&","#","=",":");//0-30
