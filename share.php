@@ -120,7 +120,7 @@
                     <a href='index.html?page=rankpage' class='topnavclick'>排行榜</a>
                     <a href='index.html?page=qnapage' class='topnavclick'>Q&A </a>
                     <a href='index.html?page=actpage' class='topnavclick'>活動專區 </a>
-                    <a href='index.html?page=shoppage' class='topnavclick'>榮耀商店
+                    <a href='index.html?page=shoppage' class='topnavclick'>類別
 					<!--<img src='img/nav_shop.png' style='margin-top:-5px' />--></a><!--20190415 Pman 修改成用文字-->
                     <div class='clr'></div>
                 </div>

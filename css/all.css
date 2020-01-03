@@ -5171,3 +5171,11 @@ border-radius: 5px;
 .txtcenter {
     text-align: center;
 }
+
+.headercate {
+    display: none;
+    margin-left: 420px;
+
+    overflow-y: scroll;
+    height: 400px;
+}

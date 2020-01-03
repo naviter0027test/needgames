@@ -3119,6 +3119,9 @@ $(document).ready(function() {
 					show_beforeloginhead();//左方頭部
 				}
 			}
+                        if(curpage!='shoppage') {
+                            $('.headercate').hide();
+                        }
 			if(curpage=="wallpage"){//動態牆
 				$("#mainmidwrapin").html("<div class='loaderbox'><img src='img/loaderd.gif'></div>");
 				topnavchange(curpage);
@@ -3176,14 +3179,21 @@ $(document).ready(function() {
 				//	popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 				//}
 			}else if(curpage=="shoppage"){
+                            if($('.headercate').css('display') == 'none') {
+                                $('.headercate').show();
 				if(sessionStorage.getItem("userid") && sessionStorage.getItem("userid").length>0){//會員
 					$("#mainmidwrapin").html("<div class='loaderbox'><img src='img/loaderd.gif'></div>");
 					topnavchange(curpage);
-					left_shopselectmenu();
+					//left_shopselectmenu();
+                                        header_shopcatemenu();
 					show_centershoplist();
 				}else{
 					popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 				}
+                            }
+                            else {
+                                $('.headercate').hide();
+                            }
 			}else if(curpage=="actpage"){
 				$("#mainmidwrapin").html("<div class='loaderbox'><img src='img/loaderd.gif'></div>");
 				topnavchange(curpage);

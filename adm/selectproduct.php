@@ -137,7 +137,7 @@ function upopen($mytable,$myid,$mypage){
 	//檢查
 	$req=array("catid","productname","dispoints","des1");
 
-	$reqb=array("商品分類","商品名稱","銷售貢獻值","商品介紹");//20190107 Pman 將「點」==>「貢獻值」
+	$reqb=array("商品分類","商品名稱","銷售金額","商品介紹");//20190107 Pman 將「點」==>「貢獻值」
 	for($a=0;$a<count($req);$a++){
 		if(empty($GLOBALS[$req[$a]])){
 		   $myerr.="[ ".$reqb[$a]." ]為必要欄位<BR>";
@@ -433,7 +433,7 @@ function upopen($mytable,$myid,$mypage){
 	}else{
 		echo " 使用獨立序號前請先儲存目前設定</td>\n";
 	}
-	echo "<tr><td width=150>銷售貢獻值</td><td style='text-align:left;'><INPUT TYPE=text NAME='dispoints' value='".($GLOBALS['dispoints']?$GLOBALS['dispoints']:$product['dispoints'])."'></td>\n"; //20190107 Pman 將「點」==>「貢獻值」
+	echo "<tr><td width=150>銷售金額</td><td style='text-align:left;'><INPUT TYPE=text NAME='dispoints' value='".($GLOBALS['dispoints']?$GLOBALS['dispoints']:$product['dispoints'])."'></td>\n"; //20190107 Pman 將「點」==>「貢獻值」
 	echo "<tr><td width=150>數量(虛擬獨立序號不需填)</td><td style='text-align:left;'><INPUT TYPE=text NAME='qty' value='".($GLOBALS['qty']?$GLOBALS['qty']:$product['qty'])."'></td>\n";
 	echo "<tr><td width=150>每人限量(0=不限)</td><td style='text-align:left;'><INPUT TYPE=text NAME='limit' value='".($GLOBALS['lim']?$GLOBALS['lim']:$product['lim'])."'></td>\n";
 	echo "<tr><th colspan=4>產品資訊</th></tr>\n";

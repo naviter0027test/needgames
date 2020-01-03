@@ -326,6 +326,30 @@ left_shopselectmenu=function(){
 	});
 
 }
+header_shopcatemenu=function(){
+    var tempvals=Array(sessionStorage.getItem("userid"),sessionStorage.getItem("key"));//人 / key / 最後id / 選項 /  哪一類(哪一頁)  /  預留目前都是mainlist/ 標籤
+    tempitem=ajaxarr("getcats",tempvals,"ajax.php");
+    tempitem.success(function(data){//回傳 data --data[0]都是確認正確  data[1]就是回傳的array  data[2]-->則是未定義..測試
+        console.log(data);
+        if(data[0]=="ERR"){
+        }else{
+            $('.headercate').html('');
+            $('.headercate').append("<div class='lefttypeselect lefttypeselecton shopcatclick' data-val='0'>全部</div>");
+            var out = "";
+            for(var a=0;a<data[1].length;a++){
+                if(data[1][a]['img']==1){
+                    out+="<div class='lefttypeselect shopcatclick' data-val='"+data[1][a]['catid']+"' style='height:"+data[1][a]['h']+"px;background:url(img/product/cat"+data[1][a]['catid']+".jpg);line-height:"+(parseInt(data[1][a]['h'])-16)+"px;text-shadow:1px 1px 7px rgba(0,0,0,0.5);'>"+data[1][a]['catname']+"</div>";
+                }else{
+                    out+="<div class='lefttypeselect shopcatclick' data-val='"+data[1][a]['catid']+"'>"+data[1][a]['catname']+"</div>";
+                }
+            }
+            $('.headercate').append(out);
+            $('.headercate div').on('click', function() {
+                $('.headercate').hide();
+            });
+        }
+    });
+}
 //排行榜選單
 left_rankselectmenu=function(){
 	var out="";
