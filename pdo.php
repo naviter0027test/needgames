@@ -2,7 +2,7 @@
 ini_set("display_errors", "On");
 error_reporting(E_ALL & ~E_NOTICE);
 
-$mysqli = new mysqli("localhost","needgam3_c","sitegrou", "needgam3_c");
+$mysqli = new mysqli("146.66.116.66","kyomonwa_user","sitegrou", "kyomonwa_m");
 
     //如果连接错误
     if(mysqli_connect_errno()){
@@ -11,7 +11,7 @@ $mysqli = new mysqli("localhost","needgam3_c","sitegrou", "needgam3_c");
         exit;
     }
     //构造SQL语句
-    $query = "SELECT * FROM `Usr_`";
+    $query = "SELECT * FROM `mem_`";
     //执行SQL语句
     $req = $mysqli->query($query);
 	print_r($req);

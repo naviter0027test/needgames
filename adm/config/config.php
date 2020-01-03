@@ -67,7 +67,47 @@ ini_set('short_open_tag', 'on');
 		$conf['dbname_c'] = 'cptjdygy_game_c';
 		//$conf['dbname_c'] = 'cptjdygy_game_c_empt';
 		$conf['db_encode'] = 'utf8';
-	}else{
+        }elseif(strpos($_SERVER['HTTP_HOST'], "demo.axcell28.idv.tw") !== false){
+		$rootaddress="http://demo.axcell28.idv.tw/";
+		//$frommail="iacgtw@gmail.com";
+		//$frompass="Ian199281912";
+		//$mailhost="smtp.gmail.com";
+		//$mailport=465;
+		$frommail="dwu446227@gmail.com";
+		$mailuser="dwu446227@gmail.com";
+		$frompass="usbhcvzoiahyacdo";
+		$mailhost="smtp.gmail.com";
+		$mailport=587;
+		$mailssl=1;
+		$conf['google_key'] ='AIzaSyAguKHLDttW-R9nDRTYGzfKpCs4VXppf1w';
+		$conf['fcm_key'] ='AAAAk-Oj24Y:APA91bF7lv8Cs50Ld4tWPwynOvTv13QcFWH6Q60d-t5i8e4RM_V06JNeghWIO1E6L0mQxJIVM_a9564JFGNOblbcu-T2hDtECzAJt6vZ7IyAhkvg-6yVGYgePbYZW56N27T2srVWe3_N';
+		//會員
+		$conf['dbhost_m'] = '146.66.116.66';
+		$conf['dbuser_m'] = 'kyomonwa_user';
+		$conf['dbpass_m'] = 'sitegrou';
+		$conf['dbname_m'] = 'kyomonwa_m';
+		//點數
+		$conf['dbhost_p'] = '146.66.116.66';
+		$conf['dbuser_p'] = 'kyomonwa_user';
+		$conf['dbpass_p'] = 'sitegrou';
+		$conf['dbname_p'] = 'kyomonwa_p';
+		//顯示
+		$conf['dbhost_d'] = '146.66.116.66';
+		$conf['dbuser_d'] = 'kyomonwa_user';
+		$conf['dbpass_d'] = 'sitegrou';
+		$conf['dbname_d'] = 'kyomonwa_d';
+		//商店
+		$conf['dbhost_s'] = '146.66.116.66';
+		$conf['dbuser_s'] = 'kyomonwa_user';
+		$conf['dbpass_s'] = 'sitegrou';
+		$conf['dbname_s'] = 'kyomonwa_s';
+		//聊天
+		$conf['dbhost_c'] = '146.66.116.66';
+		$conf['dbuser_c'] = 'kyomonwa_user';
+		$conf['dbpass_c'] = 'sitegrou';
+		$conf['dbname_c'] = 'kyomonwa_c';
+		$conf['db_encode'] = 'utf8';
+        }else{
 		$rootaddress="http://kyomon.wasd.club/";
 		//$frommail="iacgtw@gmail.com";
 		//$frompass="Ian199281912";
