@@ -334,6 +334,7 @@ header_shopcatemenu=function(){
         if(data[0]=="ERR"){
         }else{
             $('.headercate').html('');
+            /*
             $('.headercate').append("<div class='lefttypeselect lefttypeselecton shopcatclick' data-val='0'>全部</div>");
             var out = "";
             for(var a=0;a<data[1].length;a++){
@@ -341,6 +342,17 @@ header_shopcatemenu=function(){
                     out+="<div class='lefttypeselect shopcatclick' data-val='"+data[1][a]['catid']+"' style='height:"+data[1][a]['h']+"px;background:url(img/product/cat"+data[1][a]['catid']+".jpg);line-height:"+(parseInt(data[1][a]['h'])-16)+"px;text-shadow:1px 1px 7px rgba(0,0,0,0.5);'>"+data[1][a]['catname']+"</div>";
                 }else{
                     out+="<div class='lefttypeselect shopcatclick' data-val='"+data[1][a]['catid']+"'>"+data[1][a]['catname']+"</div>";
+                }
+            }
+            */
+            $('.headercate').append("<div class='shopcatclick shopcate' data-val='0'><div><img src='https://fakeimg.pl/150/?text=All' /></div><span class='shopcatename'>全部</span></div>");
+            var out = "";
+            for(var a=0;a<data[1].length;a++){
+                if(data[1][a]['img']==1){
+                    var imgSrc = "img/product/cat"+data[1][a]['catid']+".jpg";
+                    out+="<div class='shopcatclick shopcate' data-val='"+data[1][a]['catid']+"' >"+"<div><img src='"+imgSrc+"' /></div>"+"<span class='shopcatename'>"+data[1][a]['catname']+"</span></div>";
+                }else{
+                    out+="<div class='shopcatclick shopcate' data-val='"+data[1][a]['catid']+"'>"+ "<div><img src='https://fakeimg.pl/150/?text=No Img' /></div>"+data[1][a]['catname']+"</div>";
                 }
             }
             $('.headercate').append(out);

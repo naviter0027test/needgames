@@ -3186,7 +3186,7 @@ $(document).ready(function() {
 					topnavchange(curpage);
 					//left_shopselectmenu();
                                         header_shopcatemenu();
-					show_centershoplist();
+					//show_centershoplist();
 				}else{
 					popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 				}
