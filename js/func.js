@@ -1254,7 +1254,6 @@ $(document).ready(function() {
                                                 }
 							tempitem=ajaxarr("saveorder",tempvals,"ajax.php");
 							tempitem.success(function(data){//回傳 data 義
-                                                            console.log(data);
 								$("#tempcover").remove();
 								if(data[0]=="ERR"){
 									popnotice(data[1]);
@@ -1883,6 +1882,7 @@ $(document).ready(function() {
 						var tempvals=Array($(this).siblings(".vcont").val(),$(this).siblings(".vphone").val());
 						tempitem=ajaxarr("sendver",tempvals,"ajax.php");
 						tempitem.success(function(data){//回傳 data 義
+                                                    console.log(data);
 							if(data[0]=="ERR"){
 								clearInterval(tempbk);
 								me.removeClass("bgcolor_lb");

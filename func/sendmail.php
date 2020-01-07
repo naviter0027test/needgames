@@ -1,7 +1,7 @@
 <?php
 	function sendmail($x,$y,$z){//$x==編號,$y==email,$z==其他
 		global $rootaddress;
-		$sign="<BR><BR>祝您順心愉快<BR>NEED經營團隊<BR><BR>";
+		$sign="<BR><BR>祝您順心愉快<BR>KYOMON經營團隊<BR><BR>";
 		if($x=="1"){
 			$receivername="新會員";
 			$subject="會員確認信件,請開啟後執行";

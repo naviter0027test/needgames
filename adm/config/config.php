@@ -26,8 +26,8 @@ ini_set('short_open_tag', 'on');
 	$errText['reopen']="Oop！好像發生了一些錯誤，請關閉本視窗，並嘗試重新登入系統！";
 	//db 設定
 	//簡訊王
-	$vrname="needgames";
-	$vrcode="needgames54843746";
+	$vrname="iancui";
+	$vrcode="ian81912";
 	if($_SERVER['HTTP_HOST']=="99mission.why3s.tw" || $_SERVER['HTTP_HOST']=="192.168.1.202" || $_SERVER['HTTP_HOST']=="192.168.1.204"){
 		$frommail="senderfox@99mission.why3s.tw";
 		$frompass="senderfox";

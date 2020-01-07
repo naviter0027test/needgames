@@ -25,7 +25,7 @@
 		}
 		$phone=$inx.$x[1];
 		*/
-		$x1="";
+		$x1=array();
 		$er=0;
 		if($x[0] && strpos($x[0],"886")>=0){
 			if(substr($x[1],0,1)=="0"){
@@ -70,9 +70,11 @@
 			$add = dirname($url)."/prec.php";
 			if($t=sendinfo1($phone,$num,$add)){
 				$out[0]="OK";
+                                $out[1]=$t;
 			}else{
 				$out[0]="ERR";
 				$out[1]="系統錯誤，請稍後再試";
+                                $out[2]=$t;
 			}
 		}
 		$pdo=null;
@@ -81,6 +83,7 @@
 	//檢查認證碼
 	function chkver($x){
 		global $conf;
+                $out=array();
 		if($_SESSION['vercode']==""){
 			$out[0]="ERR";
 			$out[1]="認證碼已失效，請重新寄送謝謝";

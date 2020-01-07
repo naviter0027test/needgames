@@ -379,7 +379,7 @@
 			$url.="username=".$GLOBALS['vrname'];
 			$url.="&password=".$GLOBALS['vrcode'];
 			$url.="&dstaddr=".$x;
-			$url.="&smbody=".urlencode(iconv("UTF-8","big5","感謝您加入needgames手機認證，您的認證碼是".$y));
+			$url.="&smbody=".urlencode(iconv("UTF-8","big5","感謝您加入kyomon手機認證，您的認證碼是".$y));
 			$url.="&dlvtime=0";
 			$url.="&vldtime=0";
 			$url.="&response=".$z;
