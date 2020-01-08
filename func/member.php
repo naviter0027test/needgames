@@ -364,6 +364,7 @@
 				$pdo -> exec("set names ".$conf['db_encode']);
                                 $email = isset($x[2]) ? $x[2] : '';
                                 $pass = isset($x[3]) ? $x[3] : '';
+                                /*
                                 $sql = "select * from mem_ where email = '$email' and password = '$pass'";
                                 $result = $pdo->query($sql);
 
@@ -379,8 +380,8 @@
                                 //$out[3] = $sql;
 
 				echo json_encode($out);
-                                /*
-				share_update($pdo ,"mem_","locker='1',lockertime=null","lockertime<CURDATE()");
+                                 */
+				//share_update($pdo ,"mem_","locker='1',lockertime=null","lockertime<CURDATE()");
 				if($x[4] && $t=share_getfree($pdo ,"SELECT * FROM mem_ WHERE fbid='".$x[4]."' AND email<>'".$x[2]."'")){
 					$out[0]="ERR";
 					$out[1]="此fbid 已與其他帳後串接,無法再次使用";
@@ -543,7 +544,6 @@
 				}
 				$pdo= null;
 				echo json_encode($out);
-                                 */
 			}else{
 				echo json_encode($test);
 			}

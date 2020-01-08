@@ -1,4 +1,8 @@
-﻿// 請更新  fb.js 中的 appid
+﻿// 款項收款紀錄，為了避免本專案發案人賴帳的狀況
+// 後續的接案者可以此為依據
+// 2020-01-02 款項交付給開發者
+//
+// 請更新  fb.js 中的 appid
 // 所有 local storage 在 store.js
 var blnSMenuOpen=0; //20190425 Pman 次選單是否開啟(新增參數)
 $(document).ready(function() {
@@ -27,8 +31,10 @@ $(document).ready(function() {
 		var fbid="130898547491195";
 	}else if(window.location.hostname=="www.coinpayments.tw:8080"){ //20190107 Pman 修改為正式站網址
 		var fbid="1486682161360214";
+	}else if(window.location.hostname=="demo.axcell28.idv.tw"){ //20200108 Lanker 修改為正式站網址
+		var fbid="585697805544276";
 	}else{
-		var fbid="130898547491195"; //20190107 Pman 修改FB APP ID
+		var fbid="1712173338920264"; //20200108 Lanker 修改FB APP ID
 	}
 	var popon="";
 	var curpage="";//目前頁面
@@ -39,9 +45,12 @@ $(document).ready(function() {
 	//20190312 Pman 轉址判斷改以瀏覽器類型進行
 	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ){
 	//if($window.width()<900){ //20190227 Pman 修正偵測寬度的值
-			var goaddress=url.substring(0,url.lastIndexOf('/'))+"/m/"+url.substring(url.lastIndexOf('/') + 1);
-			window.location.replace(goaddress);
+			//var goaddress=url.substring(0,url.lastIndexOf('/'))+"/m/"+url.substring(url.lastIndexOf('/') + 1);
+			//window.location.replace(goaddress);
 	}
+        if( location.protocol != 'https:'){
+            window.location.href = 'https://'+ window.location.hostname+ window.location.pathname;
+        }
 	/* $window.resize(function(){
 		$window = $(window);
 		if($window.width()<900){ //20190227 Pman 修正偵測寬度的值
@@ -510,104 +519,104 @@ $(document).ready(function() {
 		});
 
 		//FB相關
-  (function(d, s, id){
+    (function(d, s, id){
      var js, fjs = d.getElementsByTagName(s)[0];
      if (d.getElementById(id)) {return;}
      js = d.createElement(s); js.id = id;
      js.src = "//connect.facebook.net/en_US/sdk.js";
      fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-		window.fbAsyncInit = function() {
-			chkfb=1;
-			FB.init({
-			  appId      : fbid,
-			  xfbml      : true,
-			  version    : 'v2.8',
-			  frictionlessRequests : true
-			});
-			$("body").delegate(".fbclick","click",function(e){
-				var me=$(this);
-				var trem=$("#"+$(this).data("type")+"form .formfield");
-				popclose();
-				//var tempvals=Array("3");//建立授權接口
-				//tempitem=ajaxarr("mem_login",tempvals,"ajax.php");
-				//tempitem.success(function(data){//回傳 data 義
-				//		var fbcode=data[0];
-						FB.login(function(response) {
-							if(response.authResponse) {
-								access_token = response.authResponse.accessToken; //get access token
-								var xfbid = response.authResponse.userID; //get FB UID
-									var tempvals=Array("3");//建立授權接口
-									tempitem=ajaxarr("mem_login",tempvals,"ajax.php");
-									tempitem.success(function(data){//回傳 data 義
-										var fbcode=data[0];
-										FB.api('/me?fields=birthday,email,name', function(response) {
-											fbname=response.name;
-											fbmail=response.email;
-											fbbirth=response.birthday;
-											if(me.data("type")=="link"){//登入串聯
-												setTimeout(function(){
-													poploginap(xfbid,fbname,fbmail,fbbirth);
-												},500);
-											}else if(me.data("type")=="rlink"){//註冊串聯
-												setTimeout(function(){
-													popregisterap(xfbid,fbname,fbmail,fbbirth);
-												},500);
-											}else if(me.data("type")=="login"){// fb 登入
-											//	var trem=$("#"+$(this).data("type")+" .formfield");
-												var tempvals=Array("2",xfbid,fbname,fbmail,fbbirth,fbcode);
+    }(document, 'script', 'facebook-jssdk'));
+    window.fbAsyncInit = function() {
+        chkfb=1;
+        FB.init({
+          appId      : fbid,
+          xfbml      : true,
+          version    : 'v5.0',
+          frictionlessRequests : true
+        });
+        $("body").delegate(".fbclick","click",function(e){
+            var me=$(this);
+            var trem=$("#"+$(this).data("type")+"form .formfield");
+            popclose();
+            //var tempvals=Array("3");//建立授權接口
+            //tempitem=ajaxarr("mem_login",tempvals,"ajax.php");
+            //tempitem.success(function(data){//回傳 data 義
+            //		var fbcode=data[0];
+            FB.login(function(response) {
+                if(response.authResponse) {
+                    access_token = response.authResponse.accessToken; //get access token
+                    var xfbid = response.authResponse.userID; //get FB UID
+                    var tempvals=Array("3");//建立授權接口
+                    tempitem=ajaxarr("mem_login",tempvals,"ajax.php");
+                    tempitem.success(function(data){//回傳 data 義
+                    var fbcode=data[0];
+                    FB.api('/me?fields=birthday,email,name', function(response) {
+                    fbname=response.name;
+                    fbmail=response.email;
+                    fbbirth=response.birthday;
+                    if(me.data("type")=="link"){//登入串聯
+                        setTimeout(function(){
+                            poploginap(xfbid,fbname,fbmail,fbbirth);
+                        },500);
+                    }else if(me.data("type")=="rlink"){//註冊串聯
+                        setTimeout(function(){
+                            popregisterap(xfbid,fbname,fbmail,fbbirth);
+                        },500);
+                    }else if(me.data("type")=="login"){// fb 登入
+                    //	var trem=$("#"+$(this).data("type")+" .formfield");
+                        var tempvals=Array("2",xfbid,fbname,fbmail,fbbirth,fbcode);
 
-												tempitem=ajaxarr("mem_login",tempvals,"ajax.php");
-												tempitem.success(function(data){//回傳 data 義
-													if(data[0]=="ERR"){
-														popnotice(data[1]);
-														popregister();
-													}else if(data[0]=="OKFB"){
-														if(trem.eq(3).is(':checked')){
-															var d = new Date();
-															var n = d.getTime();
-															localStorage.setItem("re_userid",data[2]);
-															localStorage.setItem("re_key",data[3]);
-															localStorage.setItem("re_time",n+86400*30000);
-														}
-														chk_mem(data[1]);
-													}else{
-														popnotice("登入成功！");
-														//20180911 Pman 客戶要求修改文案
-														$(".hwrap").show();
-														$("#friendsearchbox").show();
-														if(trem.eq(3).is(':checked')){
-															var d = new Date();
-															var n = d.getTime();
-															localStorage.setItem("re_userid",data[2]);
-															localStorage.setItem("re_key",data[7]);
-															localStorage.setItem("re_time",n+86400*30000);
-														}
-														sessionStorage.setItem("member",JSON.stringify(data[1]));//更新
-														sessionStorage.setItem("userid",data[2]) ;
-														sessionStorage.setItem("key",data[3]) ;
-														sessionStorage.setItem("point010",JSON.stringify(data[4]));//更新
-														sessionStorage.setItem("point012",JSON.stringify(data[5]));//更新
-														sessionStorage.setItem("point014",JSON.stringify(data[6]));//更新
-														showpage(1);
-														refreshchk();
-														popclose();
-														if(data[1]['phonev']=="0"){
-															setTimeout(function(){
-																popclose();
-																pop_vrequest();
-															},3000);
-														}
-													}
-												});
-											}
-										});
-									});
-							}
-						}, {scope: 'email,user_birthday'});
-				//});
-			});
-		}
+                        tempitem=ajaxarr("mem_login",tempvals,"ajax.php");
+                        tempitem.success(function(data){//回傳 data 義
+                            if(data[0]=="ERR"){
+                                popnotice(data[1]);
+                                popregister();
+                            }else if(data[0]=="OKFB"){
+                                if(trem.eq(3).is(':checked')){
+                                    var d = new Date();
+                                    var n = d.getTime();
+                                    localStorage.setItem("re_userid",data[2]);
+                                    localStorage.setItem("re_key",data[3]);
+                                    localStorage.setItem("re_time",n+86400*30000);
+                                }
+                                chk_mem(data[1]);
+                            }else{
+                                popnotice("登入成功！");
+                                //20180911 Pman 客戶要求修改文案
+                                $(".hwrap").show();
+                                $("#friendsearchbox").show();
+                                if(trem.eq(3).is(':checked')){
+                                    var d = new Date();
+                                    var n = d.getTime();
+                                    localStorage.setItem("re_userid",data[2]);
+                                    localStorage.setItem("re_key",data[7]);
+                                    localStorage.setItem("re_time",n+86400*30000);
+                                }
+                                sessionStorage.setItem("member",JSON.stringify(data[1]));//更新
+                                sessionStorage.setItem("userid",data[2]) ;
+                                sessionStorage.setItem("key",data[3]) ;
+                                sessionStorage.setItem("point010",JSON.stringify(data[4]));//更新
+                                sessionStorage.setItem("point012",JSON.stringify(data[5]));//更新
+                                sessionStorage.setItem("point014",JSON.stringify(data[6]));//更新
+                                showpage(1);
+                                refreshchk();
+                                popclose();
+                                if(data[1]['phonev']=="0"){
+                                    setTimeout(function(){
+                                        popclose();
+                                        pop_vrequest();
+                                    },3000);
+                                }
+                            }
+                            });
+                        }
+                    });
+                    });
+                }
+            }, {scope: 'email,user_birthday'});
+            //});
+        });
+    }
 		//變更個人資料
 		$("body").delegate(".aboutclick","click",function(e){
 			e.preventDefault();

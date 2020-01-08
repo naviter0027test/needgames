@@ -21,8 +21,8 @@ function opayAllPayment($payment) {
     if(isset($payment['MerchantTradeNo']) == true)
         $MerchantTradeNo = $payment['MerchantTradeNo'];
 
-    $obj->Send['ReturnURL']     = "http://". $_SERVER['HTTP_HOST']. '/paymentNotify.php?orderid='. $MerchantTradeNo;
-    $obj->Send['ClientBackURL'] = "http://". $_SERVER['HTTP_HOST']. '/paymentResult.php';
+    $obj->Send['ReturnURL']     = "https://". $_SERVER['HTTP_HOST']. '/paymentNotify.php?orderid='. $MerchantTradeNo;
+    $obj->Send['ClientBackURL'] = "https://". $_SERVER['HTTP_HOST']. '/paymentResult.php';
     $obj->Send['MerchantTradeNo'] = $MerchantTradeNo;
     $obj->Send['MerchantTradeDate'] = date('Y/m/d H:i:s');
     $obj->Send['TotalAmount']   = $payment['money'];

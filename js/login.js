@@ -96,13 +96,13 @@
 			out+="								<input type='hidden' class='formfield' name='f4' value='"+((typeof b=="undefined")?"":b)+"'>";
 			out+="                             <input type='submit'  name='submit' value='送出' class='submitclick border5' data-type='regform'>\n";
 			out+="                    </div>\n";
-			/*
 			out+="                    <div class='formline'>\n";
 			out+="                        <div class='formitem formitem_4' style='line-height:50px;'>快速註冊</div>\n";
 			out+="                        <div class='formitem formitem_4 formitemstext tcenter'>\n";
 			out+="							<span><div class='fbclick fbbtn btn' data-type='rlink'><span>FaceBook</span> 註冊</div></span>";
 			out+="							<div class='fbnote'>* 為了您的帳號安全,使用FB註冊仍會需要輸入帳密資料</div>";
 			out+="                        </div>\n";
+			/*
 			out+="                        <div class='clr'></div>\n";
 			out+="                    </div>\n";
 			out+="                    <div class='fbwrap'>\n";
@@ -149,7 +149,7 @@
 			out+="                    <div class='formline'>\n";
 			out+="                        <div class='formitem formitem_4'><input type='checkbox' class='formfield form-control' name='agree'></div>\n";
 			out+="                        <div class='formitem formitem_4 formitemstext tleft'>\n";
-			out+="                             <span style='color:#444;font-size:13px;line-height:17px;'>我已詳閱並同意盛事科技股份有限公司ＮＥＥＤ社群網站「<span class='agreemember'><span  id='aggrementclick'>會員規範</span>&<span  id='privacyclick'>隱私權條款</span></span>」及以上權利義務之相關條款</span>\n";
+			out+="                             <span style='color:#444;font-size:13px;line-height:17px;'>我已詳閱並同意京門科技股份有限公司KYOMON社群網站「<span class='agreemember'><span  id='aggrementclick'>會員規範</span>&<span  id='privacyclick'>隱私權條款</span></span>」及以上權利義務之相關條款</span>\n";
 			out+="                            <div class='formerr'>請確認同意會員條款</div>\n";
 			out+="                        </div>\n";
 			out+="                        <div class='clr'></div>\n";
@@ -425,8 +425,7 @@
 		//var tempvals=Array("1","42345344");
                 var tempvals = Array();
 		tempitem=ajaxarr("get_caplist",tempvals,"ajax.php");
-		$.ajax(tempitem).success(function(data){//回傳 data 義
-		//tempitem.success(function(data){//回傳 data 義
+		tempitem.success(function(data){//回傳 data 義
 			out="<form action='' method='post' id='loginform'>\n";
 			out+="                    <div class='formline'>\n";
 			out+="                        <div class='formitem formitem_4'><span>帳號</span></div>\n";
@@ -445,14 +444,18 @@
 			out+="                        <div class='clr'></div>\n";
 			out+="                    </div>\n";
 			out+="                    <div class='formline'>\n";
+                        /*
 			out+="                        <div class='formitem formitem_4 formitems'><span>驗證碼</span></div>\n";
 			out+="                        <div class='formitem formitem_4 tleft formitems'>\n";
 			out+="							<input type='text' class='formfield form-control' name='code' autocomplete='ppp'>\n"; //20190306 Pman 關掉自動完成
+                        */
 			out+="							<div style='margin-top:10px;'>";
 			out+="							<span class='inblock fL' style='width:50%'><input type='checkbox' class='formfield' name='remember' value='y'> <span style='color:#444;'>記住我</span></span>\n";
+                        /*
 			out+="							<span class='inblock fL' style='width:46%'>"+data[0]+"</span>\n";
+                        */
 			//out+="                            <div class='formerr'>請填寫驗證碼</div>\n";
-			out+="							</div>";
+			//out+="							</div>";
 			out+="                        </div>\n";
 			out+="                        <div class='clr'></div>\n";
 			out+="                    </div>\n";
@@ -492,7 +495,8 @@
 			//out+="							<span><div class='fbclick fbbtn2 btn' data-type='login'><span>Facebook</span> 登入</div></span>";
 			//out+="							<span class='fbclick fbbtn2 btn' data-type='link'>FB原有帳號綁定</div>"
 			//out+="                    </div>\n";
-                        //popbase_2("會員登入",out,'y');
+                        popbase_2("會員登入",out,'y');
+                        /*
                         $('#loginTemplate').load('template/login.html', function(tem) {
                             popbase_2("會員登入",tem,'y');
                             setTimeout(function() {
@@ -525,6 +529,7 @@
                                 });
                             }, 1000);
                         });
+                        */
 		});
 	/*
 		var tempvals=Array("1","42345344");

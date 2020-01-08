@@ -68,7 +68,7 @@ ini_set('short_open_tag', 'on');
 		//$conf['dbname_c'] = 'cptjdygy_game_c_empt';
 		$conf['db_encode'] = 'utf8';
         }elseif(strpos($_SERVER['HTTP_HOST'], "demo.axcell28.idv.tw") !== false){
-		$rootaddress="http://demo.axcell28.idv.tw/";
+		$rootaddress="https://demo.axcell28.idv.tw/";
 		//$frommail="iacgtw@gmail.com";
 		//$frompass="Ian199281912";
 		//$mailhost="smtp.gmail.com";
@@ -108,7 +108,7 @@ ini_set('short_open_tag', 'on');
 		$conf['dbname_c'] = 'kyomonwa_c';
 		$conf['db_encode'] = 'utf8';
         }else{
-		$rootaddress="http://kyomon.wasd.club/";
+		$rootaddress="https://kyomon.wasd.club/";
 		//$frommail="iacgtw@gmail.com";
 		//$frompass="Ian199281912";
 		//$mailhost="smtp.gmail.com";
