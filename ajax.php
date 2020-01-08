@@ -1580,6 +1580,7 @@
 			$pdom -> exec("set names ".$conf['db_encode']);
 			$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
 			$pdod -> exec("set names ".$conf['db_encode']);
+                        $out=array();
 			//抓取葉面
 			if($t=share_getinfo($pdod,"art_","thisid",$x[2])){
 				$out[0]="OK";
