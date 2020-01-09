@@ -760,6 +760,7 @@
 	}
 	//取得單一照片資料
 	function get_myphotoid($x){
+                $out=array();
 		if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key']){//確認資格
 			global $conf;
 			$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
