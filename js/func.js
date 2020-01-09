@@ -1566,7 +1566,7 @@ $(document).ready(function() {
 							//檢查驗證
 							if(sessionStorage.getItem("userid")){
 								//id,key,title,content,picid,pictype,tag
-								$("#newstext").val(escape($("#newstext").val())); //20190321 Pman 將emoji內容轉碼，會連同換行符號一起轉掉
+								$("#newstext").val($("#newstext").val()); //20190321 Pman 將emoji內容轉碼，會連同換行符號一起轉掉
 								var tempvals=Array(sessionStorage.getItem("userid"),sessionStorage.getItem("key"),mylist.eq(0).val(),mylist.eq(1).val(),mylist.eq(2).val(),mylist.eq(3).val(),$("#q_type").val(),$("#q_open").val());
 								tempitem=ajaxarr("uploadnews",tempvals,"ajax.php");
 								tempitem.success(function(data){//回傳 data 義
@@ -1969,8 +1969,8 @@ $(document).ready(function() {
 					textRange.select();
 				}
 			}else if(e.which == 13 ) {
-				console.log("1:"+escape($(this).val()));
-				temp=escape($(this).val());//20190321 將emoji內容轉碼，會連同換行符號一起轉掉，回寫
+				console.log("1:"+$(this).val());
+				temp=$(this).val();
 				//$(this).val($(this).val().replace(/[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF][\u200D|\uFE0F]|[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF]|[0-9|*|#]\uFE0F\u20E3|[0-9|#]\u20E3|[\u203C-\u3299]\uFE0F\u200D|[\u203C-\u3299]\uFE0F|[\u2122-\u2B55]|\u303D|[\A9|\AE]\u3030|\uA9|\uAE|\u3030/ig,""));//20190320 Pman 濾掉emoji
 				$(this).val(temp);
 				temp=$(this).val();
