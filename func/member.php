@@ -291,7 +291,7 @@
 	function mem_login($x){
 		global $conf;
 		global $mrr;
-		$out="";
+		$out=array();
 		if($x[0]=="3"){// fb登入-註冊串聯/登入串聯/
 			$_SESSION['fbstart']=time();
 			$temp=$mrr[rand(0,21)].$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].$mrr[rand(0,21)].$mrr[rand(0,21)];
@@ -552,14 +552,14 @@
 	function mem_logoff($x){
 		unset ($_SESSION['key']);
 		unset ($_SESSION['userid']);
-		$out="";
+		$out=array();
 		$out[0]="OK";
 		echo json_encode($out);
 	}
 	function mem_autologin($x){
 		global $conf;
 		global $mrr;
-		$out="";
+		$out=array();
 			$pdo = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 			$pdo -> exec("set names ".$conf['db_encode']);
 			if((($x[1]-1358743953456)/1357531)==$x[0]){//正確
@@ -620,6 +620,7 @@
 	}
 	// check if session exist
 	function chk_mem($x){
+                $out=array();
 		if($_SESSION['userid'] && $x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key']){
 			$out[0]="OK";
 		}else{
@@ -629,6 +630,7 @@
 	}
 	//更新會員資料...
 	function reget_mem($x){
+            $out=array();
 		if($_SESSION['userid']){
 			global $conf;
 			$pdo = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
