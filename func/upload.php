@@ -863,6 +863,7 @@
 	}
 	function uploadheadc($x){
 		global $conf;
+                $out=array();
 		if($_SESSION['userid']==$x[0] && $_SESSION['key']==$x[1]){
 			$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 			$pdom -> exec("set names ".$conf['db_encode']);
@@ -937,7 +938,7 @@
 					if($t=="gif"){
 						$out[1][$a]=$id.".".$t;
 					}else{
-						$out[1][$a]=$id."s.".$t;
+						$out[1][$a]=$id.".".$t;
 					}
 					$out[2][$a]=$id.".".$t;
 				}
@@ -975,7 +976,7 @@
 					if($t=="gif"){
 						$out[1][$a]=$id.".".$t;
 					}else{
-						$out[1][$a]=$id."s.".$t;
+						$out[1][$a]=$id.".".$t;
 					}
 					$out[2][$a]=$id.".".$t;
 				}
@@ -1003,7 +1004,7 @@
 					if($t=="gif"){
 						$out[1][$a]=$id.".".$t;
 					}else{
-						$out[1][$a]=$id."s.".$t;
+						$out[1][$a]=$id.".".$t;
 					}
 					$out[2][$a]=$id.".".$t;
 				}
@@ -1074,7 +1075,7 @@
 					$id=rand(123,987).date('Yndhms').rand(123,987);
 					$t=uploadfilebase($id,1900,2,'',$_FILES["val"]);//20180907 Pman 因為上傳的橫幅圖，左右都被砍掉，所以將1改成2
 					share_insert($pdod,"pho_","memberid,albid,thisfile","'".$_SESSION['userid']."','".$GLOBALS['albid']."','".$id.".".$t."'");
-					echo $id.".".$t."_".$cnt;
+					echo $id.".".$t; //."_".$cnt;
 				}
 			}else{
 				if( $cnt>20){
@@ -1086,7 +1087,7 @@
 					$id=rand(123,987).date('Yndhms').rand(123,987);
 					$t=uploadfilebase($id,1900,2,'',$_FILES["val"]);//20180907 Pman 因為上傳的橫幅圖，左右都被砍掉，所以將1改成2
 					share_insert($pdod,"pho_","memberid,albid,thisfile","'".$_SESSION['userid']."','".$GLOBALS['albid']."','".$id.".".$t."'");
-					echo $id.".".$t."_".$cnt;
+					echo $id.".".$t; //."_".$cnt;
 				}
 			}
 
@@ -1175,10 +1176,11 @@
 		}
 		if(($file["type"] == "image/jpeg") || ($file["type"] == "image/pjpeg")){
 			$fileext="jpg";
-			$src = imagecreatefromjpeg($file['tmp_name']); //20190109 Pman 修正有些JPG上傳後，方向會錯誤的問題
-			$exif = exif_read_data($file['tmp_name']); //20190109 Pman 修正有些JPG上傳後，方向會錯誤的問題
+			//$src = imagecreatefromjpeg($file['tmp_name']); //20190109 Pman 修正有些JPG上傳後，方向會錯誤的問題
+			//$exif = exif_read_data($file['tmp_name']); //20190109 Pman 修正有些JPG上傳後，方向會錯誤的問題
 
 			//20190109 Pman 讀取exif資料，確認照片的方向
+                        /*
 			if (!empty($exif['Orientation'])) {
 				$hh="y";
 				switch ($exif['Orientation']) {
@@ -1228,8 +1230,11 @@
 					move_uploaded_file($file['tmp_name'], $imgurl.$id.".".$fileext);
 				}
 			}
+                         */
+					move_uploaded_file($file['tmp_name'], $imgurl.$id.".".$fileext);
 		}else if($file["type"] == "image/png") {
 			$fileext="png";
+                        /*
 			if($imgwidth){
 				$src = imagecreatefrompng($file['tmp_name']);
 				$width = imagesx($src);
@@ -1265,6 +1270,8 @@
 				}
 
 			}
+                         */
+					move_uploaded_file($file['tmp_name'], $imgurl.$id.".".$fileext);
 			$fileext="jpg";//20190124 Pman 因為要將上傳的PNG，改成JPG，所以要改變副檔名
 		}else if($file["type"] == "video/mp4") {
 			$src = $file['tmp_name'];

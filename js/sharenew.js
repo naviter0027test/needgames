@@ -2193,11 +2193,15 @@
 	}
 
 	smallpics=function(x){
+            /*
 		if(x.indexOf(".jpg")>0){
 			return x.replace(".jpg", "s.jpg");
 		}else if(x.indexOf(".png")>0){
 			return x.replace(".png", "s.png");
-	}}
+                }
+            */
+            return x;
+        }
 	/*
 	copyToClipboard=function(elem) {
 		  // create hidden text element, if it doesn't already exist
@@ -2537,7 +2541,8 @@ $(document).ready(function(){
 									if(cdata.indexOf("gif")>0){
 										tempout="<div class='temppicwrap inblock'><i class='predelclick fa fa-times' data-job='albpic'  data-albid='"+me.data("albid")+"' data-val='"+cdatax[0]+"' ></i><img src='uploadfile/"+cdatax[0]+"' style='height:100%'></div>";
 									}else{
-										tempout="<div class='temppicwrap inblock'><i class='predelclick fa fa-times' data-job='albpic'  data-albid='"+me.data("albid")+"' data-val='"+cdatax[0]+"' ></i><img src='uploadfile/"+cdatax[0].replace(/\./g, "s.")+"'></div>";
+										//tempout="<div class='temppicwrap inblock'><i class='predelclick fa fa-times' data-job='albpic'  data-albid='"+me.data("albid")+"' data-val='"+cdatax[0]+"' ></i><img src='uploadfile/"+cdatax[0].replace(/\./g, "s.")+"'></div>";
+										tempout="<div class='temppicwrap inblock'><i class='predelclick fa fa-times' data-job='albpic'  data-albid='"+me.data("albid")+"' data-val='"+cdatax[0]+"' ></i><img src='uploadfile/"+cdatax[0]+"' style='height:100%'></div>";
 									}
 									if(parseInt(cdatax[1] )<=5 ){//上船前第幾個,上船後+1
 										returnbox="<div class='temppicwrap' id='addalbpicwrap'><img src='img/addpic.jpg'><form action='' method=post enctype='multipart/form-data' class='pciform hideform' id='addpicform'><input name='file' type='file'  data-albid='"+me.data("albid")+"' class='fileupload instantupload' data-job='addalbpic' data-form='addpicform' data-target='temppicwrap' data-pictarget='addalbpicwrap' data-type='insert' /></form></div>\n";
@@ -2545,7 +2550,7 @@ $(document).ready(function(){
 									tempout+=returnbox;
 									$("#"+me.data("pictarget")).replaceWith(tempout);
 								}else if(me.data("job")=="addalbpicb"){//動態相簿新增照片--相簿內
-									var tempvals=Array(sessionStorage.getItem("userid"),sessionStorage.getItem("key"),cdata); //人 / key / 最後id / 選項 /  哪一類(哪一頁)  /  預留目前都是mainlist/ 標籤
+									var tempvals=Array(sessionStorage.getItem("userid"),sessionStorage.getItem("key"),data.trim()); //人 / key / 最後id / 選項 /  哪一類(哪一頁)  /  預留目前都是mainlist/ 標籤
 									tempitem=ajaxarr("get_myphotoid",tempvals,"ajax.php");
 									tempitem.success(function(data){//回傳 data --data[0]都是確認正確  data[1]就是回傳的array  data[2]-->則是未定義..
 										out="";
