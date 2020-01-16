@@ -1576,9 +1576,12 @@ $(document).ready(function() {
 							if(sessionStorage.getItem("userid")){
 								//id,key,title,content,picid,pictype,tag
 								$("#newstext").val($("#newstext").val()); //20190321 Pman 將emoji內容轉碼，會連同換行符號一起轉掉
+                                                                popnotice('發佈中, 請稍後');
 								var tempvals=Array(sessionStorage.getItem("userid"),sessionStorage.getItem("key"),mylist.eq(0).val(),mylist.eq(1).val(),mylist.eq(2).val(),mylist.eq(3).val(),$("#q_type").val(),$("#q_open").val());
+                                                            console.log(tempvals);
 								tempitem=ajaxarr("uploadnews",tempvals,"ajax.php");
 								tempitem.success(function(data){//回傳 data 義
+                                                                    console.log(data);
 									if(data[0]=="ERR"){
 										popnotice(data[1]);
 									}else{
@@ -2003,6 +2006,7 @@ $(document).ready(function() {
 								var tempvals=Array(sessionStorage.getItem("userid"),sessionStorage.getItem("key"),me.data("id"),mylist.eq(0).val(),mylist.eq(1).val(),mylist.eq(2).val(),mylist.eq(3).val(),gameselect);
 								tempitem=ajaxarr("uploadnewsreply",tempvals,"ajax.php");
 								tempitem.success(function(data){//回傳 data 義
+                                                                    console.log(data);
 									if(data[0]=="ERR"){
 										popnotice(data[1]);
 									}else{

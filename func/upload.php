@@ -372,6 +372,7 @@
 	//上傳檔案
 	function uploadnewsreply($x){
 		global $conf;
+                $out=array();
 		if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key'] && $x[2]<>"" && ($x[3]<>"" || $x[5]=="1")){//確認資格//20190111 Pman 修正如果只有圖片沒有文字時，會有錯誤訊息的情況
 			$pdo = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
 			$pdo -> exec("set names ".$conf['db_encode']);
@@ -736,7 +737,7 @@
 				}
 			}else if( $x[4] && $x[5]=="2"){//影片
 				if(share_insert($pdo,"con_","memberid,typeid,gamid,thiscontent,timekey,fileinfo","'".$_SESSION['userid']."','".$x[5]."','".$x[6]."','<div class=\"newstextbox\">".share_html($x[3])."\n</div><div class=\"newsfilebox\"><video width=100% controls id=newstempvideo><source src=uploadfile/".$x[4]." type=video/mp4 ></video></div>','".time()."','".$x[4]."'")){
-				//if(share_insert($pdo,"con_","memberid,typeid,gamid,thiscontent,timekey,fileinfo","'".$_SESSION['userid']."','".$x[5]."','".$x[6]."','".share_html($x[3])."','".time()."','".$x[4]."'")){
+				//if(share_insert($pdo,"con_","memberid,typeid,gamid,thiscontent,timekey,fileinfo","'".$_SESSION['userid']."','".$x[5]."','".$x[6]."','".share_html($x[3])."','".time()."','".$x[4]."'"))
 					$t=share_gettable($pdo,"con_ WHERE memberid='".$_SESSION['userid']."' order by thisid DESC limit 1");
 					share_insert($pdo,"vid_","memberid,contentid,thisfile,thiscontent","'".$_SESSION['userid']."','".$t[0]['thisid']."','".$x[4]."','".$x[3]."'");
 					share_insert($pdo,"wall","memberid,contentid,gamid,timekey","'".$_SESSION['userid']."','".$t[0]['thisid']."','".$x[6]."','".time()."'");
@@ -794,8 +795,8 @@
 				//}else{
 				//	$x[2]="無名的相簿";
 				//}
-				//if(share_insert($pdo,"con_","memberid,typeid,gamid,opentype,thiscontent,timekey","'".$_SESSION['userid']."','3','".$x[6]."','".$x[7]."','<div class=\"newstextbox\">上傳了一個相簿 ".share_html($x[2])."</div><div class=\"newsfilebox\">".$pout."</div>','".time()."'")){
-				//if($t=share_gettable($pdo,"con_ WHERE memberid='".$_SESSION['userid']."' order by thisid DESC limit 1")){
+				//if(share_insert($pdo,"con_","memberid,typeid,gamid,opentype,thiscontent,timekey","'".$_SESSION['userid']."','3','".$x[6]."','".$x[7]."','<div class=\"newstextbox\">上傳了一個相簿 ".share_html($x[2])."</div><div class=\"newsfilebox\">".$pout."</div>','".time()."'"))
+				//if($t=share_gettable($pdo,"con_ WHERE memberid='".$_SESSION['userid']."' order by thisid DESC limit 1"))
 					//$t=share_gettable($pdo,"con_ WHERE memberid='".$_SESSION['userid']."' order by thisid DESC limit 1");
 				if(share_update($pdo,"alb_","thisname='".$x[2]."',thiscontent='".$x[3]."',opentype='".$x[7]."',isdefault=0","thisid='".$x[4]."'")){
 					//share_insert($pdo,"wall","memberid,contentid,gamid,opentype,timekey","'".$_SESSION['userid']."','".$t[0]['thisid']."','".$x[6]."','".$x[7]."','".time()."'");
@@ -952,8 +953,9 @@
 		$pdod=NULL;
 		echo json_encode($out);
 	}
-	function uploadnewspic($x){//上傳非相簿的相簿 //20181017 Pman 因為PC版上傳時，刪除舊相簿的行為，所以仿照手機版，整段重貼
+	function uploadnewspic(){//上傳非相簿的相簿 //20181017 Pman 因為PC版上傳時，刪除舊相簿的行為，所以仿照手機版，整段重貼
 		global $conf;
+                $out=array();
 		$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
 		$pdod -> exec("set names ".$conf['db_encode']);
 		if($_SESSION['userid']==$GLOBALS['uid'] && $_SESSION['key']==$GLOBALS['ukey']){

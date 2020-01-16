@@ -237,7 +237,7 @@
 		share_insert($pdod,"not_","memberid,fromid,typeid,thiscontent,thislink","'".$id."','".$id."',9,'您的手機還沒驗證，請前往驗證您的手機，完成後可使用完整功能及額外貢獻值獎勵',''");
 		$pdod=null;
 	}
-	function add_point($mid,$x,$y,$z,$id){ // 會員,點數,點數由來,note(id)
+	function add_point($mid,$x,$y,$z,$id=""){ // 會員,點數,點數由來,note(id)
 		global $conf;
 		$pdo = new PDO('mysql:host='.$conf['dbhost_p'].';dbname='.$conf['dbname_p'], $conf['dbuser_p'], $conf['dbpass_p']);
 		$pdo -> exec("set names ".$conf['db_encode']);	

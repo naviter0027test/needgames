@@ -1400,9 +1400,9 @@
 	}
 	//顯示收藏
 	function get_arc_list($x){//蒐藏...
+                $out=array();
 		if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key']){//確認資格
 			global $conf;
-			$out="";
 			$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 			$pdom -> exec("set names ".$conf['db_encode']);
 			$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
@@ -1997,7 +1997,7 @@
 	//show one WALL post
 	function show_boardone($x){//抓檔案
 		global $conf;
-		$out="";
+		$out=array();
 		$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 		$pdom -> exec("set names ".$conf['db_encode']);
 		$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
@@ -2047,7 +2047,7 @@
 	//WALL list
 	function show_wall($x){
 		global $conf;
-		$out= '';
+		$out=array();
 		$list="";
 		$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 		$pdom -> exec("set names ".$conf['db_encode']);
@@ -2220,7 +2220,7 @@
 	//一筆動態
 	function show_wallone($x){
 		global $conf;
-		$out="";
+		$out=array();
 		$list="";
 		$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 		$pdom -> exec("set names ".$conf['db_encode']);
@@ -2316,7 +2316,7 @@
 	//WALL list
 	function show_mywall($x){
 		global $conf;
-		$out="";
+		$out=array();
 		$list="";
 		$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 		$pdom -> exec("set names ".$conf['db_encode']);

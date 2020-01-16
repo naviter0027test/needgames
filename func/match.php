@@ -247,7 +247,7 @@
 	function addfriends($x){
 		if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key']){//確認資格
 			global $conf;
-			$out="";
+			$out=array();
 			$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
 			$pdod -> exec("set names ".$conf['db_encode']);	
 			$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
