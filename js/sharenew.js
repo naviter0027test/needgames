@@ -1626,7 +1626,7 @@
 			//xout+=nl2br(xdata['main']['thiscontent']);
 	//	}
 		 if(typeof xdata['main']['thiscontent'] !="undefined"){
-			xout+=nl2br(xdata['main']['thiscontent']);
+			xout+=xdata['main']['thiscontent'];
 		 }
 		if(xdata['main']['typeid']=="4"){
 			xout+="</div>\n";
@@ -1691,7 +1691,7 @@
 			//if(xdata['reply'][b]['replyto']){
 			//	xout+="<span class='replytonamebox'>to:"+xdata['reply'][b]['replytoname']+"</span>";
 			//}
-			xout+=nl2br(xdata['reply'][b]['thiscontent']);
+			xout+=xdata['reply'][b]['thiscontent'];
 			if(sessionStorage.getItem("userid") && sessionStorage.getItem("userid")==xdata['reply'][b]['uid']){
 			}else{
 				xout+="<a class='replyclick fR btn' data-id='"+xdata['reply'][b]['uid']+"' data-name='"+xdata['reply'][b]['user']+"' style='padding:5px 0;'>回覆</a>";
