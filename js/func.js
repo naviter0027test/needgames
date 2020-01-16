@@ -1751,6 +1751,7 @@ $(document).ready(function() {
 								var tempvals=Array(sessionStorage.getItem("userid"),sessionStorage.getItem("key"),mylist.eq(0).val(),mylist.eq(1).val(),mylist.eq(2).val(),articles,myopen,mylist.eq(5).val());
 								tempitem=ajaxarrpost("uploadarticletext",tempvals,"ajax.php");
 								tempitem.success(function(data){//回傳 data 義
+                                                                    console.log(data);
 									if(data[0]=="ERR"){
 										popnotice(data[1]);
 									}else if(data[0]=="OK2"){

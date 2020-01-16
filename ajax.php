@@ -19,7 +19,9 @@
 	if(!empty($job)){
 		if(!empty($val)){
 			$job($val);
-		}else{
+                }elseif(isset($_FILES['val'])){
+			$job($_FILES['val']);
+                }else{
 			$job();
 		}
 	}

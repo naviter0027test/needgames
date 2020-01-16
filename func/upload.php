@@ -494,6 +494,7 @@
 	//攻略
 	function uploadarticletext($x){//4/22 修改新增編輯的條件
 		global $conf;
+                $out=array();
 		if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key'] && $x[2]<>""){//確認資格
 			$pdo = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
 			$pdo -> exec("set names ".$conf['db_encode']);
@@ -607,6 +608,7 @@
 	}
 	function uploadnews($x){//動態牆
 		global $conf;
+                $out=array();
 		if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key']){//確認資格
 			$pdo = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
 			$pdo -> exec("set names ".$conf['db_encode']);
@@ -920,8 +922,9 @@
 		}
 
 	}
-	function uploadnewspicbook($x){//上船相簿圖片
+	function uploadnewspicbook(){//上船相簿圖片
 		global $conf;
+                $out=array();
 		$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
 		$pdod -> exec("set names ".$conf['db_encode']);
 		if($_SESSION['userid']==$GLOBALS['uid'] && $_SESSION['key']==$GLOBALS['ukey']){
@@ -1061,8 +1064,9 @@
 		$pdod=NULL;
 		echo json_encode($out);
 	}
-	function addalbpic($x){//增加照片
+	function addalbpic(){//增加照片
 		global $conf;
+                $out=array();
 		$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
 		$pdod -> exec("set names ".$conf['db_encode']);
 		if($_SESSION['userid']==$GLOBALS['uid'] && $_SESSION['key']==$GLOBALS['ukey']){
