@@ -1187,7 +1187,7 @@ show_centerartpage=function(x){
 				out+="</div>\n";
 				out+="                                        <div class='mcreplybox_q  article'>\n";
 				out+="                                        	<a href='' class='pageclick' data-type='mypage' data-val='1' data-id='"+data[1]['reply'][b]['uid']+"' ><span class='color_red'>"+data[1]['reply'][b]['user']+"</span></a>\n"; //20180905 Pman data-val帶錯，class寫錯，並缺少data-id
-				out+=nl2br(data[1]['reply'][b]['thiscontent']);
+				out+=data[1]['reply'][b]['thiscontent'];
 				if(sessionStorage.getItem("userid") && sessionStorage.getItem("userid")==data[1]['reply'][b]['uid']){
 				}else{
 					out+="<a class='replyclick fR btn' data-id='"+data[1]['reply'][b]['uid']+"' data-name='"+data[1]['reply'][b]['user']+"' style='padding:5px 0;'>回覆</a>";
