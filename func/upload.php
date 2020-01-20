@@ -373,6 +373,7 @@
 	function uploadnewsreply($x){
 		global $conf;
                 $out=array();
+                $dateadd = date('Y-m-d H:i:s');
 		if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key'] && $x[2]<>"" && ($x[3]<>"" || $x[5]=="1")){//確認資格//20190111 Pman 修正如果只有圖片沒有文字時，會有錯誤訊息的情況
 			$pdo = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
 			$pdo -> exec("set names ".$conf['db_encode']);
@@ -389,12 +390,12 @@
 			if($x[5]=="1"){//圖片
 			//	$xxt=share_insert($pdo,"rep_","contentid,memberid,thiscontent,timekey","'".$x[2]."','".$_SESSION['userid']."','<div class=\"newstextbox\">".share_html($x[3])."</div><div class=\"newsfilebox \"><img src='uploadfile/".$x[4]."'  ></div>','".time()."'");
 				if($x[3]==""){//20190111 Pman 如果只有圖片沒有文字時，就不填入文字區塊的內容
-					$xxt=share_insert($pdo,"rep_","contentid,memberid,thiscontent,timekey","'".$x[2]."','".$_SESSION['userid']."','<div class=\"newstextbox\"></div><div class=\" newsfilebox popimgclick newsrimg \"  data-type=\"chat\" ><img src=\"uploadfile/".$x[4]."\" ></div>','".time()."'");
+					$xxt=share_insert($pdo,"rep_","contentid,memberid,thiscontent,timekey,dateadd","'".$x[2]."','".$_SESSION['userid']."','<div class=\"newstextbox\"></div><div class=\" newsfilebox popimgclick newsrimg \"  data-type=\"chat\" ><img src=\"uploadfile/".$x[4]."\" ></div>','".time()."'". ",'$dateadd'");
 				}else{
-					$xxt=share_insert($pdo,"rep_","contentid,memberid,thiscontent,timekey","'".$x[2]."','".$_SESSION['userid']."','<div class=\"newstextbox\">".$rins.share_html($x[3])."</div><div class=\" newsfilebox popimgclick newsrimg \"  data-type=\"chat\" ><img src=\"uploadfile/".$x[4]."\" ></div>','".time()."'");
+					$xxt=share_insert($pdo,"rep_","contentid,memberid,thiscontent,timekey,dateadd","'".$x[2]."','".$_SESSION['userid']."','<div class=\"newstextbox\">".$rins.share_html($x[3])."</div><div class=\" newsfilebox popimgclick newsrimg \"  data-type=\"chat\" ><img src=\"uploadfile/".$x[4]."\" ></div>','".time()."'". ",'$dateadd'");
 				}
 			}else{//一般文章
-				$xxt=share_insert($pdo,"rep_","contentid,memberid,thiscontent,timekey","'".$x[2]."','".$_SESSION['userid']."','<div class=\"newstextbox\">".$rins.share_html($x[3])."</div>','".time()."'");
+				$xxt=share_insert($pdo,"rep_","contentid,memberid,thiscontent,timekey,dateadd","'".$x[2]."','".$_SESSION['userid']."','<div class=\"newstextbox\">".$rins.share_html($x[3])."</div>','".time()."'". ",'$dateadd'");
 			}
 			if($xxt){
 					$t=share_gettable($pdo,"rep_ WHERE memberid='".$_SESSION['userid']."' order by thisid DESC limit 1");
@@ -496,6 +497,7 @@
 	function uploadarticletext($x){//4/22 修改新增編輯的條件
 		global $conf;
                 $out=array();
+                $dateadd = date('Y-m-d H:i:s');
 		if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key'] && $x[2]<>""){//確認資格
 			$pdo = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
 			$pdo -> exec("set names ".$conf['db_encode']);
@@ -513,9 +515,9 @@
 				//分辨是影片/圖片/相簿/一班文章 1=圖片,2=影片,3=相簿,4=攻略
 				if( empty($x[7]) || (!empty($x[7]) && $tart[0]['isopen']=="2")){
 					if($x[6]=="1" && $x[4]){//有圖片
-						$temp=share_insert($pdo,"con_","memberid,typeid,gamid,thiscontent,timekey","'".$_SESSION['userid']."',4,'".$x[3]."','<div class=wallartbox><div class=\"newstextbox\">發表了:".share_html($x[2])."</div><div class=\"newsfilebox\"><img src=uploadfile/".$x[4]."></div></div>','".time()."'");
+						$temp=share_insert($pdo,"con_","memberid,typeid,gamid,thiscontent,timekey,dateadd","'".$_SESSION['userid']."',4,'".$x[3]."','<div class=wallartbox><div class=\"newstextbox\">發表了:".share_html($x[2])."</div><div class=\"newsfilebox\"><img src=uploadfile/".$x[4]."></div></div>','".time()."'". ",'$dateadd'");
 					}else if($x[6]=="1"){//無圖片
-						$temp=share_insert($pdo,"con_","memberid,typeid,gamid,thiscontent,timekey","'".$_SESSION['userid']."',4,'".$x[3]."','<div class=wallartbox><div class=\"newstextbox\">發表了:".share_html($x[2])."</div></div>','".time()."'");
+						$temp=share_insert($pdo,"con_","memberid,typeid,gamid,thiscontent,timekey,dateadd","'".$_SESSION['userid']."',4,'".$x[3]."','<div class=wallartbox><div class=\"newstextbox\">發表了:".share_html($x[2])."</div></div>','".time()."'". ",'$dateadd'");
 					}
 				}else if(!empty($x[7]) && $tart[0]['isopen']=="1"){//編輯
 					share_update($pdo,"art_","thistitle='".$x[2]."',gamid='".$x[3]."',thisfile='".$x[4]."',thiscontent='".$x[5]."'","thisid='".$x[7]."'");
@@ -526,7 +528,8 @@
 						if(!empty($x[7])){
 							share_update($pdo,"art_","thistitle='".$x[2]."',contentid='".$t[0]['thisid']."',gamid='".$x[3]."',thisfile='".$x[4]."',thiscontent='".$x[5]."',isopen='1'","thisid='".$x[7]."'");
 						}else{
-							share_insert($pdo,"art_","memberid,thistitle,contentid,gamid,thisfile,thiscontent","'".$_SESSION['userid']."','".$x[2]."','".$t[0]['thisid']."','".$x[3]."','".$x[4]."','".$x[5]."'");
+                                                    $dateadd = date('Y-m-d H:i:s');
+							share_insert($pdo,"art_","memberid,thistitle,contentid,gamid,thisfile,thiscontent,dateadd","'".$_SESSION['userid']."','".$x[2]."','".$t[0]['thisid']."','".$x[3]."','".$x[4]."','".$x[5]."'". ",'$dateadd'");
 						}
 						share_insert($pdo,"wall","memberid,contentid,gamid,timekey","'".$_SESSION['userid']."','".$t[0]['thisid']."','".$x[3]."','".time()."'");
 						$out[0]="OK";
@@ -535,7 +538,8 @@
 					if(!empty($x[7]) && $tart[0]['isopen']=="2" ){
 						share_update($pdo,"art_","thistitle='".$x[2]."',contentid='".$t[0]['thisid']."',gamid='".$x[3]."',thisfile='".$x[4]."',thiscontent='".$x[5]."'","thisid='".$x[7]."'");
 					}else if( empty($x[7]) ){
-						share_insert($pdo,"art_","memberid,thistitle,gamid,thisfile,thiscontent,isopen","'".$_SESSION['userid']."','".$x[2]."','".$x[3]."','".$x[4]."','".$x[5]."','2'");
+                                                $dateadd = date('Y-m-d H:i:s');
+						share_insert($pdo,"art_","memberid,thistitle,gamid,thisfile,thiscontent,isopen,dateadd","'".$_SESSION['userid']."','".$x[2]."','".$x[3]."','".$x[4]."','".$x[5]."','2'". ",'$dateadd'");
 					}
 				}else if(!empty($x[7]) && $tart[0]['isopen']=="1"){
 				}else{
@@ -711,7 +715,8 @@
 							$out[1]="存入錯誤,請重新試試,謝謝";
 						}
 					}else{
-						if(share_insert($pdo,"con_","memberid,typeid,gamid,opentype,thiscontent,timekey,fileinfo","'".$_SESSION['userid']."','".$x[5]."','".$x[6]."','".$x[7]."','<div class=\"newstextbox\">".share_html($x[3])."</div><div class=\"newsfilebox\">".$pout."</div>','".time()."','".$x[4]."'")){
+                                                $dateadd = date('Y-m-d H:i:s');
+						if(share_insert($pdo,"con_","memberid,typeid,gamid,opentype,thiscontent,timekey,fileinfo,dateadd","'".$_SESSION['userid']."','".$x[5]."','".$x[6]."','".$x[7]."','<div class=\"newstextbox\">".share_html($x[3])."</div><div class=\"newsfilebox\">".$pout."</div>','".time()."','".$x[4]."'". ",'$dateadd'")){
 							$t=share_gettable($pdo,"con_ WHERE memberid='".$_SESSION['userid']."' order by thisid DESC limit 1");
 							share_insert($pdo,"wall","memberid,contentid,gamid,opentype,timekey","'".$_SESSION['userid']."','".$t[0]['thisid']."','".$x[6]."','".$x[7]."','".time()."'");
 							$out[0]="OK";
@@ -722,7 +727,8 @@
 					}//20180918 Pman 仿照手機版整段換掉
 				}else{//圖片已經被刪光
 					if($x[3]){//一般文章
-						if(share_insert($pdo,"con_","memberid,typeid,gamid,thiscontent,timekey","'".$_SESSION['userid']."','0','".$x[6]."','<div class=\"newstextbox\">".share_html($x[3])."\n</div>','".time()."'")){
+                                                $dateadd = date('Y-m-d H:i:s');
+						if(share_insert($pdo,"con_","memberid,typeid,gamid,thiscontent,timekey,dateadd","'".$_SESSION['userid']."','0','".$x[6]."','<div class=\"newstextbox\">".share_html($x[3])."\n</div>','".time()."'". ",'$dateadd'")){
 							$t=share_gettable($pdo,"con_ WHERE memberid='".$_SESSION['userid']."' order by thisid DESC limit 1");
 							share_insert($pdo,"wall","memberid,contentid,gamid,timekey","'".$_SESSION['userid']."','".$t[0]['thisid']."','".$x[6]."','".time()."'");
 							$out[0]="OK";
@@ -807,7 +813,7 @@
 				}//20180918 Pman 仿照手機版整段換掉
 
 			}else if($x[3]){//一般文章
-				if(share_insert($pdo,"con_","memberid,typeid,gamid,opentype,thiscontent,timekey","'".$_SESSION['userid']."','0','".$x[6]."','".$x[7]."','<div class=\"newstextbox\">".share_html($x[3])."\n</div>','".time()."'")){
+				if(share_insert($pdo,"con_","memberid,typeid,gamid,opentype,thiscontent,timekey,dateadd","'".$_SESSION['userid']."','0','".$x[6]."','".$x[7]."','<div class=\"newstextbox\">".share_html($x[3])."\n</div>','".time()."'". ",'$dateadd'")){
 					//20190322 Pman 修正在動態牆發文時，opentype沒有寫入的問題
 					$t=share_gettable($pdo,"con_ WHERE memberid='".$_SESSION['userid']."' order by thisid DESC limit 1");
 					//20190322 Pman 修正在動態牆發文時，opentype沒有寫入的問題
@@ -1278,7 +1284,7 @@
 			}
                          */
 					move_uploaded_file($file['tmp_name'], $imgurl.$id.".".$fileext);
-			$fileext="jpg";//20190124 Pman 因為要將上傳的PNG，改成JPG，所以要改變副檔名
+			$fileext="png";//20190124 Pman 因為要將上傳的PNG，改成JPG，所以要改變副檔名
 		}else if($file["type"] == "video/mp4") {
 			$src = $file['tmp_name'];
 			$fileext="mp4";

@@ -3,6 +3,7 @@
 	ini_set('post_max_size', '10M');
 	error_reporting(~E_ALL);
 	ini_set("display_errors", 1);
+        ini_set('date.timezone', "Asia/Taipei");
 	//以下是內容
 	session_start();
    	if (isset($_REQUEST['_SESSION'])) die("Get lost Muppet!");
