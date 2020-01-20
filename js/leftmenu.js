@@ -311,6 +311,7 @@ left_shopselectmenu=function(){
 	var tempvals=Array(sessionStorage.getItem("userid"),sessionStorage.getItem("key"));//人 / key / 最後id / 選項 /  哪一類(哪一頁)  /  預留目前都是mainlist/ 標籤
 	tempitem=ajaxarr("getcats",tempvals,"ajax.php");
 	tempitem.success(function(data){//回傳 data --data[0]都是確認正確  data[1]就是回傳的array  data[2]-->則是未定義..測試
+            console.log(data);
 		if(data[0]=="ERR"){
 		}else{
 			out+="<div class='lefttypeselect lefttypeselecton shopcatclick' data-val='0'>全部</div>";
@@ -330,7 +331,6 @@ header_shopcatemenu=function(){
     var tempvals=Array(sessionStorage.getItem("userid"),sessionStorage.getItem("key"));//人 / key / 最後id / 選項 /  哪一類(哪一頁)  /  預留目前都是mainlist/ 標籤
     tempitem=ajaxarr("getcats",tempvals,"ajax.php");
     tempitem.success(function(data){//回傳 data --data[0]都是確認正確  data[1]就是回傳的array  data[2]-->則是未定義..測試
-        console.log(data);
         if(data[0]=="ERR"){
         }else{
             $('.headercate').html('');
@@ -345,14 +345,14 @@ header_shopcatemenu=function(){
                 }
             }
             */
-            $('.headercate').append("<div class='shopcatclick shopcate' data-val='0'><div><img src='https://fakeimg.pl/150/?text=All' /></div><span class='shopcatename'>全部</span></div>");
+            $('.headercate').append("<div class='shopcatclick shopcate' data-val='0'><div><img src='https://fakeimg.pl/250/?text=All' /></div><span class='shopcatename'>全部</span></div>");
             var out = "";
             for(var a=0;a<data[1].length;a++){
                 if(data[1][a]['img']==1){
                     var imgSrc = "img/product/cat"+data[1][a]['catid']+".jpg";
                     out+="<div class='shopcatclick shopcate' data-val='"+data[1][a]['catid']+"' >"+"<div><img src='"+imgSrc+"' /></div>"+"<span class='shopcatename'>"+data[1][a]['catname']+"</span></div>";
                 }else{
-                    out+="<div class='shopcatclick shopcate' data-val='"+data[1][a]['catid']+"'>"+ "<div><img src='https://fakeimg.pl/150/?text=No Img' /></div>"+data[1][a]['catname']+"</div>";
+                    out+="<div class='shopcatclick shopcate' data-val='"+data[1][a]['catid']+"'>"+ "<div><img src='https://fakeimg.pl/250/?text=No Img' /></div>"+data[1][a]['catname']+"</div>";
                 }
             }
             $('.headercate').append(out);

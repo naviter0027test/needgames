@@ -2535,6 +2535,7 @@ $(document).ready(function() {
 		});
 		//################### 商店分類選單  ################
 		$("body").delegate(".shopcatclick","click",function(){
+                        $('.headercate').hide();
 			$(".lefttypeselect").removeClass("lefttypeselecton");
 			$(this).addClass("lefttypeselecton");
 			var x=$(".lefttypeselecton").data("val");
@@ -3196,9 +3197,10 @@ $(document).ready(function() {
                             if($('.headercate').css('display') == 'none') {
                                 $('.headercate').show();
 				if(sessionStorage.getItem("userid") && sessionStorage.getItem("userid").length>0){//會員
+                                    console.log('left_shopselectmenu');
 					$("#mainmidwrapin").html("<div class='loaderbox'><img src='img/loaderd.gif'></div>");
 					topnavchange(curpage);
-					//left_shopselectmenu();
+					left_shopselectmenu();
                                         header_shopcatemenu();
 					//show_centershoplist();
 				}else{

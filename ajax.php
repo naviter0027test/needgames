@@ -548,7 +548,7 @@
 		$pdom -> exec("set names ".$conf['db_encode']);
 		$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
 		$pdod -> exec("set names ".$conf['db_encode']);
-		$out="";
+		$out=array();
 		$cnt=0;
 		$perpage=9;
 		if($x[6]){
@@ -608,8 +608,11 @@
 		}
 		if($list){
 			$a=0;
-			$listb="";
+			$listb=array();
 			foreach($list as $t){
+                            if(isset($listb[$a]) == false) {
+                                $listb[$a] = array();
+                            }
 				if($ta=share_getcountid($pdod,"rep_","contentid",$t['contentid'])){
 				}else{
 					$ta=0;
@@ -1008,6 +1011,7 @@
 	//商店相關
 	function getcats($x){
 		global $conf;
+                $out=array();
 		$pdos = new PDO('mysql:host='.$conf['dbhost_s'].';dbname='.$conf['dbname_s'], $conf['dbuser_s'], $conf['dbpass_s']);
 		$pdos -> exec("set names ".$conf['db_encode']);
 		if($t=share_gettable($pdos,"cat_ WHERE isopen='1' ORDER BY sorting DESC")){ //20190719 Pman 修正商品分類排序無效的問題
