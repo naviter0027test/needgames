@@ -2382,13 +2382,29 @@ show_centermatchone=function(x){
 	});
 }
 // 配對好友內頁
-show_centermatchlist=function(x){
+show_centermatchlist=function(x = null){
 	if($("#addgamematchselecttime").val() || $("#addgamematchselectarea").val() || localStorage.getItem("friendselect")){
 		var out="";
 		$("#maincontentbox").html("<div class='tcenter'><img src='img/loaderd.gif' style='padding:20px;'></div>");
-		var tempvals=Array(sessionStorage.getItem("userid"),sessionStorage.getItem("key"),JSON.parse(localStorage.getItem("friendselect")),$("#addgamematchselectarea").val(),$("#addgamematchselecttime").val());//人 / key / 最後id / 選項 /  哪一類(哪一頁)  /  預留目前都是mainlist/ 遊戲
+                var friendselect = '';
+                var text = localStorage.getItem("friendselect");
+                if (text.trim() != "" && text.trim() != "[]" ) {
+
+                    friendselect = JSON.parse(text);
+                }
+                var addgamematchselectarea = '';
+                if($("#addgamematchselectarea").val().trim() != '') {
+                    addgamematchselectarea = $("#addgamematchselectarea").val();
+                }
+                var addgamematchselecttime = '';
+                if($("#addgamematchselecttime").val().trim() != '') {
+                    addgamematchselecttime = $("#addgamematchselecttime").val();
+                }
+		var tempvals=Array(sessionStorage.getItem("userid"),sessionStorage.getItem("key"), friendselect, addgamematchselectarea, addgamematchselecttime);//人 / key / 最後id / 選項 /  哪一類(哪一頁)  /  預留目前都是mainlist/ 遊戲
+                console.log(tempvals);
 		tempitem=ajaxarr("get_match_request",tempvals,"ajax.php");
 		tempitem.success(function(data){//回傳 data --data[0]都是確認正確  data[1]就是回傳的array  data[2]-->則是未定義..測試
+                    console.log(data);
 				if(data[0]=="ERR"){
 					popnotice(data[1]);
 					$("#maincontentbox").html('');

@@ -345,7 +345,7 @@ header_shopcatemenu=function(){
                 }
             }
             */
-            $('.headercate').append("<div class='shopcatclick shopcate' data-val='0'><div><img src='https://fakeimg.pl/250/?text=All' /></div><span class='shopcatename'>全部</span></div>");
+            $('.headercate').append("<div class='shopcatclick shopcate' data-val='0'><div><img src='img/all_cate.jpg' /></div><span class='shopcatename'>全部</span></div>");
             var out = "";
             for(var a=0;a<data[1].length;a++){
                 if(data[1][a]['img']==1){

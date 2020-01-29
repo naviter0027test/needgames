@@ -1,9 +1,9 @@
 <?php
 	//show match 的 送出數和受邀請數
 	function get_match_count($x){
+                $out=array();
 		if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key']){//確認資格
 			global $conf;
-			$out="";
 			$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
 			$pdod -> exec("set names ".$conf['db_encode']);	
 			$out[0]="OK";
@@ -119,9 +119,9 @@
 	}	
 	//get_match_request 使用者選擇的
 	function get_match_request($x){
+                $out=array();
 		if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key']){//確認資格
 			global $conf;
-			$out="";
 			$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
 			$pdod -> exec("set names ".$conf['db_encode']);	
 			$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);

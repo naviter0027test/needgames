@@ -141,6 +141,7 @@
 	// 更新2個月沒有選擇答案的..自選最佳答案  在這裡
 	function uploadqnareply($x){
 		global $conf;
+                $out=array();
 		if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key'] && $x[2]<>"" && $x[3]<>""){//確認資格
 			if($_SESSION['isver']==1){
 				$pdo = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
@@ -158,7 +159,7 @@
 				share_del($pdo,"not_ WHERE dateadd<( CURDATE() - INTERVAL ".$conf['notkeep']." DAY )");
 				//分辨是影片/圖片/相簿/一班文章 1=圖片,2=影片,3=相簿
 				if($x[5]=="1"){//圖片
-					$xxt=share_insert($pdo,"qrep_","contentid,memberid,thiscontent,timekey","'".$x[2]."','".$_SESSION['userid']."','<div class=\"newstextbox\">".share_html($x[3])."</div><div class=\"newsfilebox\"><img src=uploadfile/".$x[4]."></div>','".time()."'");
+					$xxt=share_insert($pdo,"qrep_","contentid,memberid,thiscontent,timekey","'".$x[2]."','".$_SESSION['userid']."','<div class=\"newstextbox\">".share_html($x[3])."</div><div class=\"newsfilebox\"><img src=uploadfile/".trim($x[4])."></div>','".time()."'");
 				}else{//一般文章
 					$xxt=share_insert($pdo,"qrep_","contentid,memberid,thiscontent,timekey","'".$x[2]."','".$_SESSION['userid']."','<div class=\"newstextbox\">".share_html($x[3])."</div>','".time()."'");
 				}
@@ -1000,6 +1001,7 @@
 	}
 	function uploadqnapic($x){//上傳QNA圖片
 		global $conf;
+                $out=array();
 		$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
 		$pdod -> exec("set names ".$conf['db_encode']);
 		if($_SESSION['userid']==$GLOBALS['uid'] && $_SESSION['key']==$GLOBALS['ukey']){

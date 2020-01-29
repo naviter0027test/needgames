@@ -1810,7 +1810,7 @@
 	function get_onearticle($x){
 		if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key']){//確認資格
 			global $conf;
-			$out="";
+			$out=array();
 			$out[0]="OK";
 			$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
 			$pdod -> exec("set names ".$conf['db_encode']);
@@ -2455,7 +2455,7 @@
 	}
 	function show_qnaone($x){//抓檔案
 		global $conf;
-		$out="";
+		$out=array();
 		$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 		$pdom -> exec("set names ".$conf['db_encode']);
 		$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
@@ -2493,7 +2493,7 @@
 	}
 	function show_qna($x){
 		global $conf;
-		$out="";
+		$out=array();
 		$list="";
 		$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 		$pdom -> exec("set names ".$conf['db_encode']);

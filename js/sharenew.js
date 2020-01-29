@@ -1491,7 +1491,7 @@
 			xout+="</div>\n";
 			xout+="                                        <div class='mcreplybox_q'>\n";
 			xout+="                                        	<a href='' class='pageclick' data-type='mypage' data-val='1'  data-id='"+xdata['reply'][b]['uid']+"' ><span class='color_red'>"+xdata['reply'][b]['user']+"</span></a>\n";
-			xout+=nl2br(xdata['reply'][b]['thiscontent']).replace("img ","img class='qnapics' style='width:100% !important;'");
+			xout+=xdata['reply'][b]['thiscontent'].replace("img ","img class='qnapics' style='width:100% !important;' ");
 			//20190109 Pman 替QA回文的照片，加上點開的功能.......這部分，從PC版上線一開始就沒有......
 			xout+="                                            <div class='mcreplyboxsub timeitem' data-t='"+xdata['reply'][b]['dateadd']+"'>"+xdata['reply'][b]['dateadd']+" </div>\n";
 			xout+="                                        </div>\n";

@@ -73,7 +73,7 @@
 			out+="                    <div class='formline'>\n";
 			out+="                        <div class='formitem formitem_4'><input type='checkbox' class='formfield form-control' name='agree'></div>\n";
 			out+="                        <div class='formitem formitem_4 formitemstext tleft'>\n";
-			out+="                             <span style='color:#444;font-size:13px;line-height:17px;'>我已詳閱並同意盛事科技股份有限公司ＮＥＥＤ社群網站「<span class='agreemember'><span  id='aggrementclick'>會員規範</span>&<span  id='privacyclick'>隱私權條款</span></span>」及以上權利義務之相關條款</span>\n";
+			out+="                             <span style='color:#444;font-size:13px;line-height:17px;'>我已詳閱並同意盛事科技股份有限公司KYOMON社群網站「<span class='agreemember'><span  id='aggrementclick'>會員規範</span>&<span  id='privacyclick'>隱私權條款</span></span>」及以上權利義務之相關條款</span>\n";
 			out+="                            <div class='formerr'>請確認同意會員條款</div>\n";
 			out+="                        </div>\n";
 			out+="                        <div class='clr'></div>\n";
