@@ -5173,16 +5173,17 @@ border-radius: 5px;
 }
 
 .headercate {
+    display: none;
     position: absolute;
     top: 43px;
     width: 100%;
-    height: 650px;
+    height: 550px;
 
     overflow-y: scroll;
-    background: #333333;
+    background: #737373;
     color: white;
     text-align: center;
-    border-top:3px solid #e54c00;
+    border:3px solid #fccf00;
 }
 
 .headercate img {

@@ -2672,7 +2672,7 @@
 	}
 	function getranktype(){
 		global $conf;
-		$out="";
+		$out=array();
 		$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 		$pdom -> exec("set names ".$conf['db_encode']);
 		$out[0]="OK";
@@ -2682,6 +2682,7 @@
 	}
 	function get_topranklist($x){
 		global $conf;
+                $out=array();
 		$out[0]="OK";
 		if($x[1]){
 			//$thismonth=$x[1];
@@ -2701,19 +2702,22 @@
 		if($x[0]==1){//月榜
 			$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 			$pdom -> exec("set names ".$conf['db_encode']);
-			$out[1]=share_gettable($pdom,"rank_nohide WHERE ymonth='".$thismonth."' order by qty desc limit 10");//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
-			$out[2]=share_gettable($pdom,"rank_nohide WHERE ymonth='".$lastmonth."' order by qty desc limit 10");//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
-			$out[3]=array_reverse(share_getfree($pdom,"SELECT DISTINCT ymonth FROM rank_nohide order by ymonth DESC limit 6  "));//限制往回讀六個月//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
+			$out[1]=share_gettable($pdom,"rank_ WHERE ymonth='".$thismonth."' order by qty desc limit 10");//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
+			$out[2]=share_gettable($pdom,"rank_ WHERE ymonth='".$lastmonth."' order by qty desc limit 10");//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
+			$out[3]=array_reverse(share_getfree($pdom,"SELECT DISTINCT ymonth FROM rank_ order by ymonth DESC limit 6  "));//限制往回讀六個月//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
 			$pdom=null;
 		}else if($x[0]==2){//本月各類遊戲玩家人數
 			$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 			$pdom -> exec("set names ".$conf['db_encode']);
 			$list=share_gettable($pdom,"gametype");
 			$a=0;
-			$tempx="";
+			$tempx=array();
 			foreach($list as $temp){
+                            if(isset($tempx[$a]) == false) {
+                                $tempx[$a]=array();
+                            }
 				$tempx[$a]['type']=$temp['typename'];
-				$tempx[$a]['qty']=share_getfree($pdom,"SELECT ifNull(sum(qty),0) as  sum  FROM rank_nohide WHERE ymonth='".$thismonth."' AND gameid in (SELECT gameid FROM gam_ WHERE typeid='".$temp['typeid']."')")[0]['sum'];//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
+				$tempx[$a]['qty']=share_getfree($pdom,"SELECT ifNull(sum(qty),0) as  sum  FROM rank_ WHERE ymonth='".$thismonth."' AND gameid in (SELECT gameid FROM gam_ WHERE typeid='".$temp['typeid']."')")[0]['sum'];//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
 				$a++;
 			}
 			usort($tempx, function($a, $b) {
@@ -2725,7 +2729,7 @@
 			$tempx=array_reverse($tempx);
 			$out[1]=$tempx;
 			$out[2]="";
-			$out[3]=array_reverse(share_getfree($pdom,"SELECT DISTINCT ymonth FROM rank_nohide order by ymonth DESC limit 6"));//限制往回讀六個月//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
+			$out[3]=array_reverse(share_getfree($pdom,"SELECT DISTINCT ymonth FROM rank_ order by ymonth DESC limit 6"));//限制往回讀六個月//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
 			$pdom=null;
 		}else if($x[0]==3){//會員top30
 			$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
@@ -2742,23 +2746,23 @@
 				$a++;
 			}
 			$out[2]="";
-			$out[3]=array_reverse(share_getfree($pdom,"SELECT DISTINCT ymonth FROM rank_nohide order by ymonth DESC limit 6"));//限制往回讀六個月//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
+			$out[3]=array_reverse(share_getfree($pdom,"SELECT DISTINCT ymonth FROM rank_ order by ymonth DESC limit 6"));//限制往回讀六個月//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
 			$pdom=null;
 			$pdop=null;
 		}else if($x[0]==4){//新進遊戲排行
 			$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 			$pdom -> exec("set names ".$conf['db_encode']);
-			$out[1]=share_gettable($pdom,"rank_nohide WHERE ymonth='".$thismonth."' AND gameid in (SELECT gameid FROM gam_ WHERE dateadd>='".$thismonth."-1')  order by qty desc limit 10");//限制往回讀六個月//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
+			$out[1]=share_gettable($pdom,"rank_ WHERE ymonth='".$thismonth."' AND gameid in (SELECT gameid FROM gam_ WHERE dateadd>='".$thismonth."-1')  order by qty desc limit 10");//限制往回讀六個月//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
 			$out[2]="";
-			$out[3]=array_reverse(share_getfree($pdom,"SELECT DISTINCT ymonth FROM rank_nohide order by ymonth DESC limit 6"));//限制往回讀六個月//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
+			$out[3]=array_reverse(share_getfree($pdom,"SELECT DISTINCT ymonth FROM rank_ order by ymonth DESC limit 6"));//限制往回讀六個月//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
 			$pdom=null;
 		}else if($x[0]==9){//各類型遊戲排行
 			if($x[2]){
 				$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 				$pdom -> exec("set names ".$conf['db_encode']);
-				$out[1]=share_gettable($pdom,"rank_nohide WHERE ymonth='".$thismonth."' AND gameid in (SELECT gameid FROM gam_ WHERE typeid='".$x[2]."') order by qty desc limit 10");//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
-				$out[2]=share_gettable($pdom,"rank_nohide WHERE ymonth='".$lastmonth."' AND gameid in (SELECT gameid FROM gam_ WHERE typeid='".$x[2]."') order by qty desc limit 10");//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
-				$out[3]=array_reverse(share_getfree($pdom,"SELECT DISTINCT ymonth FROM rank_nohide order by ymonth DESC limit 6"));//限制往回讀六個月//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
+				$out[1]=share_gettable($pdom,"rank_ WHERE ymonth='".$thismonth."' AND gameid in (SELECT gameid FROM gam_ WHERE typeid='".$x[2]."') order by qty desc limit 10");//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
+				$out[2]=share_gettable($pdom,"rank_ WHERE ymonth='".$lastmonth."' AND gameid in (SELECT gameid FROM gam_ WHERE typeid='".$x[2]."') order by qty desc limit 10");//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
+				$out[3]=array_reverse(share_getfree($pdom,"SELECT DISTINCT ymonth FROM rank_ order by ymonth DESC limit 6"));//限制往回讀六個月//20190109 Pman 該從一個新的view(rank_nohide)撈取，因為隱藏標籤不能出現在排行榜上
 				$out[4]=share_getinfo($pdom,"gametype","typeid",$x[2])['typename'];
 				$pdom=null;
 			}else{

@@ -45,8 +45,8 @@ $(document).ready(function() {
 	//20190312 Pman 轉址判斷改以瀏覽器類型進行
 	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ){
 	//if($window.width()<900){ //20190227 Pman 修正偵測寬度的值
-			//var goaddress=url.substring(0,url.lastIndexOf('/'))+"/m/"+url.substring(url.lastIndexOf('/') + 1);
-			//window.location.replace(goaddress);
+            var goaddress=url.substring(0,url.lastIndexOf('/'))+"/m/"+url.substring(url.lastIndexOf('/') + 1);
+            window.location.replace(goaddress);
 	}
         if( location.protocol != 'https:'){
             window.location.href = 'https://'+ window.location.hostname+ window.location.pathname;
@@ -3195,14 +3195,24 @@ $(document).ready(function() {
 				//}
 			}else if(curpage=="shoppage"){
                             if($('.headercate').css('display') == 'none') {
-                                $('.headercate').show();
 				if(sessionStorage.getItem("userid") && sessionStorage.getItem("userid").length>0){//會員
-                                    console.log('left_shopselectmenu');
+                                        $('.headercate').show();
 					$("#mainmidwrapin").html("<div class='loaderbox'><img src='img/loaderd.gif'></div>");
 					topnavchange(curpage);
-					left_shopselectmenu();
+					//left_shopselectmenu();
                                         header_shopcatemenu();
 					//show_centershoplist();
+                                        /*
+                                        var checkCount = 0;
+                                        var checkCountMax = 10;
+                                        var checkleftmenu = setInterval(function() {
+                                            if(curpage == 'shoppage' && $('#leftfunctionbox .shopcatclick').length < 1) {
+                                                left_shopselectmenu();
+                                            }
+                                            if(checkCount++ > checkCountMax)
+                                                clearInterval(checkleftmenu);
+                                        }, 1000);
+                                        */
 				}else{
 					popnotice("您尚未登入，請登入KYOMON，享用更完善功能");
 				}

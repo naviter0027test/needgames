@@ -375,7 +375,6 @@
 	}
 	function sendinfo1($x,$y,$z){//手機馬,序號,回復網址--g1 ice
 			//$url="http://202.39.48.216/kotsmsapi-1.php?";
-            /*
 			$url="https://api.kotsms.com.tw/kotsmsapi-1.php?";
 			$url.="username=".$GLOBALS['vrname'];
 			$url.="&password=".$GLOBALS['vrcode'];
@@ -385,8 +384,8 @@
 			$url.="&vldtime=0";
 			$url.="&response=".$z;
 			$temp=curl_getb($url);
-             */
             //簡訊王不接受國外IP
+            /*
             $p = array(
                 'vrname' => $GLOBALS['vrname'],
                 'vrcode' => $GLOBALS['vrcode'],
@@ -394,13 +393,14 @@
                 'y' => $y,
                 'z' => $z,
             );
-            $url = 'http://demo.axcell28.idv.tw/kotsms.php';
+            $url = '';
             $tuCurl = curl_init(); 
             curl_setopt($tuCurl,CURLOPT_URL,$url);
             curl_setopt($tuCurl,CURLOPT_RETURNTRANSFER,true);
             curl_setopt($tuCurl,CURLOPT_POSTFIELDS, http_build_query($p));
             $temp = curl_exec($tuCurl);
             curl_close($tuCurl);
+             */
             return $temp;
 	}
 	function getgurl($x){

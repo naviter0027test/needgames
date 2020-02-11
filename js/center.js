@@ -1437,12 +1437,12 @@ get_centerarticlelist=function(x,y,z){
 
 			if(data[0]=="ERR"){
 				var out="";
-				out+="<div class='tcenter'><div class='searchbox'><input class='searchtext' type='text' placeholder='請填入關鍵字'><input class='searchsubmit' type='submit' value='' data-type='article'></div></div>";
+				out+="<div class='tcenter'><!--<div class='searchbox'><input class='searchtext' type='text' placeholder='請填入關鍵字'><input class='searchsubmit' type='submit' value='' data-type='article'></div>--></div>";
 				$("#maincontentbox").html(out);
 			}else{
 
 				var out="";
-				out+="<div class='tcenter'><div class='searchbox'><input class='searchtext' type='text' placeholder='請填入關鍵字'><input class='searchsubmit' type='submit' value='' data-type='article'></div></div>";
+				out+="<div class='tcenter'><!--<div class='searchbox'><input class='searchtext' type='text' placeholder='請填入關鍵字'><input class='searchsubmit' type='submit' value='' data-type='article'></div>--></div>";
 				out+="<div>";
 
 				for(var a=0;a<data[1].length;a++){
@@ -2518,6 +2518,7 @@ show_centerranklistin=function(x,y,z){
 	var tempvals=Array(ranktype,xmonth,xtype);//人 / key / id
 	tempitem=ajaxarr("get_topranklist",tempvals,"ajax.php");
 	tempitem.success(function(data){//回傳 data --data[0]都是確認正確  data[1]就是回傳的array  data[2]-->則是未定義..測
+            console.log(data);
 		if(data[0]=="ERR"){
 		}else{
 			var out="";
