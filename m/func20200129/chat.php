@@ -23,11 +23,15 @@
 						$out[1]="程式錯誤,請稍後再試試";
 					}
 				}
-			}else if($x[2]=="getroominfo"){//剛開始進入chatroom顯示資料
+			}
+			else if($x[2]=="getroominfo"){//剛開始進入chatroom顯示資料
 				$out[0]="OK";
 				$out[1]=chat_room_info($x[3]);
-				$out[2]=chat_read_conorg($x[3],$x[0]);
-			}else if($x[2]=="savechat"){//儲存chat
+				$temp=chat_read_conorg($x[3],$x[0]);
+				$out[2]=$temp[0];
+				$out[3]=$temp[1];
+			}
+			else if($x[2]=="savechat"){//儲存chat
 				//先清理
 				chat_del_old_con();
 				$out[0]="OK";
@@ -74,6 +78,7 @@
 					$out[0]="ERR";
 					$out[1]="聊天室已不存在,請關閉這個聊天室後重新開啟,謝謝";
 				}
+
 			}
 			else if($x[2]=="chkroomext"){//popchat  click
 				if(chat_chk_room2($x[3])){//檢查聊天室
@@ -113,6 +118,48 @@
 		}else{
 			$out[0]="ERR";
 			$out[1]=$errText['reopen'];
+		}
+		echo json_encode($out);
+	}
+	// ########## UPDATE CHAT #####################
+	function upchatroomtype2($x){
+		if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key']){//確認資格
+			global $conf;
+			$pdoc = new PDO('mysql:host='.$conf['dbhost_c'].';dbname='.$conf['dbname_c'], $conf['dbuser_c'], $conf['dbpass_c']);
+			$pdoc -> exec("set names ".$conf['db_encode']);
+			share_update($pdoc,"usr_","dont='2'","roomid='".$x[3]."' AND memberid='".$_SESSION['userid']."'");
+			$pdoc=null;
+			$out[0]="OK";
+		}else{
+			$out[0]="ERR";
+		}
+		echo json_encode($out);
+	}
+
+	function upchatroomtype($x){
+		if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key']){//確認資格
+			global $conf;
+			$pdoc = new PDO('mysql:host='.$conf['dbhost_c'].';dbname='.$conf['dbname_c'], $conf['dbuser_c'], $conf['dbpass_c']);
+			$pdoc -> exec("set names ".$conf['db_encode']);
+			if($x[2]=="out"){
+				share_del($pdoc,"usr_ WHERE roomid='".$x[3]."' AND memberid='".$_SESSION['userid']."'");
+				$gr=share_gettable($pdoc,"usr_ WHERE roomid='".$x[3]."'");
+				if($gr<=1){//只剩一人了...刪除
+					share_del($pdoc,"rnot_ WHERE roomid='".$x[3]."'");
+					share_del($pdoc,"con_ WHERE roomid='".$x[3]."'");
+					share_del($pdoc,"usr_ WHERE roomid='".$x[3]."'");
+					share_del($pdoc,"roo_ WHERE roomid='".$x[3]."'");
+				}
+			}else if($x[2]=="close"){
+				share_update($pdoc,"usr_","dont='1'","roomid='".$x[3]."' AND memberid='".$_SESSION['userid']."'");
+			}else if($x[2]=="open"){
+				share_update($pdoc,"usr_","dont='0'","roomid='".$x[3]."' AND memberid='".$_SESSION['userid']."'");
+			}
+			$pdoc=null;
+			$out[0]="OK";
+		}else{
+			$out[0]="ERR";
+			//$out[1]="認證錯誤";
 		}
 		echo json_encode($out);
 	}
@@ -157,7 +204,7 @@
 	}
 	// ### 建立 room
 	//檢查是否已有建立room(兩人)
-	function chat_chk_room($x,$y){//使用者 1,房間
+	function chat_chk_room($x,$y){//使用者 1,對象
 		global $conf;
 		$pdoc = new PDO('mysql:host='.$conf['dbhost_c'].';dbname='.$conf['dbname_c'], $conf['dbuser_c'], $conf['dbpass_c']);
 		$pdoc -> exec("set names ".$conf['db_encode']);
@@ -236,6 +283,96 @@
 		share_insert($pdoc,"usr_","roomid,memberid","'".$x."','".$y."'");
 		$pdoc=null;
 	}
+	//再聊天室內加入新人
+	function chat_room_adduser($r){
+		global $conf;
+		$pdoc = new PDO('mysql:host='.$conf['dbhost_c'].';dbname='.$conf['dbname_c'], $conf['dbuser_c'], $conf['dbpass_c']);
+		$pdoc -> exec("set names ".$conf['db_encode']);
+		$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
+		$pdom -> exec("set names ".$conf['db_encode']);
+		$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
+		$pdod -> exec("set names ".$conf['db_encode']);
+		$newf=share_getinfo($pdom,"mem_","memberid",$r[3]);
+		//房間加入新人
+		share_insert($pdoc,"usr_","roomid,memberid","'".$r[2]."','".$r[3]."'");
+		//通知其他人
+		chat_tell_all($r[2],$r[3],1);
+		//通知新人
+		chat_create_note($r[2],$_SESSION['userid'],$r[3],1);
+		//加入內容
+		//chat_save_con($r[2],0,"歡迎".$newf['nickname']."加入聊天室");
+		$out="";
+		$out[0]="OK";
+
+		$pdod=null;
+		$pdom=null;
+		$pdoc=null;
+		echo json_encode($out);
+	}
+	//取得room 以外朋友資料
+	function chat_room_adduserlist($r){
+		global $conf;
+		$pdoc = new PDO('mysql:host='.$conf['dbhost_c'].';dbname='.$conf['dbname_c'], $conf['dbuser_c'], $conf['dbpass_c']);
+		$pdoc -> exec("set names ".$conf['db_encode']);
+		$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
+		$pdom -> exec("set names ".$conf['db_encode']);
+		$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
+		$pdod -> exec("set names ".$conf['db_encode']);
+	//	$ta=share_gettable($pdoc,"usr_ WHERE roomid='".$r[2]."'");//所有在房間的人
+		$out="";
+		$out[0]="OK";
+		$temp=share_gettable($pdom,"mem_ WHERE memberid not in (SELECT memberid FROM ".$conf['dbname_c'].".usr_ WHERE roomid='".$r[2]."' ) AND ((memberid in (SELECT memberid FROM ".$conf['dbname_d'].".friend_ WHERE friendid='".$_SESSION['userid']."' AND ispass=1) OR memberid in (SELECT friendid FROM ".$conf['dbname_d'].".friend_ WHERE memberid='".$_SESSION['userid']."'  AND ispass=1)))");
+		if($temp){
+			for($a=0;$a<count($temp);$a++){
+				$out[1][$a]=unsetmem($temp[$a]);
+				$out[1][$a]['uid']=$temp[$a]['memberid'];
+			}
+		}else{
+			$out[1]="";
+		}
+		$pdod=null;
+		$pdom=null;
+		$pdoc=null;
+		echo json_encode($out);
+	}
+	//取得room 使用者列表
+	function chat_room_userinfo($r){
+		global $conf;
+		$pdoc = new PDO('mysql:host='.$conf['dbhost_c'].';dbname='.$conf['dbname_c'], $conf['dbuser_c'], $conf['dbpass_c']);
+		$pdoc -> exec("set names ".$conf['db_encode']);
+		$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
+		$pdom -> exec("set names ".$conf['db_encode']);
+		$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
+		$pdod -> exec("set names ".$conf['db_encode']);
+		$ta=share_gettable($pdoc,"usr_ WHERE roomid='".$r[2]."' AND memberid<>'".$_SESSION['userid']."'");
+		$out="";
+		$out[0]="OK";
+		for($a=0;$a<count($ta);$a++){
+			$tb=$ta[$a];
+			$temp=share_getinfo($pdom,"mem_","memberid",$tb['memberid']);
+			$out[1][$a]['memberid']=$temp['memberid'];
+			$out[1][$a]['name']=$temp['nickname'];
+			$out[1][$a]['score']=$temp['score'];
+			$out[1][$a]['headpic']=$temp['headpic'];
+			$out[1][$a]['rank_v']=$temp['rank_v'];
+			$out[1][$a]['level_v']=$temp['level_v'];
+			$out[1][$a]['id']=$temp['memberid'];
+			if($tf=share_gettable($pdod,"friend_ WHERE (friendid='".$_SESSION['userid']."' AND memberid='".$tb['memberid']."') OR (memberid='".$_SESSION['userid']."' AND friendid='".$tb['memberid']."')")){
+				if($tf[0]['ispass']==1){
+					$out[1][$a]['isfriend']=1;
+				}else{
+					$out[1][$a]['isfriend']=0;//尚不是朋友
+				}
+			}else{
+				$out[1][$a]['isfriend']=2;//可加朋友
+			}
+		}
+		//$out[1][0]=count($ta);
+		$pdod=null;
+		$pdom=null;
+		$pdoc=null;
+		echo json_encode($out);
+	}
 	//取得room資料
 	function chat_room_info($r){
 		global $conf;
@@ -265,6 +402,8 @@
 		$pdom -> exec("set names ".$conf['db_encode']);
 		$temp=share_getinfo($pdom,"mem_","memberid",$y);
 		$pdom=null;
+		//將 dont=2 變 0
+		share_update($pdoc,"usr_","dont='0'","roomid='".$x."' AND dont='2'");
 		//取出room中所有人
 		if($ta=share_gettable($pdoc,"usr_ WHERE roomid='".$x."'")){
 			foreach($ta as $tb){
@@ -275,26 +414,85 @@
 			return false;
 		}
 		$pdoc=null;
+
 	}
 	//讀取內容開始
 	function chat_read_conorg($x,$y){//roomid,memberid
 		global $conf;
 		$pdoc = new PDO('mysql:host='.$conf['dbhost_c'].';dbname='.$conf['dbname_c'], $conf['dbuser_c'], $conf['dbpass_c']);
 		$pdoc -> exec("set names ".$conf['db_encode']);
+		$tcnt=0;
+		$tcnt=share_getcount($pdoc,"con_ where memberid='".$y."' AND roomid='".$x."' AND (viewed=0 or viewed=2)");//尚未讀取數
 		$temp=share_gettable($pdoc,"con_ WHERE roomid='".$x."' AND memberid='".$y."' AND ((viewed=1  AND timekey>".(time()-25920000).") OR viewed=0 OR viewed=2) order by thisid"); //20190426 Pman 改成顯示過去300天的聊天訊息
 		share_update($pdoc,"con_","viewed=1","roomid='".$x."' AND memberid='".$y."'");
 		share_update($pdoc,"roo_","timekey='".time()."'","roomid='".$x."'");
-		return $temp;
+		$xo[0]=$temp;
+		$xo[1]=0;
+		if($tcnt>0){//表示之前有未讀
+			$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
+			$pdom -> exec("set names ".$conf['db_encode']);
+			$tx=share_getinfo($pdom,"mem_","memberid",$y);
+			$pdom=null;
+			if($tx['fcmid']){
+				$tcnt=share_getcount($pdoc,"con_ where memberid='".$y."' AND (viewed=0 or viewed=2)");//抓取剩下未讀--其他房
+				$tcnt=$tcnt+$tx['note_count'];
+				/*
+				if(fcmupdatebadge($tx['fcmid'],$tcnt)){
+					return $xo;
+				}else{
+					return $xo;
+				}
+				*/
+				//fcmupdatebadge($tx['fcmid'],$tcnt);//android用
+				$xo[1]=$tcnt;
+				return $xo;
+			}else{
+				return $xo;
+			}
+		}else{
+			return $xo;
+		}
+		/*
+		$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
+		$pdom -> exec("set names ".$conf['db_encode']);
+		$tx=share_getinfo($pdom,"mem_","memberid",$y);
+		$pdom=null;
+		if($tx['fcmid']){
+			$tcnt=share_getcount($pdoc,"con_ where memberid='".$y."' AND (viewed=0 or viewed=2)");//抓取剩下未讀--其他房
+			if(fcmupdatebadge($tx['fcmid'],666)){
+				return $temp;
+			}else{
+				return $temp;
+			}
+		}else{
+			return $temp;
+		}
+*/
 		$pdoc=null;
 	}
+
 	//讀取內容
 	function chat_read_con($x,$y){//roomid,memberid
 		global $conf;
 		$pdoc = new PDO('mysql:host='.$conf['dbhost_c'].';dbname='.$conf['dbname_c'], $conf['dbuser_c'], $conf['dbpass_c']);
 		$pdoc -> exec("set names ".$conf['db_encode']);
 		if($t=share_gettable($pdoc,"con_ WHERE (viewed=0 OR viewed=2) AND roomid='".$x."' AND memberid='".$y."' order by thisid")){
+		//	$tcnt=count($t);//尚未讀取數
 			share_update($pdoc,"roo_","timekey='".time()."'","roomid='".$x."'");
 			share_update($pdoc,"con_","viewed=1","roomid='".$x."' AND memberid='".$y."'");//0428更新
+/*
+			//新讀不需要送
+			if($tcnt>0){//表示之前有未讀
+				$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
+				$pdom -> exec("set names ".$conf['db_encode']);
+				$tx=share_getinfo($pdom,"mem_","memberid",$y);
+				$pdom=null;
+				if($tx['fcmid']){
+					$tcnt=share_getcount($pdoc,"con_ where memberid='".$y."' AND (viewed=0 or viewed=2)");//抓取剩下未讀--其他房
+					fcmupdatebadge($tx['fcmid'],$tcnt);
+				}
+			}
+*/
 			return $t;//回復 抓取資料
 		}else{
 			share_update($pdoc,"roo_","timekey='".time()."'","roomid='".$x."'");
@@ -348,13 +546,14 @@
 			share_update($pdoc,"con_","viewed='2'","viewed='0' AND memberid='".$_SESSION['userid']."' AND timekey<".(time()-50));
 			$pdoc=null;
 		}
+
 	}
 	//發出msg..所有我發出的言論
 	function chat_chk_msg(){
 		global $conf;
 		$pdoc = new PDO('mysql:host='.$conf['dbhost_c'].';dbname='.$conf['dbname_c'], $conf['dbuser_c'], $conf['dbpass_c']);
 		$pdoc -> exec("set names ".$conf['db_encode']);
-		$ta=share_getfree($pdoc,"SELECT * FROM con_ WHERE fcmed='0' AND fromid='".$_SESSION['userid']."' AND memberid<>'".$_SESSION['userid']."'  AND timekey<".(time()-20));
+		$ta=share_getfree($pdoc,"SELECT memberid ,roomid FROM con_ WHERE fcmed='0' AND fromid='".$_SESSION['userid']."' AND memberid<>'".$_SESSION['userid']."'  AND timekey<".(time()-20)." group by roomid");
 		if($ta){
 			$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 			$pdom -> exec("set names ".$conf['db_encode']);
@@ -365,14 +564,14 @@
 				$temp=share_getinfo($pdom,"mem_","memberid",$tb['memberid']);
 				if($temp['fcmid']){
 					sendfcm($temp['fcmid'],"聊天室訊息",$conout,$tb['roomid'],$temp['note_count']+$tcnt,$temp['mobtype']); //20181224 Pman 調整送出推播時，所送出badge總數
+				//	fcmupdatebadge($temp['fcmid'],$temp['note_count']+$tcnt);//android用
 				}
 			}
 			$pdom=null;
-			share_update($pdoc,"con_","fcmed='1'","fromid='".$_SESSION['userid']."' AND memberid<>'".$_SESSION['userid']."' AND timekey<".(time()-10));
+			$ta=share_update($pdoc,"con_","fcmed='1'","fromid='".$_SESSION['userid']."' AND memberid<>'".$_SESSION['userid']."' AND timekey<".(time()-10));
 		}
 		$pdoc=null;
 	}
-
 	//發出通知
 	function chat_create_note($r,$x,$y,$con){//討論室id,由誰,發給誰, 內容類別
 		global $conf;
@@ -381,6 +580,7 @@
 		if($con==1){
 			$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 			$pdom -> exec("set names ".$conf['db_encode']);
+			$conout="";
 			$ta=share_gettable($pdoc,"usr_ WHERE roomid='".$r."' AND memberid<>'".$y."'");
 			foreach($ta as $tb){
 				$temp=share_getinfo($pdom,"mem_","memberid",$tb['memberid']);
@@ -410,7 +610,7 @@
 				}else if($con==2){
 					$conout.="等人向你傳遞了訊息";
 				}
-				share_update($pdoc,"usr_","dont='0'","roomid='".$r."' AND dont='2'");
+		//		share_update($pdoc,"usr_","dont='0'","roomid='".$r."' AND dont='2'");
 				return share_update($pdoc,"rnot_","thiscontent='".$conout."'","roomid='".$r."' AND memberid='".$y."'");
 			}
 		}else{
@@ -419,9 +619,7 @@
 			}else if($con==2){
 				$conout.="向你傳遞了訊息";
 			}
-			//$tb=share_getinfo($pdom,"mem_","memberid",$y);
-			//share_insert($pdoc,"rnot_","roomid,fromid,memberid,thiscontent","'".$r."','".$x."','".$x."','你向".$tb['nickname']."傳遞了訊息'");
-			share_update($pdoc,"usr_","dont='0'","roomid='".$r."' AND dont='2'");
+		//	share_update($pdoc,"usr_","dont='0'","roomid='".$r."' AND dont='2'");
 			return share_insert($pdoc,"rnot_","roomid,fromid,memberid,thiscontent","'".$r."','".$x."','".$y."','".$conout."'");
 
 		}

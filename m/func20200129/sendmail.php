@@ -1,7 +1,7 @@
 <?php
 	function sendmail($x,$y,$z){//$x==編號,$y==email,$z==其他
 		global $rootaddress;
-		$sign="<BR><BR>祝您順心愉快<BR>KYOMON經營團隊<BR><BR>";
+		$sign="<BR><BR>祝您順心愉快<BR>NEED經營團隊<BR><BR>";
 		if($x=="1"){
 			$receivername="新會員";
 			$subject="會員確認信件,請開啟後執行";
@@ -11,11 +11,8 @@
 		}else if($x=="2"){
 			$receivername="忘記密碼";
 			$subject="會員相關資料,請妥善保管";
-			$subject="會員相關資料,請妥善保管";
 			$contents="親愛的玩家您好<BR>";
 			$contents.="您的密碼為".$z."<BR>請妥善保管使用,若有其他使用問題請使用聯絡我們功能,將有專人與您聯絡<BR>";
-			//$contents="親愛的會員您好<BR>有人使用本站的忘記密碼功能,要求了這封信件<BR>以下是您的密碼資料,請妥善保管<BR>您的密碼<BR>";
-			//$contents.=$z."<BR><BR>";
 			$contents.=$sign;
 		}else if($x=="3"){
 			$receivername="親愛的朋友";
@@ -28,6 +25,12 @@
 			$contents="親愛的會員您好<BR>這是您在KYOMON的榮耀商店所換取的非實體商品序號<BR>請妥善保存謝謝<BR>";//20190413 Pman 變更文案//20190524 Pman 變更文案去除逗號
 			$contents.=$z."<BR><BR>";
 			$contents.=$sign;
+		}else if($x=="5"){
+			$receivername="Email重新綁定";
+			$subject="會員email驗證碼,請確認";
+			$contents="親愛的會員您好<BR>這是您所要求重新綁定Email的確認信件，您的驗證碼為 ".$z." 請回網站上輸入以上驗證碼，謝謝<BR>";
+			$contents.="<BR><BR>";
+			$contents.=$sign;
 		}
 		phpmail($y,$receivername,$subject,$contents);
 	}
@@ -36,28 +39,26 @@
 	}
 	function phpmail($receiver,$receivername,$subject,$contents){
 		global $frommail;
-		global $mailuser;
 		global $frompass;
 		global $mailhost;
 		global $mailport;
 		global $mailssl;
 		global $conf;
 		mb_internal_encoding('UTF-8');    // 內部預設編碼改為UTF-8
-		require __DIR__. '/PHPMailerAutoload.php';
+		require 'PHPMailerAutoload.php';
 		//require("class.phpmailer.php");
 		//$mail = new PHPMailer();
 		$mail = new PHPMailer;
 		$mail->IsSMTP();
 		$mail->SMTPAuth = true;
 		if($mailssl==1){
-			//$mail->SMTPSecure = "ssl";
-			$mail->SMTPSecure = "tls";
+			$mail->SMTPSecure = "ssl";
 		}
 		$mail->Host = $mailhost;
 		$mail->Port = $mailport;
 		$mail->CharSet = "utf-8";
 		$mail->Encoding = "base64";
-		$mail->Username = $mailuser;
+		$mail->Username = $frommail;
 		$mail->Password = $frompass;
 		$mail->FromName = $frommail;
 		$mail->From = $frommail;
@@ -77,6 +78,36 @@
 			return false;
 		}
 	}
+	function fcmupdatebadge($id,$cct){
+		global $conf;
+		$mykey=$conf['fcm_key'];
+		$rnd1=rand(1234567,9876543);
+		$fcmMsg = array(
+			'body' => "updatebadge",
+			'title' => "updatebadge",
+  		'mybadge'=>$cct,
+			'badge'=>$cct
+		);
+		$fcmFields = array(
+			'to' => $id,
+		  'priority' => 'high',
+		  'data' => $fcmMsg
+		);
+		$headers = array(
+			'Authorization:key='.$mykey,
+			'Content-Type:application/json'
+		);
+		$ch = curl_init();
+		curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
+		curl_setopt( $ch,CURLOPT_POST, true );
+		curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+		curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+		curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+		curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fcmFields ) );
+		$result = curl_exec($ch );
+		curl_close( $ch );
+		return true;
+	}
 	function sendfcm($id,$title,$msg,$act,$xct,$mtp){
 		global $conf;
 		$mykey=$conf['fcm_key'];
@@ -84,6 +115,7 @@
 		$fcmMsg = array(
 			'body' => $msg,
 			'title' => $title,
+			'mybadge'=>$xct,
 			'badge'=>$xct,
 			'actiontype' =>'chat',
 		  'action' =>$act,
@@ -117,36 +149,6 @@
 		$result = curl_exec($ch );
 		curl_close( $ch );
 		return true;
-		/*
-		global $conf;
-		$mykey=$conf['fcm_key'];
-		$fcmMsg = array(
-			'body' => $msg,
-			'title' => $title,
-			'actiontype' =>'chat',
-		  'action' =>$act
-		);
-		$fcmFields = array(
-			'to' => $id,
-		  'priority' => 'high',
-		  'data' => $fcmMsg
-		);
-		$headers = array(
-			'Authorization:key='.$mykey,
-			'Content-Type:application/json'
-		);
-
-		$ch = curl_init();
-		curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
-		curl_setopt( $ch,CURLOPT_POST, true );
-		curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
-		curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
-		curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
-		curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fcmFields ) );
-		$result = curl_exec($ch);
-		curl_close( $ch );
-		return true;
-		*/
 	}
 
 ?>

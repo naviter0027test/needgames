@@ -57,6 +57,9 @@ $(document).ready(function() {	//設定
 	}else{
 		alert("本APP需要網路連線");
 	}
+        if( location.protocol != 'https:'){
+            window.location.href = 'https://'+ window.location.hostname+ window.location.pathname;
+        }
 	isapp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
 	remotebase="http://www.coinpayments.tw/";//這個有用到..給分享
 	if(isapp){

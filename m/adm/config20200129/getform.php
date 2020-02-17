@@ -15,6 +15,8 @@
 		foreach ($_POST as $key => $term){
 			$term= str_replace("'", "&#039;",$term);
 			$term= str_replace("\"", "&#034;",$term);
+			$term= str_replace("<", "&lt;",$term);
+			$term= str_replace(">", "&gt;",$term);
 			//$term= str_replace("http:", "",$term);
 			//$term= str_replace("HTTP:", "",$term);		
 			//$term= str_replace(":", "",$term);

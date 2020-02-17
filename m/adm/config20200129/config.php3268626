@@ -1,10 +1,12 @@
 <?php
-error_reporting(~E_ALL);
-ini_set('display_errors', 0);
-ini_set('short_open_tag', 'on');
 //	###	本網頁為基礎設定頁	###		//
 	//公司名稱
-	$rootcompanyname="NEED";
+	set_time_limit(500);
+	ini_set('max_execution_time', '500');
+	ini_set('post_max_size', '10M');
+  ini_set('upload_max_filesize', '10M');
+
+	$rootcompanyname="";
 	//設定共用
 	$s_ar=array("DASDSADFAFSADADAD","JOFIHUIQOIWJE","DHAUSKWEGDUASK","AJIOHUIJRONREIJOI","QNJJHIHDISDHISUAHD","CNIUGRIWHIEWNBNBDJA");//0-5
 	$s_br=array("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","!","&","#","=",":");//0-30
@@ -24,13 +26,14 @@ ini_set('short_open_tag', 'on');
 	//簡訊王
 	$vrname="needgames";
 	$vrcode="needgames54843746";
-	if($_SERVER['HTTP_HOST']=="99mission.why3s.tw" || $_SERVER['HTTP_HOST']=="192.168.1.202" || $_SERVER['HTTP_HOST']=="192.168.1.204"){
+	if($_SERVER['HTTP_HOST']=="99mission.why3s.tw"){
 		$frommail="senderfox@99mission.why3s.tw";
 		$frompass="senderfox";
 		$mailhost="localhost";
 		$mailport=25;
 		$mailssl=0;
-		$rootaddress="http://99mission.why3s.tw/game/";
+		$conf['google_key'] ='AIzaSyAFu01-f8QT5iDB4BBxdsgalbLcunnHz0k';
+		$rootaddress="hhttp://99mission.why3s.tw/gamex/m/";
 		$conf['fcm_key'] ='AAAAdDWNzcc:APA91bEIDnJ_jtyVtr4nXKWFjgDsF2F46GCGOfXvzek4VW-unQUBkqffC4XF5SGv8mgqcf74hGRhOQfLRpWOpC0Q6Jml8fY1BfHiRwgvudPSUm2bp7hpe1l8lqfbHeFu1sXzWtulXWAL';
 		//會員
 		$conf['dbhost_m'] = 'localhost';
@@ -63,15 +66,55 @@ ini_set('short_open_tag', 'on');
 		$conf['dbname_c'] = 'cptjdygy_game_c';
 		//$conf['dbname_c'] = 'cptjdygy_game_c_empt';
 		$conf['db_encode'] = 'utf8';
+	}else if($_SERVER['HTTP_HOST']=="192.168.1.202"){
+		$frommail="senderfox@99mission.why3s.tw";
+		$frompass="senderfox";
+		$mailhost="localhost";
+		$mailport=25;
+		$mailssl=0;
+		$conf['google_key'] ='AIzaSyAFu01-f8QT5iDB4BBxdsgalbLcunnHz0k';
+		$conf['fcm_key'] ='';
+		$rootaddress="http://192.168.1.202/m/";
+		//會員
+		$conf['dbhost_m'] = 'localhost';
+		$conf['dbuser_m'] = 'cptjdygy_user';
+		$conf['dbpass_m'] = '99missionpass';
+		$conf['dbname_m'] = 'cptjdygy_game_m';
+		//$conf['dbname_m'] = 'cptjdygy_game_m_empt';
+		//點數
+		$conf['dbhost_p'] = 'localhost';
+		$conf['dbuser_p'] = 'cptjdygy_user';
+		$conf['dbpass_p'] = '99missionpass';
+		$conf['dbname_p'] = 'cptjdygy_game_p';
+		//$conf['dbname_p'] = 'cptjdygy_game_p_empt';
+		//顯示
+		$conf['dbhost_d'] = 'localhost';
+		$conf['dbuser_d'] = 'cptjdygy_user';
+		$conf['dbpass_d'] = '99missionpass';
+		$conf['dbname_d'] = 'cptjdygy_game_d';
+		//$conf['dbname_d'] = 'cptjdygy_game_d_empt';
+		//商店
+		$conf['dbhost_s'] = 'localhost';
+		$conf['dbuser_s'] = 'cptjdygy_user';
+		$conf['dbpass_s'] = '99missionpass';
+		$conf['dbname_s'] = 'cptjdygy_game_s';
+		//$conf['dbname_s'] = 'cptjdygy_game_s_empt';
+		//聊天
+		$conf['dbhost_c'] = 'localhost';
+		$conf['dbuser_c'] = 'cptjdygy_user';
+		$conf['dbpass_c'] = '99missionpass';
+		$conf['dbname_c'] = 'cptjdygy_game_c';
+		//$conf['dbname_c'] = 'cptjdygy_game_c_empt';
+		$conf['db_encode'] = 'utf8';
 	}else{
-		$rootaddress="http://http://www.needgames.tw/";
+		$rootaddress="http://www.needgames.tw/";
 		$frommail="needgameservice@gmail.com";
 		$frompass="needgame54843746";
 		$mailhost="smtp.gmail.com";
 		$mailport=465;
 		$mailssl=1;
 		$conf['google_key'] ='AIzaSyAguKHLDttW-R9nDRTYGzfKpCs4VXppf1w';
-		$conf['fcm_key'] ='AAAAdDWNzcc:APA91bEIDnJ_jtyVtr4nXKWFjgDsF2F46GCGOfXvzek4VW-unQUBkqffC4XF5SGv8mgqcf74hGRhOQfLRpWOpC0Q6Jml8fY1BfHiRwgvudPSUm2bp7hpe1l8lqfbHeFu1sXzWtulXWAL';
+		$conf['fcm_key'] ='';
 		//會員
 		$conf['dbhost_m'] = '10.1.0.6';
 		$conf['dbuser_m'] = 'gamer';

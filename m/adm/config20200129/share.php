@@ -2,8 +2,8 @@
 	//本系統由沈元製作及管理
 	//版本 2015 安全版
 	//請勿未授權使用
-	//版本 V 3.0 
-	//COPY RIGHT RESERVED 
+	//版本 V 3.0
+	//COPY RIGHT RESERVED
 	//DANNEWKJBWIEHUIWANEIWHEAUHDASJKDHIUWAHIWUEHUHNIDWAEHIWAUEHI
 	//細節翔鷺 AJSIODAJWIAJEIQ*LAASNVLKLHWILAAAWEWJOJELWAIJELWIJELWJI
 	//請詳細了解整體規劃後再做任何修改
@@ -16,7 +16,7 @@
 	// VERSION 2.0 PDO VERSION
 	// SHARE FUNCTION IS REQUIRED TO RUN THIS SITE
 	//###########################################################################################################
-	//ALL SELECT ALL SELECT ALL SELECT ALL SELECT 
+	//ALL SELECT ALL SELECT ALL SELECT ALL SELECT
 	function unsetmem($inarr){
 		for($a=0;$a<count($inarr);$a++){
 			unset($inarr[$a]);
@@ -33,7 +33,7 @@
 		}
 		if($inarr['location_v']==0){
 			unset($inarr['location']);
-		}		
+		}
 		if($inarr['gt_v']==0){
 			unset($inarr['gtid']);
 		}
@@ -86,7 +86,7 @@
 		return $row;
 	}
 	//###########################################################################################################
-	// INSERT UPDATE DELETE 
+	// INSERT UPDATE DELETE
 	function share_del($db,$table){
 		$pdo=$db;
 		$sql_statement = $pdo->prepare( "DELETE  FROM ".$table);
@@ -109,7 +109,7 @@
 		$out="";
 		$xx=0;
 		$pdo = new PDO('mysql:host='.$conf['dbhost_p'].';dbname='.$conf['dbname_p'], $conf['dbuser_p'], $conf['dbpass_p']);
-		$pdo -> exec("set names ".$conf['db_encode']);	
+		$pdo -> exec("set names ".$conf['db_encode']);
 		for($a=0;$a<count($x);$a++){
 			$awa=share_getinfo($pdo ,"awa_","awardid",$x[$a]);
 			$xx=$xx+$awa['points'];
@@ -122,19 +122,19 @@
 		global $conf;
 		$out="";
 		$pdo = new PDO('mysql:host='.$conf['dbhost_p'].';dbname='.$conf['dbname_p'], $conf['dbuser_p'], $conf['dbpass_p']);
-		$pdo -> exec("set names ".$conf['db_encode']);	
+		$pdo -> exec("set names ".$conf['db_encode']);
 		$awa=share_getinfo($pdo ,"awa_","awardid",$x);
-		$pdo=null;	
+		$pdo=null;
 		return $awa['points'];
 	}
 	//###########################################################################################################
-	// ALL OTHER SHARE FUNCTIONS 	
+	// ALL OTHER SHARE FUNCTIONS
 	function share_showerr($con){
 		global $returnerr;
 		$returnerr=$con;
 		 echo "<div id=error style='width:100%;font-size:30px;'>".$con."<BR><BR></div>";
 	}
-	//link處理 ? 和= & 
+	//link處理 ? 和= &
 	function share_setlink($x){
 		$t=str_replace("=","|A|",$x);
 		$tt=str_replace("?","|B|",$t);
@@ -146,19 +146,19 @@
 		$t=str_replace("|B|","?",$t);
 		$t=str_replace("|C|","&",$t);
 		return $t;
-	}	
+	}
 	function curl_get($url,$data){
-		$tuCurl = curl_init(); 
-		curl_setopt($tuCurl, CURLOPT_URL, $url); 
-		curl_setopt($tuCurl, CURLOPT_RETURNTRANSFER, 1); 
+		$tuCurl = curl_init();
+		curl_setopt($tuCurl, CURLOPT_URL, $url);
+		curl_setopt($tuCurl, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($tuCurl, CURLOPT_POST, 1);
-		curl_setopt($tuCurl, CURLOPT_POSTFIELDS, $data); 
+		curl_setopt($tuCurl, CURLOPT_POSTFIELDS, $data);
 		$tuData = curl_exec($tuCurl);
 		curl_close($tuCurl);
 		return $tuData;
 	}
 	function curl_getb($url){
-		$tuCurl = curl_init(); 
+		$tuCurl = curl_init();
     	curl_setopt($tuCurl,CURLOPT_URL,$url);
     	curl_setopt($tuCurl,CURLOPT_RETURNTRANSFER,true);
 		$tuData = curl_exec($tuCurl);
@@ -166,10 +166,9 @@
 		return $tuData;
 	}
 	function curl_getjson($url,$code){
-		$tuCurl = curl_init(); 
-
-    	curl_setopt($tuCurl,CURLOPT_URL,$url);
-    	curl_setopt($tuCurl,CURLOPT_RETURNTRANSFER,true);
+		$tuCurl = curl_init();
+    curl_setopt($tuCurl,CURLOPT_URL,$url);
+    curl_setopt($tuCurl,CURLOPT_RETURNTRANSFER,true);
 		curl_setopt($tuCurl, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
 		curl_setopt($tuCurl, CURLOPT_POSTFIELDS, json_encode( array( "longUrl" => $code ) ));
 		$tuData = curl_exec($tuCurl);
@@ -180,13 +179,13 @@
 	function share_tranmice($con){
 		$out=str_replace("&#034;","'",$con);
 		$out=str_replace("&#061;","=",$out);
-		$out=str_replace("../uploadfile/","uploadfile/",$out);
-		$out=str_replace("../img/upload/","img/upload/",$out);
+		$out=str_replace("../uploadfile/","../uploadfile/",$out); //20190320 Pman 調整成正確的相關路徑
+		$out=str_replace("../img/upload/","../img/upload/",$out); //20190320 Pman 調整成正確的相關路徑
 		return $out;
 	}
 	//檢查檔案格式
 	function share_chkfiletype($x,$y){
-		if(($y=="png" && ($x["type"] == "image/png")) || ( $y=="jpg"  && ($x["type"] == "image/jpeg") || ($x["type"] == "image/pjpeg")))  { 
+		if(($y=="png" && ($x["type"] == "image/png")) || ( $y=="jpg"  && ($x["type"] == "image/jpeg") || ($x["type"] == "image/pjpeg")))  {
 			return "OK";
 		}else if($y=="gif" && ($x["type"] == "image/gif")){
 			return "OK2";
@@ -215,7 +214,7 @@
 	function chk_points($x){
 		global $conf;
 		$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
-		$pdom -> exec("set names ".$conf['db_encode']);	
+		$pdom -> exec("set names ".$conf['db_encode']);
 		$t=share_getinfo($pdom,"mem_","memberid",$x);
 		$pdom=null;
 		return $t['points'];
@@ -224,7 +223,7 @@
 	function get_point($x){
 		global $conf;
 		$pdo = new PDO('mysql:host='.$conf['dbhost_p'].';dbname='.$conf['dbname_p'], $conf['dbuser_p'], $conf['dbpass_p']);
-		$pdo -> exec("set names ".$conf['db_encode']);	
+		$pdo -> exec("set names ".$conf['db_encode']);
 		$temp=share_getinfo($pdo,"awa_","awardid",$x);
 		return $temp['points'];
 		$pdo=null;
@@ -233,14 +232,14 @@
 	function send_vnotice($id){
 		global $conf;
 		$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
-		$pdod -> exec("set names ".$conf['db_encode']);	
+		$pdod -> exec("set names ".$conf['db_encode']);
 		share_insert($pdod,"not_","memberid,fromid,typeid,thiscontent,thislink","'".$id."','".$id."',9,'您的手機還沒驗證，請前往驗證您的手機，完成後可使用完整功能及額外貢獻值獎勵',''");
 		$pdod=null;
 	}
-	function add_point($mid,$x,$y,$z,$id=""){ // 會員,點數,點數由來,note(id)
+	function add_point($mid,$x,$y,$z,$id){ // 會員,點數,點數由來,note(id)
 		global $conf;
 		$pdo = new PDO('mysql:host='.$conf['dbhost_p'].';dbname='.$conf['dbname_p'], $conf['dbuser_p'], $conf['dbpass_p']);
-		$pdo -> exec("set names ".$conf['db_encode']);	
+		$pdo -> exec("set names ".$conf['db_encode']);
 		$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 		$pdom -> exec("set names ".$conf['db_encode']);
 		$flag=0;
@@ -272,7 +271,7 @@
 	function addgamerank($x){
 		global $conf;
 		$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
-		$pdom -> exec("set names ".$conf['db_encode']);			
+		$pdom -> exec("set names ".$conf['db_encode']);
 		$dates=date('Y-m');
 		if($t=share_gettable($pdom,"rank_ WHERE ymonth='".$dates."' AND gameid='".$x."'")){
 			share_update($pdom,"rank_","qty=qty+1","thisid='".$t[0]['thisid']."'");
@@ -281,7 +280,7 @@
 		}
 		$pdom=null;
 	}
-	
+
 	function GetIP(){
 	 if(!empty($_SERVER["HTTP_CLIENT_IP"])){
 	   $cip = $_SERVER["HTTP_CLIENT_IP"];
@@ -297,7 +296,7 @@
 	  }
 	  return $cip;
 	}
-	
+
 
 	//#######################################################
 	//########## 以下為網站程式
@@ -308,9 +307,9 @@
 		chat_chk_note();
 		global $conf;
 		$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
-		$pdom -> exec("set names ".$conf['db_encode']);	
+		$pdom -> exec("set names ".$conf['db_encode']);
 		$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
-		$pdod -> exec("set names ".$conf['db_encode']);	
+		$pdod -> exec("set names ".$conf['db_encode']);
 
 		$out[0]=share_gettable($pdom,"ran_");
 		$out[1]=share_gettable($pdom,"gam_ order by hotrank DESC");
@@ -330,7 +329,7 @@
 		$pdod=null;
 		//chatpic
 		$pdoc = new PDO('mysql:host='.$conf['dbhost_c'].';dbname='.$conf['dbname_c'], $conf['dbuser_c'], $conf['dbpass_c']);
-		$pdoc -> exec("set names ".$conf['db_encode']);	
+		$pdoc -> exec("set names ".$conf['db_encode']);
 		$pictype=share_gettable($pdoc,"chatimgtype WHERE isopen=1 order by sorting DESC");
 		$a=0;
 		$out[6]=[];
@@ -341,14 +340,13 @@
 		}
 		$pdoc=null;
 		$out[7]=$a;
-		$out[8]=$conf['maxQA']; //20190329 Pman 輸出config的maxQA設定值
 		echo json_encode($out);
 	}
 	//刪除超過時間的舊資料   1.walllist 超過時間的  2.只有單純發言的content 3.content 相對的rep
 	function chk_walldel(){
 		global $conf;
 		$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
-		$pdod -> exec("set names ".$conf['db_encode']);	
+		$pdod -> exec("set names ".$conf['db_encode']);
 		if($ts=share_gettable($pdod,"wall WHERE timekey<(".time()."-".$conf['wallkeep']."*86400)")){
 			foreach($ts as $t){
 				$c=share_getinfo($pdod,"con_","thisid",$t['contentid']);
@@ -375,33 +373,29 @@
 	}
 	function sendinfo1($x,$y,$z){//手機馬,序號,回復網址--g1 ice
 			//$url="http://202.39.48.216/kotsmsapi-1.php?";
-            /*
 			$url="https://api.kotsms.com.tw/kotsmsapi-1.php?";
 			$url.="username=".$GLOBALS['vrname'];
 			$url.="&password=".$GLOBALS['vrcode'];
 			$url.="&dstaddr=".$x;
-			$url.="&smbody=".urlencode(iconv("UTF-8","big5","感謝您加入kyomon手機認證，您的認證碼是".$y));
+			$url.="&smbody=".urlencode(iconv("UTF-8","big5","感謝您加入needgames手機認證，您的認證碼是".$y));
 			$url.="&dlvtime=0";
 			$url.="&vldtime=0";
 			$url.="&response=".$z;
 			$temp=curl_getb($url);
-             */
-            //簡訊王不接受國外IP
-            $p = array(
-                'vrname' => $GLOBALS['vrname'],
-                'vrcode' => $GLOBALS['vrcode'],
-                'x' => $x,
-                'y' => $y,
-                'z' => $z,
-            );
-            $url = 'http://demo.axcell28.idv.tw/kotsms.php';
-            $tuCurl = curl_init(); 
-            curl_setopt($tuCurl,CURLOPT_URL,$url);
-            curl_setopt($tuCurl,CURLOPT_RETURNTRANSFER,true);
-            curl_setopt($tuCurl,CURLOPT_POSTFIELDS, http_build_query($p));
-            $temp = curl_exec($tuCurl);
-            curl_close($tuCurl);
-            return $temp;
+			return $temp;
+	}
+	function sendinfo2($x,$y,$z){//手機馬,序號,回復網址--g1 ice
+			//$url="http://202.39.48.216/kotsmsapi-1.php?";
+			$url="https://api.kotsms.com.tw/kotsmsapi-1.php?";
+			$url.="username=".$GLOBALS['vrname'];
+			$url.="&password=".$GLOBALS['vrcode'];
+			$url.="&dstaddr=".$x;
+			$url.="&smbody=".urlencode(iconv("UTF-8","big5","親愛的玩家您好,您的密碼為".$y."\n請妥善保管使用,若有其他使用問題請使用聯絡我們功能,將有專人與您聯絡。"));
+			$url.="&dlvtime=0";
+			$url.="&vldtime=0";
+			$url.="&response=".$z;
+			$temp=curl_getb($url);
+			return $temp;
 	}
 	function getgurl($x){
 		global $conf;
@@ -412,13 +406,6 @@
 		$id=file_get_contents("https://tinyurl.com/api-create.php?url=".$x);
 		return json_encode(array('id' => $id));
 	}
-	
-	function get_maxQAn($x){
-		$out="";
-		global $conf;
-		$out[0]=$conf['maxQA']; //20190329 Pman 輸出config的maxQA設定值
-		echo json_encode($out);
-	}
-	
+
 	//		###		共用功能 END 		###		//
 ?>

@@ -1,4 +1,6 @@
+
 <?php
+//中文要有
 if($_SERVER['QUERY_STRING']<>""){
 	$MYSTRING=$_SERVER['QUERY_STRING'];
 	parse_str($MYSTRING, $params);

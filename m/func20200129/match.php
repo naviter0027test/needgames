@@ -1,9 +1,9 @@
 <?php
 	//show match 的 送出數和受邀請數
 	function get_match_count($x){
-                $out=array();
 		if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key']){//確認資格
 			global $conf;
+			$out="";
 			$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
 			$pdod -> exec("set names ".$conf['db_encode']);	
 			$out[0]="OK";
@@ -35,7 +35,6 @@
 			$pdom=null;
 		}else{
 			$out[0]="ERR";
-			$out[1]=$errText['reopen'];
 		}
 		echo json_encode($out);	
 	}
@@ -60,7 +59,6 @@
 			$pdom=null;
 		}else{
 			$out[0]="ERR";
-			$out[1]=$errText['reopen'];
 		}
 		echo json_encode($out);	
 	}
@@ -92,12 +90,12 @@
 				}else{
 					$ttt="WHERE memberid>".$x[2];
 				}
-				$temp=share_gettable($pdom,"mem_ ".$ttt." AND (memberid NOT in (SELECT friendid from ".$conf['dbname_d'].".friend_ WHERE memberid='".$_SESSION['userid']."'))  AND (memberid NOT in (SELECT memberid from ".$conf['dbname_d'].".friend_ WHERE friendid='".$_SESSION['userid']."')) AND memberid<>'".$_SESSION['userid']."' order by memberid limit 5");
+				$temp=share_gettable($pdom,"mem_ ".$ttt." AND (memberid NOT in (SELECT friendid from ".$conf['dbname_d'].".friend_ WHERE memberid='".$_SESSION['userid']."'))  AND (memberid NOT in (SELECT memberid from ".$conf['dbname_d'].".friend_ WHERE friendid='".$_SESSION['userid']."')) AND memberid<>'".$_SESSION['userid']."' order by memberid limit 100");//20190329 Pman 先把limit加大，暫時避過沒有繼續往下讀的問題
 			}else{//開始抓
 				if($ttt){
 					$ttt="WHERE (".$ttt.")";
 				}
-				$temp=share_gettable($pdom,"mem_ ".$ttt." AND (memberid NOT in (SELECT friendid from ".$conf['dbname_d'].".friend_ WHERE memberid='".$_SESSION['userid']."'))  AND (memberid NOT in (SELECT memberid from ".$conf['dbname_d'].".friend_ WHERE friendid='".$_SESSION['userid']."')) AND memberid<>'".$_SESSION['userid']."' order by memberid limit 5");
+				$temp=share_gettable($pdom,"mem_ ".$ttt." AND (memberid NOT in (SELECT friendid from ".$conf['dbname_d'].".friend_ WHERE memberid='".$_SESSION['userid']."'))  AND (memberid NOT in (SELECT memberid from ".$conf['dbname_d'].".friend_ WHERE friendid='".$_SESSION['userid']."')) AND memberid<>'".$_SESSION['userid']."' order by memberid limit 100");//20190329 Pman 先把limit加大，暫時避過沒有繼續往下讀的問題
 			}
 			for($a=0;$a<count($temp);$a++){
 				$tempb[$a]=unsetmem($temp[$a]);
@@ -119,42 +117,52 @@
 	}	
 	//get_match_request 使用者選擇的
 	function get_match_request($x){
-                $out=array();
 		if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key']){//確認資格
 			global $conf;
+			$out="";
 			$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
 			$pdod -> exec("set names ".$conf['db_encode']);	
 			$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 			$pdom -> exec("set names ".$conf['db_encode']);	
 			$ttt="";
 			if($x[2]){
-				for($a=0;$a<count($x[2]);$a++){
-					for($b=1;$b<=3;$b++){
-						if($ttt){
-							$ttt=$ttt." OR (game".$b."=".$x[2][$a]['gameid']." AND game".$b."_v=1)";
-						}else{
-							$ttt="(game".$b."=".$x[2][$a]['gameid']." AND game".$b."_v=1)";
-						}
-					}
+				if($ttt){
+					$ttt=$ttt." OR (game1=".$x[2]." AND game1_v=1) OR (game2=".$x[2]." AND game2_v=1) OR (game3=".$x[2]." AND game3_v=1)";
+				}else{
+					$ttt="(game1=".$x[2]." AND game1_v=1) OR (game2=".$x[2]." AND game2_v=1) OR (game3=".$x[2]." AND game3_v=1)";
 				}
 			}
 			if($x[3]){
 				if($ttt){
-					$ttt="(".$ttt.") AND (location='".$x[3]."' AND location_v=1)";
+					$ttt=$ttt." OR (game1=".$x[3]." AND game1_v=1) OR (game2=".$x[3]." AND game2_v=1) OR (game3=".$x[3]." AND game3_v=1)";
 				}else{
-					$ttt="(location='".$x[3]."' AND location_v=1)";
+					$ttt="(game1=".$x[3]." AND game1_v=1) OR (game2=".$x[3]." AND game2_v=1) OR (game3=".$x[3]." AND game3_v=1)";
 				}
 			}
 			if($x[4]){
 				if($ttt){
-					$ttt="(".$ttt.") AND (gtid='".$x[4]."' AND gt_v=1)";
+					$ttt=$ttt." OR (game1=".$x[4]." AND game1_v=1) OR (game2=".$x[4]." AND game2_v=1) OR (game3=".$x[4]." AND game3_v=1)";
 				}else{
-					$ttt="(gtid='".$x[4]."' AND gt_v=1)";
+					$ttt="(game1=".$x[4]." AND game1_v=1) OR (game2=".$x[4]." AND game2_v=1) OR (game3=".$x[4]." AND game3_v=1)";
+				}
+			}
+			if($x[5]){
+				if($ttt){
+					$ttt="(".$ttt.") AND (location='".$x[5]."' AND location_v=1)";
+				}else{
+					$ttt="(location='".$x[5]."' AND location_v=1)";
+				}
+			}
+			if($x[6]){
+				if($ttt){
+					$ttt="(".$ttt.") AND (gtid='".$x[6]."' AND gt_v=1)";
+				}else{
+					$ttt="(gtid='".$x[6]."' AND gt_v=1)";
 				}
 			}			
 			$temp=[];
 			$tempb=[];
-			$temp=share_gettable($pdom,"mem_ WHERE (".$ttt.") AND (memberid NOT in (SELECT friendid as memberid from ".$conf['dbname_d'].".friend_ WHERE memberid='".$_SESSION['userid']."'))  AND (memberid NOT in (SELECT memberid from ".$conf['dbname_d'].".friend_ WHERE friendid='".$_SESSION['userid']."')) AND memberid<>'".$_SESSION['userid']."' order by memberid limit 5");
+			$temp=share_gettable($pdom,"mem_ WHERE (".$ttt.") AND (memberid NOT in (SELECT friendid as memberid from ".$conf['dbname_d'].".friend_ WHERE memberid='".$_SESSION['userid']."'))  AND (memberid NOT in (SELECT memberid from ".$conf['dbname_d'].".friend_ WHERE friendid='".$_SESSION['userid']."')) AND memberid<>'".$_SESSION['userid']."' order by memberid limit 100");//20190329 Pman 先把limit加大，暫時避過沒有繼續往下讀的問題
 			for($a=0;$a<count($temp);$a++){
 				$tempb[$a]=unsetmem($temp[$a]);
 				$tempb[$a]['uid']=$temp[$a]['memberid'];
@@ -247,7 +255,7 @@
 	function addfriends($x){
 		if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key']){//確認資格
 			global $conf;
-			$out=array();
+			$out="";
 			$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
 			$pdod -> exec("set names ".$conf['db_encode']);	
 			$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
@@ -276,12 +284,12 @@
 						$me=share_update($pdod,"friend_","ispass=1","memberid='".$_SESSION['userid']."' AND friendid='".$x[3]."'");
 						$out[0]="ERR";
 						$out[1]="你們已恢復朋友關係！";
-						$out[2]="CLOSE";
+						$out[2]="CLOSER";
 				}else if($temp=share_gettable($pdod,"friend_ WHERE ispass>1 AND memberid='".$x[3]."' AND friendid='".$_SESSION['userid']."'")){//當初是我拒絕對方的,現在馬上可以加回來
 						$me=share_update($pdod,"friend_","ispass=1","memberid='".$x[3]."' AND friendid='".$_SESSION['userid']."'");
 						$out[0]="ERR";
 						$out[1]="你們已恢復朋友關係！";
-						$out[2]="CLOSE";
+						$out[2]="CLOSER";
 				}else if($temp=share_gettable($pdod,"friend_ WHERE memberid='".$_SESSION['userid']."' AND friendid='".$x[3]."' AND ispass=0")){//已經在等對方了
 						$out[0]="ERR";
 						//$out[1]="邀約等待中，請耐心等候回復！";
@@ -331,15 +339,16 @@
 			}else if($x[2]=="add2"){	//同意邀請
 				$temp=share_gettable($pdod,"friend_ WHERE memberid='".$x[3]."' AND friendid='".$_SESSION['userid']."'");
 				if($temp && $temp[0]['ispass']==0){
-					if($me=share_update($pdod,"friend_","ispass=1","memberid='".$x[3]."' AND friendid='".$_SESSION['userid']."'")){
+					if($me=share_update($pdod,"friend_","ispass=1,viewed=1","memberid='".$x[3]."' AND friendid='".$_SESSION['userid']."'")){
 						//送出notice
 						$mex=share_getinfo($pdom,"mem_","memberid",$_SESSION['userid']);
 						$sender=share_getinfo($pdom,"mem_","memberid",$x[3]);
 						share_insert($pdod,"not_","memberid,fromid,typeid,thiscontent,thislink","'".$x[3]."','".$_SESSION['userid']."',3,'".$mex['nickname']."和你已經成為朋友了',''");
 						
 						if($sender['fcmid']){  //20181225 Pman 確認同意邀請時，送一個推播給發出邀請的人
-							sendfcm($sender['fcmid'],"交友邀請同意",$mex['nickname']."和你已經成為朋友了","",$sender['note_count']+1,$sender['mobtype']);  //20190220 Pman 新增"mobtype"參數
+							sendfcm($sender['fcmid'],"交友邀請同意",$mex['nickname']."和你已經成為朋友了","",$sender['note_count']+1,$sender['mobtype']); //20190220 Pman 新增"mobtype"參數 
 						}
+						
 						
 						$out[0]="OK4";
 						//加點
@@ -363,7 +372,7 @@
 				}
 			
 			}else if($x[2]=="reject"){	//拒絕邀請
-				if($me=share_update($pdod,"friend_","ispass=2","memberid='".$x[3]."' AND friendid='".$_SESSION['userid']."'")){
+				if($me=share_update($pdod,"friend_","ispass=2,viewed=1","memberid='".$x[3]."' AND friendid='".$_SESSION['userid']."'")){
 					$out[0]="OK3";
 				}else{
 					$out[0]="ERR";
@@ -392,7 +401,7 @@
 			$out[0]="ERR";
 			$out[1]=$errText['reopen'];
 		}
-		if($out[0]=="OK"){ //20181224 Pman 成功發出交友邀請時，發出一則交友邀請通知推播
+		if($out[0]=="OK"){ //20181222 Pman 成功發出交友邀請時，發出一則交友邀請通知推播
 			$me=share_getinfo($pdom,"mem_","memberid",$_SESSION['userid']);
 			$conout=$me['nickname']."向你發出交友邀請";
 			$temp=share_getinfo($pdom,"mem_","memberid",$x[3]);
@@ -400,6 +409,7 @@
 				sendfcm($temp['fcmid'],"交友邀請",$conout,"",$temp['note_count']+1,$temp['mobtype']); //20181224 Pman 發出交友邀請推播時，更新badge數量 //20190220 Pman 新增"mobtype"參數
 			}
 		}
+		//$pdom=null;  //20181225 Pman 清除$pdom
 		echo json_encode($out);			
 	}
 
