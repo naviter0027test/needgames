@@ -814,6 +814,7 @@
 				}//20180918 Pman 仿照手機版整段換掉
 
 			}else if($x[3]){//一般文章
+                                $dateadd = date('Y-m-d H:i:s');
 				if(share_insert($pdo,"con_","memberid,typeid,gamid,opentype,thiscontent,timekey,dateadd","'".$_SESSION['userid']."','0','".$x[6]."','".$x[7]."','<div class=\"newstextbox\">".share_html($x[3])."\n</div>','".time()."'". ",'$dateadd'")){
 					//20190322 Pman 修正在動態牆發文時，opentype沒有寫入的問題
 					$t=share_gettable($pdo,"con_ WHERE memberid='".$_SESSION['userid']."' order by thisid DESC limit 1");
