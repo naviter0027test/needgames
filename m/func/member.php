@@ -701,29 +701,224 @@
 	}
 	//清除 view =0;
 	function clr_notice($x){
-		global $conf;
-		if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key']){//確認資格
-			$out[0]="OK";
-			if($x[2]=="notice"){
-				$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
-				$pdod -> exec("set names ".$conf['db_encode']);
-				share_update($pdod,"not_","viewed=1","memberid='".$_SESSION['userid']."'");//通知
-				$pdod=null;
-			}else if($x[2]=="chat"){
-				$pdoc = new PDO('mysql:host='.$conf['dbhost_c'].';dbname='.$conf['dbname_c'], $conf['dbuser_c'], $conf['dbpass_c']);
-				$pdoc -> exec("set names ".$conf['db_encode']);
-				share_update($pdoc,"rnot_","viewed=1","memberid='".$_SESSION['userid']."'");//聊天通知
-				$pdoc=null;
-			}else if($x[2]=="addfriend"){
-				$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
-				$pdod -> exec("set names ".$conf['db_encode']);
-				share_update($pdod,"friend_","viewed=1","friendid='".$_SESSION['userid']."'");//聊天通知
-				$pdod=null;
-			}
-		}else{
-			$out[0]="ERR";
-		}
-		echo json_encode($out);
+            global $conf;
+            $out=array();
+            if($x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key']){//確認資格
+                $out[0]="OK";
+                if($x[2]=="popnoticbell"){
+                    $pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
+                    $pdod -> exec("set names ".$conf['db_encode']);
+                    $pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
+                    $pdom -> exec("set names ".$conf['db_encode']);
+                    //	$temp=share_gettable($pdod,"not_ WHERE viewed=0 AND memberid='".$_SESSION['userid']."' order by thisid desc");
+                    $temp=share_gettable($pdod,"not_ WHERE viewed=0 AND memberid='".$_SESSION['userid']."' order by thisid desc");
+                    share_update($pdod,"not_","viewed=1","memberid='".$_SESSION['userid']."'");//通知
+                    if($temp && count($temp)<10){
+                        $tempb=share_gettable($pdod,"not_ WHERE memberid='".$_SESSION['userid']."'  order by thisid desc limit ".(10-count($temp))."");
+                        array_merge($temp, $tempb);
+                    }else{
+                        $temp=share_gettable($pdod,"not_ WHERE memberid='".$_SESSION['userid']."'  order by thisid desc limit 10");
+                    }
+                    for($a=0;$a<count($temp);$a++){
+                        if($temp[$a]['fromid']){
+                            $tb=share_getinfo($pdom,"mem_","memberid",$temp[$a]['fromid']);
+                            $temp[$a]['headpic']=$tb['headpic'];
+                        }else{
+                            $temp[$a]['headpic']="";
+                        }
+                        if($temp[$a]['typeid']=="4"){//攻略--連去攻略
+                            $tx=share_getinfo($pdod,"art_","contentid",$temp[$a]['thislink']);
+                            $temp[$a]['thislink']=$tx['thisid'];
+                        }
+                    }
+                    $out[1]=$temp;
+                    $pdod=null;
+                }
+                        /*
+                        else if($x[2]=="popnoticcommenttest"){
+                                $pdoc = new PDO('mysql:host='.$conf['dbhost_c'].';dbname='.$conf['dbname_c'], $conf['dbuser_c'], $conf['dbpass_c']);
+                                $pdoc -> exec("set names ".$conf['db_encode']);
+                                $pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
+                                $pdom -> exec("set names ".$conf['db_encode']);
+                                //$temp=share_gettable($pdoc,"rnot_ WHERE viewed=0 AND memberid='".$_SESSION['userid']."'");
+                                //抓有未讀的...
+                                //$out[1]="SELECT roomid,count(*) as cc FROM con_ WHERE  memberid='".$_SESSION['userid']."' AND viewed<>1 group by roomid";
+                                $out[1]="";
+                                $nr=share_getfree($pdoc,"SELECT roomid,count(*) as cc FROM con_ WHERE  memberid='".$_SESSION['userid']."' AND viewed<>1 group by roomid");
+                                $out[1].="<BR>nr:".count($nr);
+                                $rlist="";
+                                if($nr){
+                                        for($a=0;$a<count($nr);$a++){
+                                                if($rlist){
+                                                        $rlist.=",'".$nr[$a]['roomid']."'";
+                                                }else{
+                                                        $rlist="'".$nr[$a]['roomid']."'";
+                                                }
+                                        }
+                                }
+                                //$out[1].="<BR>rlist:".$rlist;
+                                //抓剩下的
+                                if($rlist){
+                                        $yr=share_getfree($pdoc,"SELECT u.roomid,r.timekey FROM usr_ as u,roo_ as r  WHERE u.roomid=r.roomid AND u.memberid='".$_SESSION['userid']."' AND r.timekey>(".time()."-86400*7) AND r.roomid not in (".$rlist.") order by r.timekey desc");
+                                }else{
+                                        $yr=share_getfree($pdoc,"SELECT u.roomid,r.timekey FROM usr_ as u,roo_ as r  WHERE u.roomid=r.roomid AND u.memberid='".$_SESSION['userid']."' AND r.timekey>(".time()."-86400*7)  order by r.timekey desc");
+                                }
+                                //$out[1].="<BR>yr:SELECT u.roomid,r.timekey FROM usr_ as u,roo_ as r  WHERE u.roomid=r.roomid AND u.memberid='".$_SESSION['userid']."' AND r.timekey>(".time()."-86400*7) AND r.roomid not in (".$rlist.") order by r.timekey desc";
+                                $out[1].="<BR>YR count:".count($yr);
+                                for($a=0;$a<count($yr);$a++){
+                                        $yr[$a]['do']=share_gettable($pdoc,"usr_ WHERE roomid='".$yr[$a]['roomid']."' AND memberid='".$_SESSION['userid']."'")[0]['dont'];
+                                        $out[1].="<BR>YR do: usr_ WHERE roomid='".$yr[$a]['roomid']."' AND memberid='".$_SESSION['userid']."'";
+                                        $yr[$a]['last']=share_gettable($pdoc,"con_ WHERE roomid='".$yr[$a]['roomid']."' AND memberid='".$_SESSION['userid']."' AND fromid<>'".$_SESSION['userid']."' order by timekey DESC limit 1")[0];
+                                        $out[1].="<BR>YR last:	con_ WHERE roomid='".$yr[$a]['roomid']."' AND memberid='".$_SESSION['userid']."' AND fromid<>'".$_SESSION['userid']."' order by timekey DESC limit 1";
+                                        $gr=share_gettable($pdoc,"usr_ WHERE roomid='".$yr[$a]['roomid']."' AND memberid<>'".$_SESSION['userid']."'");
+                                        if(count($gr)>1){
+                                                for($b=0;$b<2;$b++){
+                                                                $tb=share_getinfo($pdom,"mem_","memberid",$gr[$b]['memberid']);
+                                                                if($yr[$a]['last']['oname']){
+                                                                        $yr[$a]['last']['oname'].=",".$tb['nickname'];
+                                                                }else{
+                                                                        $yr[$a]['last']['oname']=$tb['nickname'];
+                                                                }
+                                                }
+                                                if(count($gr)>2){
+                                                        $yr[$a]['last']['oname'].="...(".count($gr).")";
+                                                }
+                                                $yr[$a]['last']['headpic']="group";
+                                        }else{
+                                                $tb=share_getinfo($pdom,"mem_","memberid",$gr[0]['memberid']);
+                                                $yr[$a]['last']['headpic']=$tb['headpic'];
+                                                $yr[$a]['last']['oname']=$tb['nickname'];
+                                        }
+                                }
+                                if($nr && $yr){
+                                        $tr=$nr+$yr;
+                                }else if($nr){
+                                        $tr=$nr;
+                                }else if($yr){
+                                        $tr=$yr;
+                                }
+                                $out[1].="<BR>TR count:".count($tr);
+                                $out[1].="<BR>".$tr;
+                                $pdoc=null;
+                        }*/
+                else if($x[2]=="popnoticcomment"){
+                    $pdoc = new PDO('mysql:host='.$conf['dbhost_c'].';dbname='.$conf['dbname_c'], $conf['dbuser_c'], $conf['dbpass_c']);
+                    $pdoc -> exec("set names ".$conf['db_encode']);
+                    $pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
+                    $pdom -> exec("set names ".$conf['db_encode']);
+                    //$temp=share_gettable($pdoc,"rnot_ WHERE viewed=0 AND memberid='".$_SESSION['userid']."'");
+                    //抓有未讀的...
+                    $nr=share_getfree($pdoc,"SELECT roomid,count(*) as cc FROM con_ WHERE  memberid='".$_SESSION['userid']."' AND viewed<>1 group by roomid");
+                    $rlist="";
+                    if($nr){
+                        for($a=0;$a<count($nr);$a++){
+                            if($rlist){
+                                $rlist.=",'".$nr[$a]['roomid']."'";
+                            }else{
+                                $rlist="'".$nr[$a]['roomid']."'";
+                            }
+                            $nr[$a]['do']=share_gettable($pdoc,"usr_ WHERE roomid='".$nr[$a]['roomid']."' AND memberid='".$_SESSION['userid']."'")[0]['dont'];
+                            $nr[$a]['last']=share_gettable($pdoc,"con_ WHERE roomid='".$nr[$a]['roomid']."' AND memberid='".$_SESSION['userid']."' AND fromid<>'".$_SESSION['userid']."' AND viewed<>1 order by timekey DESC limit 1")[0];
+                            $gr=share_gettable($pdoc,"usr_ WHERE roomid='".$nr[$a]['roomid']."' AND memberid<>'".$_SESSION['userid']."'");
+                            if(count($gr)>1){
+                                for($b=0;$b<2;$b++){
+                                    $tb=share_getinfo($pdom,"mem_","memberid",$gr[$b]['memberid']);
+                                    if($nr[$a]['last']['oname']){
+                                        $nr[$a]['last']['oname'].=",".$tb['nickname'];
+                                    }else{
+                                        $nr[$a]['last']['oname']=$tb['nickname'];
+                                    }
+                                }
+                                if(count($gr)>2){
+                                    $nr[$a]['last']['oname'].="...(".count($gr).")";
+                                }
+                                $nr[$a]['last']['headpic']="group";
+                            }else{
+                                $tb=share_getinfo($pdom,"mem_","memberid",$gr[0]['memberid']);
+                                $nr[$a]['last']['headpic']=$tb['headpic'];
+                                $nr[$a]['last']['oname']=$tb['nickname'];
+                            }
+                        }
+                    }
+                    //抓剩下的
+                    if($rlist){
+                        $yr=share_getfree($pdoc,"SELECT u.roomid,r.timekey FROM usr_ as u,roo_ as r  WHERE u.roomid=r.roomid AND u.memberid='".$_SESSION['userid']."' AND r.timekey>(".time()."-86400*300) AND r.roomid not in (".$rlist.") order by r.timekey desc");
+                    }else{
+                        $yr=share_getfree($pdoc,"SELECT u.roomid,r.timekey FROM usr_ as u,roo_ as r  WHERE u.roomid=r.roomid AND u.memberid='".$_SESSION['userid']."' AND r.timekey>(".time()."-86400*300)  order by r.timekey desc");
+                    }
+                    for($a=0;$a<count($yr);$a++){
+                        $yr[$a]['do']=share_gettable($pdoc,"usr_ WHERE roomid='".$yr[$a]['roomid']."' AND memberid='".$_SESSION['userid']."'")[0]['dont'];
+                        $yr[$a]['last']=share_gettable($pdoc,"con_ WHERE roomid='".$yr[$a]['roomid']."' AND memberid='".$_SESSION['userid']."' AND fromid<>'".$_SESSION['userid']."' order by timekey DESC limit 1")[0];
+                        $gr=share_gettable($pdoc,"usr_ WHERE roomid='".$yr[$a]['roomid']."' AND memberid<>'".$_SESSION['userid']."'");
+                        if(count($gr)>1){
+                            for($b=0;$b<2;$b++){
+                                $tb=share_getinfo($pdom,"mem_","memberid",$gr[$b]['memberid']);
+                                if($yr[$a]['last']['oname']){
+                                    $yr[$a]['last']['oname'].=",".$tb['nickname'];
+                                }else{
+                                    $yr[$a]['last']['oname']=$tb['nickname'];
+                                }
+                            }
+                            if(count($gr)>2){
+                                $yr[$a]['last']['oname'].="...(".count($gr).")";
+                            }
+                            $yr[$a]['last']['headpic']="group";
+                        }else{
+                            $tb=share_getinfo($pdom,"mem_","memberid",$gr[0]['memberid']);
+                            $yr[$a]['last']['headpic']=$tb['headpic'];
+                            $yr[$a]['last']['oname']=$tb['nickname'];
+                        }
+                    }
+                    share_update($pdoc,"rnot_","viewed=1","memberid='".$_SESSION['userid']."'");//聊天通知關掉
+                    if($nr && $yr){
+                        //array_push($nr,$yr);
+                        //$out[1]=$nr+$yr;
+                        $out[1]=array_merge($nr, $yr);
+                    }else if($nr){
+                        $out[1]=$nr;
+                    }else if($yr){
+                        $out[1]=$yr;
+                    }else{
+                        $out[1]="";
+                    }
+                    $pdoc=null;
+                }else if($x[2]=="popnoticuser"){//這個要改成 直接顯示邀請內容
+                    $pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
+                    $pdod -> exec("set names ".$conf['db_encode']);
+                    $pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
+                    $pdom -> exec("set names ".$conf['db_encode']);
+                    $me=share_gettable($pdod,"friend_ WHERE friendid='".$_SESSION['userid']."' AND ispass=0 order by thisid desc");//
+                    $temp=[];
+                    $tempb=[];
+                    if(count($me)>0){
+                        for($a=0;$a<count($me);$a++){
+                            $temp=share_getinfo($pdom,"mem_","memberid",$me[$a]['memberid']);
+                            $tempb[$a]=unsetmem($temp);
+                            $tempb[$a]['uid']=$temp['memberid'];
+                            $tempb[$a]['addtext']=$me[$a]['addtext'];
+                        }
+                    }
+                    $out[0]="ERR";
+                    if(count($me)>0){
+                        $out[0]="OK";
+                        $out[1]=$tempb;
+                    }else{
+                        $out[0]="OK";
+                        $out[1]=NULL;
+                        //					$out[0]="ERR";
+                        //					$out[1]="目前無資料";
+                    }
+                    //$temp=share_gettable($pdod,"rnot_ WHERE viewed=1 AND memberid='".$_SESSION['userid']."'");
+                    //share_update($pdod,"friend_","viewed=1","friendid='".$_SESSION['userid']."'");//聊天通知
+                    $pdod=null;
+                }else{
+                    $out[0]="ERR";
+                    $out[1]="缺乏項目資料";
+                }
+            }else{
+                $out[0]="ERR";
+            }
+            echo json_encode($out);
 	}
 
 	// 取出 notice內容
@@ -924,6 +1119,14 @@
 		}else{
 			$out[0]="ERR";
 			$out[1]="認證錯誤,或已在其他視窗開啟,請關閉這個視窗";
+		}
+		echo json_encode($out);
+	}
+	function chk_session($x){
+		if($_SESSION['userid'] && $_SESSION['key'] && $x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key']){//確認資格
+			$out[0]="OK";
+		}else{
+			$out[0]="NO";
 		}
 		echo json_encode($out);
 	}

@@ -1211,6 +1211,7 @@ popnoticall=function(x,d){//
 	out+="            </div>";
 	//out+=insert;
 	out+="        </header>";
+        console.log(d);
 	if(me.data("type")=="popnoticbell"){//通知
 		out+="        <ul class='alert'>";
 		if(d && d.length<1){

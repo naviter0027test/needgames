@@ -150,7 +150,10 @@
 						localStorage.setItem("actiontype","");
 					},700);
 				}
-			});
+			})
+                        .error(function(err) {
+                            console.log(err);
+                        });
 		}
 	}
 	sessionStorage.setItem("browser",ismobile);
@@ -311,7 +314,9 @@
 						sessionStorage.setItem("gamerem","1");
 						cntss--;
 					}
-				});
+				}).error(function(err) {
+                                    console.log(err);
+                                });
 			}else{ //新登入
 				if(localStorage.getItem("re_userid") && localStorage.getItem("re_time") && localStorage.getItem("re_key")){//檢查是否有自動登入
 					var d = new Date();
@@ -1065,8 +1070,9 @@
 						}else if(me.data("type")=="shopbuy"){//顯示兌換表格
 							show_shopform(me.data("id"))
 						}
-					}).error(function(){
-						callpagereload("Oop！好像發生了一些錯誤！將重新載入頁面",0);//20190423 Pman 修正文案
+					}).error(function(err){
+                                            console.log(err);
+                                            //callpagereload("Oop！好像發生了一些錯誤！將重新載入頁面",0);//20190423 Pman 修正文案
 					});
 				}else{
 					callpagereload("您似乎尚未登入喔~煩請先登入！謝謝",1);//20190423 Pman 修正文案
@@ -1573,6 +1579,7 @@
 								//	callpagereload();//身分遺失...重新讀取身分..
 								}
 							}else{
+                                                            console.log(data);
 								popnoticall(me,data[1]);
 							}
 						});

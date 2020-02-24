@@ -1538,9 +1538,9 @@ var readerForFaster = new FileReader(); //20190121 Pman 用在上傳圖片時，
 	}
 	smallpics=function(x){
 		if(x.indexOf(".jpg")>0){
-			return x.replace(".jpg", "s.jpg");
+			return x.replace(".jpg", ".jpg");
 		}else if(x.indexOf(".png")>0){
-			return x.replace(".png", "s.png");
+			return x.replace(".png", ".png");
 	}}
 	chk_notice=function(){
 		if(sessionStorage.getItem("userid") && sessionStorage.getItem("userid").length>0){//會員
@@ -1649,6 +1649,9 @@ var readerForFaster = new FileReader(); //20190121 Pman 用在上傳圖片時，
           }else{
             return false;
           }
+        }).error(function(err) {
+            console.log('chk_session err');
+            console.log(err);
         });
       }else{
         return false;

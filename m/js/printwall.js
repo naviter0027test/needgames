@@ -79,7 +79,9 @@ get_centerwalllist=function(x){
 					wall_slides();
 				},1000);
 			}
-	});
+	}).error(function(err) {
+            console.log('show wall err');
+        });
 }
 //單一動態強..需更新通知
 get_centerwallone=function(x){
@@ -226,7 +228,9 @@ show_centerwallreplyin=function(x){
 			run_timeitem();//跑一次
 			set_video();
 		}
-	})
+	}).error(function(err) {
+            console.log(err);
+        });
 }
 //發言框
 show_centerwallpostbox=function(x){
@@ -524,8 +528,8 @@ show_centerwallreplypostbox=function(myid,mytag,mytagname,myaid){
 			var ttb=mytemp[0].split('<div class="newstextbox">');
 			mytext=ttb[1];
 			if(xdata['main']['thiscontent'].indexOf("newsfilebox")>0){//有圖
-				ttb=mytemp[1].split('src=');
-				ttc=ttb[1].split('>');
+				ttb=mytemp[1].split("src='");
+				ttc=ttb[1].split("'>");
 				myimage[0]=sessionStorage.getItem("imgurl")+ttc[0];
 			}
 		}else{
@@ -591,7 +595,7 @@ show_centerwallreplypostbox=function(myid,mytag,mytagname,myaid){
 					if(xdata['main']['typeid'] && xdata['main']['typeid']==4){
 						xout+="                    <img src='"+myimage[0]+"' class='pageclick  applebtn' data-type='artpage' data-val='"+xdata['main']['aid']+"'>\n";;
 					}else{
-						xout+="                    <img src='"+myimage[0]+"'>";
+						xout+="                    <img src="+myimage[0]+">";
 					}
 
 				}
