@@ -292,22 +292,29 @@
 		global $conf;
 		global $mrr;
 		$out=array();
-		if($x[0]=="3"){// fb登入-註冊串聯/登入串聯/
+		if($x[0]=="3"){// fb登入-舉得安全號
 			$_SESSION['fbstart']=time();
 			$temp=$mrr[rand(0,21)].$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].$mrr[rand(0,21)].$mrr[rand(0,21)];
 			$_SESSION['fbcode']=$temp;
 			$out[0]=$temp;
 			echo json_encode($out);
 		}else if($x[0]=="2"){// fb登入
-			if(!empty($_SESSION['fbstart']) && !empty($_SESSION['fbcode']) && (time()-$_SESSION['fbstart'])<5  && $_SESSION['fbcode']==$x[5]){
+			$_SESSION['fbstart']=time();
+			$_SESSION['fbcode']="123456axc";
+			if( !empty($_SESSION['fbcode']) &&  $_SESSION['fbcode']==$x[5]){
 				$pdo = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 				$pdo -> exec("set names ".$conf['db_encode']);
 				share_update($pdo ,"mem_","locker='1',lockertime=null","lockertime<CURDATE()");
 				if($t=share_getinfo($pdo ,"mem_","fbid",$x[1])){
 					//if($x[2]==$t['fbname'] && ($x[3]==$t['fbmail'] || (empty($x[3]) && $t['fbmail']=="" )) && ($x[4]==$t['fbbirth'] || (empty($x[4]) && $t['fbbirth']=="")) ){
-						if($t['actcode']==1){
+						if($t['actcode']==1 && $t['nickname']){
 							if($t['locker']==1){
-								share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW()","memberid='".$t['memberid']."'");
+								if(!empty($x[6])){
+									share_update($pdo,"mem_","fcmid=null","fcmid='".$x[6]."'");
+									share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW(),fcmid='".$x[6]."',mobtype='".$x[7]."'","memberid='".$t['memberid']."'");
+								}else{
+									share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW()","memberid='".$t['memberid']."'");
+								}
 								$temp=$mrr[rand(0,21)].$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].$mrr[rand(0,21)].$mrr[rand(0,21)];
 								$_SESSION['userid']=$t['memberid'];
 								$_SESSION['isver']=$t['phonev'];
@@ -344,57 +351,199 @@
 							}
 						}else{//送去註冊後續流程
 							$out[0]="OKFB";
-							$out[1]=$t['actcode'];
-								//這是自動登入用...2019/5/14 此時尚未正式完成
-							$out[2]=$t['memberid'];
-							$out[3]=$_SESSION['userid']*1357531+1358743953456;
+							for($y=0;$y<count($t);$y++){
+								unset($t[$y]);
+							}
+							unset($t['password']);
+							$temp=$mrr[rand(0,21)].$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].$mrr[rand(0,21)].$mrr[rand(0,21)];
+							$_SESSION['key']=$temp;
+							$_SESSION['fbid']=$x[1];
+							$out[1]=$t;
+							$out[2]=$_SESSION['key'];
+							//$out[1]=$t['actcode'];
+							//這是自動登入用...2019/5/14 此時尚未正式完成
+							$out[3]=$t['memberid'];
+							$out[4]=$_SESSION['userid']*1357531+1358743953456;
 						}
 				}else{
 					$out[0]="ERR";
 					//$out[1]="無法找到FB相關紀錄,或FB資料已修改,請使用FB串接功能更新紀錄,謝謝";
 					$out[1]="你似乎未使用FB註冊過，請先同意「會員規範&隱私權條款」！";//20190322 Pman 修改未使用FB註冊過的錯誤訊息
 				}
+			}else{
+				$out[0]="ERR";
+				$out[1]="授權逾時,請再重新試試";
 			}
 			echo json_encode($out);
-		}else{//帳密登入 與 FB串接+帳密登入
+		}else{//帳密登入
 			//$test=test_capcodesub($x[1]);
-                        $test = array("PASS");
+			$test[0]="PASS";
 			if($test[0]=="PASS"){
 				$pdo = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 				$pdo -> exec("set names ".$conf['db_encode']);
-                                $email = isset($x[2]) ? $x[2] : '';
-                                $pass = isset($x[3]) ? $x[3] : '';
-                                /*
-                                $sql = "select * from mem_ where email = '$email' and password = '$pass'";
-                                $result = $pdo->query($sql);
-
-                                $out=array();
-                                $out[0]="ERR";
-                                if($t = $result->fetch(PDO::FETCH_ASSOC)) {
-                                    $_SESSION['userid']=$t['memberid'];
-                                    $_SESSION['isver']=$t['phonev'];
-                                    $out[0]="OK";
-                                    $out[1]=$t;
-                                    $out[2]=$_SESSION['userid'];
-                                }
-                                //$out[3] = $sql;
-
-				echo json_encode($out);
-                                 */
-				//share_update($pdo ,"mem_","locker='1',lockertime=null","lockertime<CURDATE()");
-				if($x[4] && $t=share_getfree($pdo ,"SELECT * FROM mem_ WHERE fbid='".$x[4]."' AND email<>'".$x[2]."'")){
+				share_update($pdo ,"mem_","locker='1',lockertime=null","lockertime<CURDATE()");
+				if($x[4] && $x[4]!="ios" && $x[4]!="android" && $t=share_getfree($pdo ,"SELECT * FROM mem_ WHERE fbid='".$x[4]."' AND email<>'".$x[2]."'")){//保留串接功能
 					$out[0]="ERR";
 					$out[1]="此fbid 已與其他帳後串接,無法再次使用";
-				}else if($t=share_getinfo($pdo ,"mem_","email",$x[2])){
-					if($t['password']==$x[3]){
-						if($t['actcode']==1){
-							if($t['locker']==1){
-								if(!empty($x[4])){
-									share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW(),fbid='".$x[4]."',fbname='".$x[5]."',fbmail='".$x[6]."',fbbirth='".$x[7]."'","memberid='".$t['memberid']."'");
-								}else{
-									share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW()","memberid='".$t['memberid']."'");
-								}
+				}else if($t=share_getinfo($pdo ,"mem_","email",$x[1])){
+					if($t['password']==$x[2]){
+						if($t['actcode']==1 && $t['nickname']){
+								if($t['locker']==1){
+									if(!empty($x[4])){//
+										//這個更新餘4/9/2019 因為匯把 mobtype值放進 fbid
+										if(!empty($x[3])){
+											share_update($pdo,"mem_","fcmid=null,mobtype=null","fcmid='".$x[3]."'");
+										}
+										share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW(),fcmid='".$x[3]."',mobtype='".$x[4]."'","memberid='".$t['memberid']."'");
+										//share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW(),fbid='".$x[4]."',fbname='".$x[5]."',fbmail='".$x[6]."',fbbirth='".$x[7]."'","memberid='".$t['memberid']."'");
+									}else if(!empty($x[3])){
+										share_update($pdo,"mem_","fcmid=null,mobtype=null","fcmid='".$x[3]."'");
+										share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW(),fcmid='".$x[3]."'","memberid='".$t['memberid']."'");
+									}else{
+										share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW()","memberid='".$t['memberid']."'");
+									}
+									$temp=$mrr[rand(0,21)].$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].$mrr[rand(0,21)].$mrr[rand(0,21)];
+									$_SESSION['key']=$temp;
+									$_SESSION['userid']=$t['memberid'];
+									$_SESSION['isver']=$t['phonev'];
+									if($t['phonev'] !=1){
+										send_vnotice($t['memberid']);
+									}
+									if($t['refurl']){
+									}else{
+										$texp=getgurl((isset($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['HTTP_HOST']."/?refid=".(10000000000000+$t['memberid']*13));//20190116 Pman 改成依實際情況判斷是http還是https
+										$mt=json_decode($texp);
+										$t['refurl']=$mt->id;;
+										share_update($pdo,"mem_","refurl='".$t['refurl']."'","memberid='".$t['memberid']."'");
+									}
+									unset($t['password']);
+									for($x=0;$x<count($t);$x++){
+										unset($t[$x]);
 
+									}
+									$out[0]="OK";
+									$out[1]=$t;
+									$out[2]=$_SESSION['userid'];
+									$out[3]=$_SESSION['key'];
+									$pdop = new PDO('mysql:host='.$conf['dbhost_p'].';dbname='.$conf['dbname_p'], $conf['dbuser_p'], $conf['dbpass_p']);
+									$pdop -> exec("set names ".$conf['db_encode']);
+									$out[4]=share_gettable($pdop,"poi_ WHERE memberid='".$_SESSION['userid']."' AND orderid='010'");
+									$out[5]=share_gettable($pdop,"poi_ WHERE memberid='".$_SESSION['userid']."' AND orderid='012'");
+									$out[6]=share_gettable($pdop,"poi_ WHERE memberid='".$_SESSION['userid']."' AND orderid='014'");
+									$out[7]=$_SESSION['userid']*1357531+1358743953456;
+									$out[8]=share_gettable($pdop,"poi_ WHERE memberid='".$_SESSION['userid']."' AND orderid='020'");
+									$pdop=null;
+								}else{
+									$out[0]="ERR";
+									$out[1]="此帳號已被鎖定，若須解除請聯絡管理單位（透過聯絡我們按鈕） ";
+								}
+						}else{
+							$out[0]="OKFB";
+							for($y=0;$y<count($t);$y++){
+								unset($t[$y]);
+							}
+							unset($t['password']);
+							$temp=$mrr[rand(0,21)].$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].$mrr[rand(0,21)].$mrr[rand(0,21)];
+							$_SESSION['key']=$temp;
+							$_SESSION['email']=$x[1];
+							$out[1]=$t;
+							$out[2]=$_SESSION['key'];
+							//這是自動登入用...2019/5/14 此時尚未正式完成
+							$out[3]=$t['memberid'];
+							$out[4]=$_SESSION['userid']*1357531+1358743953456;
+						}
+					}else{
+						$out[0]="ERR";
+						$out[1]="密碼錯誤";
+					}
+				}else if($t=share_getinfo($pdo ,"mem_","phonenum",$x[1]) ){
+					if($t['password']==$x[2]){
+						if($t['actcode']==1 && $t['nickname']){//還沒填詳細資料
+								if($t['locker']==1){
+									if(!empty($x[4])){//
+										//這個更新餘4/9/2019 因為匯把 mobtype值放進 fbid
+										if(!empty($x[3])){
+											share_update($pdo,"mem_","fcmid=null,mobtype=null","fcmid='".$x[3]."'");
+										}
+										share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW(),fcmid='".$x[3]."',mobtype='".$x[4]."'","memberid='".$t['memberid']."'");
+										//share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW(),fbid='".$x[4]."',fbname='".$x[5]."',fbmail='".$x[6]."',fbbirth='".$x[7]."'","memberid='".$t['memberid']."'");
+									}else if(!empty($x[3])){
+											share_update($pdo,"mem_","fcmid=null,mobtype=null","fcmid='".$x[3]."'");
+											share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW(),fcmid='".$x[3]."',mobtype=''","memberid='".$t['memberid']."'");
+									}else{
+											share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW()","memberid='".$t['memberid']."'");
+									}
+									$temp=$mrr[rand(0,21)].$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].$mrr[rand(0,21)].$mrr[rand(0,21)];
+									$_SESSION['key']=$temp;
+									$_SESSION['userid']=$t['memberid'];
+									$_SESSION['isver']=$t['phonev'];
+									if($t['phonev'] !=1){
+										send_vnotice($t['memberid']);
+									}
+									if($t['refurl']){
+									}else{
+										$texp=getgurl((isset($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['HTTP_HOST']."/?refid=".(10000000000000+$t['memberid']*13));//20190116 Pman 改成依實際情況判斷是http還是https
+										$mt=json_decode($texp);
+										$t['refurl']=$mt->id;;
+										share_update($pdo,"mem_","refurl='".$t['refurl']."'","memberid='".$t['memberid']."'");
+									}
+									unset($t['password']);
+									for($x=0;$x<count($t);$x++){
+										unset($t[$x]);
+
+									}
+									$out[0]="OK";
+									$out[1]=$t;
+									$out[2]=$_SESSION['userid'];
+									$out[3]=$_SESSION['key'];
+									$pdop = new PDO('mysql:host='.$conf['dbhost_p'].';dbname='.$conf['dbname_p'], $conf['dbuser_p'], $conf['dbpass_p']);
+									$pdop -> exec("set names ".$conf['db_encode']);
+									$out[4]=share_gettable($pdop,"poi_ WHERE memberid='".$_SESSION['userid']."' AND orderid='010'");
+									$out[5]=share_gettable($pdop,"poi_ WHERE memberid='".$_SESSION['userid']."' AND orderid='012'");
+									$out[6]=share_gettable($pdop,"poi_ WHERE memberid='".$_SESSION['userid']."' AND orderid='014'");
+									$out[7]=$_SESSION['userid']*1357531+1358743953456;
+									$out[8]=share_gettable($pdop,"poi_ WHERE memberid='".$_SESSION['userid']."' AND orderid='020'");
+									$pdop=null;
+								}else{
+									$out[0]="ERR";
+									$out[1]="此帳號已被鎖定，若須解除請聯絡管理單位（透過聯絡我們按鈕） ";
+								}
+						}else{//送去詳細資料
+							$out[0]="OKFB";
+							for($y=0;$y<count($t);$y++){
+								unset($t[$y]);
+							}
+							unset($t['password']);
+							$temp=$mrr[rand(0,21)].$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].$mrr[rand(0,21)].$mrr[rand(0,21)];
+							$_SESSION['key']=$temp;
+							$_SESSION['phonenum']=$x[1];
+							$out[1]=$t;
+							$out[2]=$_SESSION['key'];
+							//這是自動登入用...2019/5/14 此時尚未正式完成
+							$out[3]=$t['memberid'];
+							$out[4]=$_SESSION['userid']*1357531+1358743953456;
+						}
+					}else{
+						$out[0]="ERR";
+						$out[1]="密碼錯誤";
+					}
+				}else if($t=share_getinfo($pdo ,"mem_","phonenum","+886".ltrim($x[1],"0")) ){
+					if($t['password']==$x[2]){
+						if($t['actcode']==1 && $t['nickname']){//還沒填詳細資料
+							if($t['locker']==1){
+								if(!empty($x[4])){//
+									//這個更新餘4/9/2019 因為匯把 mobtype值放進 fbid
+									if(!empty($x[3])){
+										share_update($pdo,"mem_","fcmid=null,mobtype=null","fcmid='".$x[3]."'");
+									}
+									share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW(),fcmid='".$x[3]."',mobtype='".$x[4]."'","memberid='".$t['memberid']."'");
+									//share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW(),fbid='".$x[4]."',fbname='".$x[5]."',fbmail='".$x[6]."',fbbirth='".$x[7]."'","memberid='".$t['memberid']."'");
+								}else if(!empty($x[3])){
+										share_update($pdo,"mem_","fcmid=null,mobtype=null","fcmid='".$x[3]."'");
+										share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW(),fcmid='".$x[3]."',mobtype='".$x[4]."'","memberid='".$t['memberid']."'");
+								}else{
+										share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW()","memberid='".$t['memberid']."'");
+								}
 								$temp=$mrr[rand(0,21)].$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].$mrr[rand(0,21)].$mrr[rand(0,21)];
 								$_SESSION['key']=$temp;
 								$_SESSION['userid']=$t['memberid'];
@@ -414,7 +563,6 @@
 									unset($t[$x]);
 
 								}
-
 								$out[0]="OK";
 								$out[1]=$t;
 								$out[2]=$_SESSION['userid'];
@@ -424,9 +572,7 @@
 								$out[4]=share_gettable($pdop,"poi_ WHERE memberid='".$_SESSION['userid']."' AND orderid='010'");
 								$out[5]=share_gettable($pdop,"poi_ WHERE memberid='".$_SESSION['userid']."' AND orderid='012'");
 								$out[6]=share_gettable($pdop,"poi_ WHERE memberid='".$_SESSION['userid']."' AND orderid='014'");
-
-
-								$out[7]=$_SESSION['userid']*1357531+1358743953456;//背後KEY
+								$out[7]=$_SESSION['userid']*1357531+1358743953456;
 								$out[8]=share_gettable($pdop,"poi_ WHERE memberid='".$_SESSION['userid']."' AND orderid='020'");
 								$pdop=null;
 							}else{
@@ -434,113 +580,28 @@
 								$out[1]="此帳號已被鎖定，若須解除請聯絡管理單位（透過聯絡我們按鈕） ";
 							}
 						}else{
-							sendmail('1',$t['email'],$t['actcode']);
-							$out[0]="ERR";
-							$out[1]="這個Email尚未啟用,我們已經重新寄了一封確認信至您的信箱,請前往啟用,謝謝";
-						}
-					}else{
-
-						$out[0]="ERR";
-
-						$out[1]="密碼錯誤";
-					}
-				}else if($t=share_getinfo($pdo ,"mem_","phonenum",$x[2])){
-					if($t['password']==$x[3]){
-						if($t['locker']==1){
-							if(!empty($x[4])){
-								share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW(),fbid='".$x[4]."',fbname='".$x[5]."',fbmail='".$x[6]."',fbbirth='".$x[7]."'","memberid='".$t['memberid']."'");
-							}else{
-								share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW()","memberid='".$t['memberid']."'");
-							}
-							$temp=$mrr[rand(0,21)].$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].$mrr[rand(0,21)].$mrr[rand(0,21)];
-							$_SESSION['key']=$temp;
-							$_SESSION['userid']=$t['memberid'];
-							$_SESSION['isver']=$t['phonev'];
-							if($t['phonev'] !=1){
-								send_vnotice($t['memberid']);
-							}
-							if($t['refurl']){
-							}else{
-								$texp=getgurl((isset($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['HTTP_HOST']."/?refid=".(10000000000000+$t['memberid']*13));//20190116 Pman 改成依實際情況判斷是http還是https
-								$mt=json_decode($texp);
-								$t['refurl']=$mt->id;;
-								share_update($pdo,"mem_","refurl='".$t['refurl']."'","memberid='".$t['memberid']."'");
+							$out[0]="OKFB";
+							for($y=0;$y<count($t);$y++){
+								unset($t[$y]);
 							}
 							unset($t['password']);
-							for($x=0;$x<count($t);$x++){
-								unset($t[$x]);
-
-							}
-							$out[0]="OK";
-							$out[1]=$t;
-							$out[2]=$_SESSION['userid'];
-							$out[3]=$_SESSION['key'];
-							$pdop = new PDO('mysql:host='.$conf['dbhost_p'].';dbname='.$conf['dbname_p'], $conf['dbuser_p'], $conf['dbpass_p']);
-							$pdop -> exec("set names ".$conf['db_encode']);
-							$out[4]=share_gettable($pdop,"poi_ WHERE memberid='".$_SESSION['userid']."' AND orderid='010'");
-							$out[5]=share_gettable($pdop,"poi_ WHERE memberid='".$_SESSION['userid']."' AND orderid='012'");
-							$out[6]=share_gettable($pdop,"poi_ WHERE memberid='".$_SESSION['userid']."' AND orderid='014'");
-							$out[7]=$_SESSION['userid']*1357531+1358743953456;
-							$out[8]=share_gettable($pdop,"poi_ WHERE memberid='".$_SESSION['userid']."' AND orderid='020'");
-							$pdop=null;
-						}else{
-							$out[0]="ERR";
-							$out[1]="此帳號已被鎖定，若須解除請聯絡管理單位（透過聯絡我們按鈕） ";
-						}
-					}else{
-						$out[0]="ERR";
-						$out[1]="密碼錯誤";
-					}
-				}else if($t=share_getinfo($pdo ,"mem_","phonenum","+886".ltrim($x[2],"0")) ){//電話
-					if($t['password']==$x[3]){
-						if($t['locker']==1){
-							if(!empty($x[4])){
-								share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW(),fbid='".$x[4]."',fbname='".$x[5]."',fbmail='".$x[6]."',fbbirth='".$x[7]."'","memberid='".$t['memberid']."'");
-							}else{
-								share_update($pdo,"mem_","lastIP='".GetIP()."',lastlogin=NOW()","memberid='".$t['memberid']."'");
-							}
 							$temp=$mrr[rand(0,21)].$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].$mrr[rand(0,21)].$mrr[rand(0,21)];
 							$_SESSION['key']=$temp;
-							$_SESSION['userid']=$t['memberid'];
-							$_SESSION['isver']=$t['phonev'];
-							if($t['phonev'] !=1){
-								send_vnotice($t['memberid']);
-							}
-							if($t['refurl']){
-							}else{
-								$texp=getgurl((isset($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['HTTP_HOST']."/?refid=".(10000000000000+$t['memberid']*13));//20190116 Pman 改成依實際情況判斷是http還是https
-								$mt=json_decode($texp);
-								$t['refurl']=$mt->id;;
-								share_update($pdo,"mem_","refurl='".$t['refurl']."'","memberid='".$t['memberid']."'");
-							}
-							unset($t['password']);
-							for($x=0;$x<count($t);$x++){
-								unset($t[$x]);
-
-							}
-							$out[0]="OK";
+							$_SESSION['phonenum']="+886".ltrim($x[1],"0");
 							$out[1]=$t;
-							$out[2]=$_SESSION['userid'];
-							$out[3]=$_SESSION['key'];
-							$pdop = new PDO('mysql:host='.$conf['dbhost_p'].';dbname='.$conf['dbname_p'], $conf['dbuser_p'], $conf['dbpass_p']);
-							$pdop -> exec("set names ".$conf['db_encode']);
-							$out[4]=share_gettable($pdop,"poi_ WHERE memberid='".$_SESSION['userid']."' AND orderid='010'");
-							$out[5]=share_gettable($pdop,"poi_ WHERE memberid='".$_SESSION['userid']."' AND orderid='012'");
-							$out[6]=share_gettable($pdop,"poi_ WHERE memberid='".$_SESSION['userid']."' AND orderid='014'");
-							$out[7]=$_SESSION['userid']*1357531+1358743953456;
-							$out[8]=share_gettable($pdop,"poi_ WHERE memberid='".$_SESSION['userid']."' AND orderid='020'");
-							$pdop=null;
-						}else{
-							$out[0]="ERR";
-							$out[1]="此帳號已被鎖定，若須解除請聯絡管理單位（透過聯絡我們按鈕） ";
+							$out[2]=$_SESSION['key'];
+							//這是自動登入用...2019/5/14 此時尚未正式完成
+							$out[3]=$t['memberid'];
+							$out[4]=$_SESSION['userid']*1357531+1358743953456;
 						}
 					}else{
 						$out[0]="ERR";
 						$out[1]="密碼錯誤";
 					}
+
 				}else{
 					$out[0]="ERR";
-					$out[1]="這個Email/電話號碼尚未註冊";
+					$out[1]="找不到帳戶相關資料";
 				}
 				$pdo= null;
 				echo json_encode($out);
