@@ -23,7 +23,7 @@
 	}else if(window.location.hostname=="www.coinpayments.tw:8080"){ //20190107 Pman 修改為正式站網址
 		fbid="1486682161360214";
 	}else{
-		fbid="130898547491195"; //20190130 Pman 修改FB APP ID
+		fbid="1712173338920264"; //20200108 Lanker 修改FB APP ID
 	}
 	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {	ismobile=1;mobiletype="android";}
 	if( /iPhone|iPad|iPod/i.test(navigator.userAgent) ) {	isios=1;mobiletype="ios";}
