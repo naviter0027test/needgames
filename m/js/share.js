@@ -2336,12 +2336,14 @@ $(document).ready(function(){
 						type: 'POST',
 						//Ajax events
 						success: completeHandler = function(data) {
+                                                    console.log(data);
 							me.show();
               if(me.data("pictargettype2")){
                 $(".loaderbox").remove();
               }
 							$(".fileupload").val('');//更新 2016/7/18
-							cdata=data.replace(/ /g,'');
+							cdata=data.replace(/ /g,'').trim();
+                                                        console.log(cdata);
 							if(cdata=="ERR"){
 								swal("會員資料不符合,請重新登入,謝謝");
 							}else if(cdata=="ERRB"){

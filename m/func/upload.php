@@ -917,14 +917,8 @@
 	function uploadnewsreplypic($x){//
 		if($_SESSION['userid']==$GLOBALS['uid'] && $_SESSION['key']==$GLOBALS['ukey']){
 			$id=rand(123,987).date('Yndhms').rand(123,987);
-			//$image_info = getimagesize($_FILES['val']["tmp_name"]);
-			//$theight=$image_info[1];
-			//if($theight>350){
-			//	echo "ERRH";
-			//}else{
-				$t=uploadfilebase($id,1900,2,'',$_FILES["val"]);   //縮圖的尺寸放大 380 ==> 900 Pman//20180907 Pman 因為上傳的橫幅圖，左右都被砍掉，所以將1改成2
-				echo $id.".".$t;
-			//}
+			$t=uploadfilebase($id,1900,2,'',$_FILES["val"]);   //縮圖的尺寸放大 380 ==> 900 Pman//20180907 Pman 因為上傳的橫幅圖，左右都被砍掉，所以將1改成2
+			echo $id.".".$t;
 		}else{
 			echo "ERR";
 		}
@@ -1178,7 +1172,7 @@
 		//$file=$_FILES["val"];
 		$file=$fil;
 		$imgwidth="";
-		$imgurl="uploadfile/";
+		$imgurl="../uploadfile/";
 		$imgheight=0;
 		$imgs=1;
 		$thumbwidth=120;
