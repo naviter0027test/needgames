@@ -27,6 +27,7 @@
 		*/
 		$x1=array();
 		$er=0;
+                $out=array();
 		if($x[0] && strpos($x[0],"886")>=0){
 			if(substr($x[1],0,1)=="0"){
 				$x[1]=ltrim($x[1],"0");
