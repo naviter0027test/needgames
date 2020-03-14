@@ -94,7 +94,7 @@
 	}
 	function share_insert($db,$table,$key,$val){
 		$pdo=$db;
-		$sql_statement = $pdo->prepare( "INSERT INTO ".$table."(".$key.") VALUES(".$val.")");
+		$sql_statement = $pdo->prepare( "INSERT INTO ".$table." (".$key.") VALUES(".$val.")");
 		return $sql_statement->execute();
 	}
 	function share_update($db,$table,$key,$val){
@@ -375,32 +375,16 @@
 	}
 	function sendinfo1($x,$y,$z){//手機馬,序號,回復網址--g1 ice
 			//$url="http://202.39.48.216/kotsmsapi-1.php?";
-            /*
 			$url="https://api.kotsms.com.tw/kotsmsapi-1.php?";
 			$url.="username=".$GLOBALS['vrname'];
 			$url.="&password=".$GLOBALS['vrcode'];
 			$url.="&dstaddr=".$x;
-			$url.="&smbody=".urlencode(iconv("UTF-8","big5","感謝您加入kyomon手機認證，您的認證碼是".$y));
+			//$url.="&smbody=".urlencode(iconv("UTF-8","big5","感謝您加入kyomon手機認證，您的認證碼是".$y));
+			$url.="&smbody=".urlencode(mb_convert_encoding("感謝您加入kyomon手機認證，您的認證碼是".$y,"big5","UTF-8"));
 			$url.="&dlvtime=0";
 			$url.="&vldtime=0";
 			$url.="&response=".$z;
 			$temp=curl_getb($url);
-             */
-            //簡訊王不接受國外IP
-            $p = array(
-                'vrname' => $GLOBALS['vrname'],
-                'vrcode' => $GLOBALS['vrcode'],
-                'x' => $x,
-                'y' => $y,
-                'z' => $z,
-            );
-            $url = 'http://demo.axcell28.idv.tw/kotsms.php';
-            $tuCurl = curl_init(); 
-            curl_setopt($tuCurl,CURLOPT_URL,$url);
-            curl_setopt($tuCurl,CURLOPT_RETURNTRANSFER,true);
-            curl_setopt($tuCurl,CURLOPT_POSTFIELDS, http_build_query($p));
-            $temp = curl_exec($tuCurl);
-            curl_close($tuCurl);
             return $temp;
 	}
 	function getgurl($x){

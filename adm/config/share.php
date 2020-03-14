@@ -379,28 +379,11 @@
 			$url.="username=".$GLOBALS['vrname'];
 			$url.="&password=".$GLOBALS['vrcode'];
 			$url.="&dstaddr=".$x;
-			$url.="&smbody=".urlencode(iconv("UTF-8","big5","感謝您加入kyomon手機認證，您的認證碼是".$y));
+			$url.="&smbody=".urlencode(mb_convert_encoding("感謝您加入kyomon手機認證，您的認證碼是".$y,"big5","UTF-8"));
 			$url.="&dlvtime=0";
 			$url.="&vldtime=0";
 			$url.="&response=".$z;
 			$temp=curl_getb($url);
-            //簡訊王不接受國外IP
-            /*
-            $p = array(
-                'vrname' => $GLOBALS['vrname'],
-                'vrcode' => $GLOBALS['vrcode'],
-                'x' => $x,
-                'y' => $y,
-                'z' => $z,
-            );
-            $url = '';
-            $tuCurl = curl_init(); 
-            curl_setopt($tuCurl,CURLOPT_URL,$url);
-            curl_setopt($tuCurl,CURLOPT_RETURNTRANSFER,true);
-            curl_setopt($tuCurl,CURLOPT_POSTFIELDS, http_build_query($p));
-            $temp = curl_exec($tuCurl);
-            curl_close($tuCurl);
-             */
             return $temp;
 	}
 	function getgurl($x){
