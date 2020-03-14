@@ -1905,7 +1905,14 @@ $(document).ready(function() {
 							}else{
 								popnotice("認證碼已寄送至您的手機，請前往確認，謝謝");
 							}
-						});
+						}).error(function(err) {
+                                                    console.log(err);
+                                                    clearInterval(tempbk);
+                                                    me.removeClass("bgcolor_lb");
+                                                    me.val("發送簡訊");
+                                                    vpflag="";
+                                                    popnotice('err');
+                                                });
 						me.addClass("bgcolor_lb");
 
 						//setTimeout(function(){
