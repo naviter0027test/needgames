@@ -2349,6 +2349,7 @@
 								var tempvals=Array("1","",mylist.eq(0).val(),mylist.eq(1).val(),mylist.eq(2).val(),mylist.eq(3).val(),mylist.eq(4).val(),mylistb.eq(5).val(),fcmid,mobiletype);
 								tempitem=ajaxarr("mem_reg",tempvals,ajaxurl);
 								tempitem.success(function(data){//回傳 data 義
+                                                                    console.log(data);
 									me.removeClass("submitclicktemp");
 									me.removeClass("block");
 									if(data[0]=="ERR"){
@@ -2362,7 +2363,9 @@
 											 location.href=window.page;
 										},3000);
 									}
-								});
+								}).error(function(err) {
+                                                                    console.log(err);
+                                                                });
 						}else{
 							me.removeClass("block");
 						}
@@ -3100,6 +3103,7 @@
 							var tempvals=Array(vcont,$(this).siblings(".vphone").val()); //20190522 Pman 改成依國碼欄位發送
 							tempitem=ajaxarr("sendver",tempvals,ajaxurl);
 							tempitem.success(function(data){//回傳 data 義
+                                                            console.log(data);
 								if(data[0]=="ERR"){
 									clearInterval(tempbk);
 									me.removeClass("bgcolor_lb");
@@ -3109,7 +3113,9 @@
 								}else{
 									swal("認證碼已寄送至您的手機，請前往確認，謝謝");
 								}
-							});
+							}).error(function(err) {
+                                                            console.log(err);
+                                                        });
 							me.addClass("bgcolor_lb");
 							setTimeout(function(){
 									me.removeClass("bgcolor_lb");

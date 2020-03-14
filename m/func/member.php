@@ -18,13 +18,6 @@
 	//寄送確認馬
 	function sendver($x){
 		global $conf;
-		/*
-		$inx="";
-		if($x[0] && strpos($x[0],"886")<0){
-			$inx="(".str_replace("+","",$x[0]).")";
-		}
-		$phone=$inx.$x[1];
-		*/
 		$x1=array();
 		$er=0;
 		if($x[0] && strpos($x[0],"886")>=0){
@@ -40,7 +33,6 @@
 		}else{
 			$x1=$x[1];
 		}
-
 		$phone=$x[0].$x1;
 		//檢查是否已有
 		$pdo = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m'] );
@@ -126,6 +118,7 @@
 		}else{
 			$out[0]="ERR";
 			$out[1]="認證碼錯誤，請重新寄送謝謝";
+                        $out[2]=$_SESSION['vercode'];
 		}
 		echo json_encode($out);
 	}
@@ -1038,91 +1031,59 @@
 		global $mrr;
 		$out=array();
 		//$test=test_capcodesub($x[1]);
-		if($x[0]=="2"){//fb快速註冊
+		$test[0]="PASS";
+		if($test[0]=="PASS"){
 			$pdo = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
 			$pdo -> exec("set names ".$conf['db_encode']);
 			//刪除過久的
 			share_del($pdo ,"mem_ WHERE actcode<>'1' AND DATEDIFF(CURDATE(),dateadd)>".$conf['actkeep']);
-			if($t=share_getinfo($pdo ,"mem_","fbid",$x[1])){
+			if(share_getinfo($pdo ,"mem_","email",$x[2])){
 				$out[0]="ERR";
-				$out[1]="FB帳號已使用在其他帳號上";
-			}else{
+				$out[1]="此帳號已註冊";
+			}
+			else if($x[5]!=$_SESSION['vercode']){
+				$out[0]="ERR";
+				$out[1]="手機簡訊驗證碼錯誤";
+                                $out[2]=$_SESSION['vercode'];
+			}
+			else if($x[3]==$x[4]){
 				$temp=$mrr[rand(0,21)].$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].$mrr[rand(0,21)].$mrr[rand(0,21)];
-				if(share_insert($pdo ,"mem_","actcode,fbid,fbname,fbmail,fbbirth","'".$temp."','".$x[1]."','".$x[2]."','".$x[3]."','".$x[4]."'")){
-						if($x[5]){//有人介紹
-							$myinfo=share_getinfo($pdo ,"mem_","fbid",$x[1]);
-							$fid=($x[5]-10000000000000)/13;
-							$refinfo=share_getinfo($pdo ,"mem_","memberid",$fid);
-							$mid=10000000000000+$myinfo['memberid']*13;
-							share_insert($pdo ,"reflist","refid,refname,memberid,memname,regtime,isexport","'".$x[5]."','".$refinfo['nickname']."','".$mid."','".$myinfo['nickname']."','".$myinfo['dateadd']."','0'");
-						}
-						$out[0]="OKFB";
-						$out[1]=$temp;
+				$fcname="";
+				$fcmid="";
+				if($x[8]){
+					$fcname=",fcmid,mobtype";
+					$fcmid=",'".$x[8]."','".$x[9]."'";
+					share_update($pdo,"mem_","fcmid=null","fcmid='".$x[8]."'");
+				}
+				if(share_insert($pdo ,"mem_","email,password,actcode,phonenum,phonev".$fcname,"'".$x[2]."','".$x[3]."','1','".$_SESSION['phonenum']."',1".$fcmid)){
+					//送入介紹
+					if($x[7]){//有人介紹
+						$myinfo=share_getinfo($pdo ,"mem_","email",$x[2]);
+						$fid=($x[7]-10000000000000)/13;
+						$refinfo=share_getinfo($pdo ,"mem_","memberid",$fid);
+						$mid=10000000000000+$myinfo['memberid']*13;
+						share_insert($pdo ,"reflist","refid,refname,memberid,memname,regtime,isexport","'".$x[7]."','".$refinfo['nickname']."','".$mid."','".$myinfo['nickname']."','".$myinfo['dateadd']."','0'");
+					}
+				//	sendmail('1',$x[2],$temp);
+					$out[0]="OK";
 				}else{
 					$out[0]="ERR";
 					$out[1]="存入錯誤,請稍後在試";
+                                        $out[2]=$x;
+                                        $out[3]=$_SESSION['phonenum'];
+                                        $out[4]=$pdo->errorInfo();
+                                        $out[5]="email,password,actcode,phonenum,phonev".$fcname;
+                                        $out[6]="'".$x[2]."','".$x[3]."','1','".$_SESSION['phonenum']."',1".$fcmid;
 				}
+			}
+			else{
+				$out[0]="ERR";
+				$out[1]="密碼與確認密碼不符合";
 			}
 			$pdo= null;
 			echo json_encode($out);
 		}else{
-			$test[0]="PASS";
-			if($test[0]=="PASS"){
-				$pdo = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
-				$pdo -> exec("set names ".$conf['db_encode']);
-				//刪除過久的
-				share_del($pdo ,"mem_ WHERE actcode<>'1' AND DATEDIFF(CURDATE(),dateadd)>".$conf['actkeep']);
-				if(share_getinfo($pdo ,"mem_","email",$x[2])){
-					$out[0]="ERR";
-					$out[1]="此帳號已註冊";
-				}else if($x[6] && share_getinfo($pdo ,"mem_","fbid",$x[6])){
-					$out[0]="ERR";
-					$out[1]="FB帳號已使用在其他帳號上";
-				}else if($x[3]==$x[4]){
-					$temp=$mrr[rand(0,21)].$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].rand(12,98).$mrr[rand(0,21)].$mrr[rand(0,21)].$mrr[rand(0,21)];
-                                        $input = array(
-                                            ':email' => $x[2],
-                                            ':password' => $x[3],
-                                            ':actcode' => $temp,
-                                            ':fbid' => $x[6],
-                                            ':fbname' => $x[7],
-                                            ':fbmail' => $x[8],
-                                            ':fbbirth' => $x[9]
-                                        );
-                                        $insertSql = "insert into `mem_` (email,password,actcode,fbid,fbname,fbmail,fbbirth) value (:email, :password, :actcode, :fbid, :fbname, :fbmail, :fbbirth)";
-                                        $statm = $pdo->prepare($insertSql);
-					//if(share_insert($pdo ,"mem_","email,password,actcode,fbid,fbname,fbmail,fbbirth","'".$x[2]."','".$x[3]."','".$temp."','".$x[6]."','".$x[7]."','".$x[8]."','".$x[9]."'"))
-                                        if($statm->execute($input)){
-						//$out[1]="INSERT INTO mem_(email,password,actcode) VALUES('".$x[2]."','".$x[3]."','".$temp."')";
-						//送入介紹
-						if($x[5]){//有人介紹
-							$myinfo=share_getinfo($pdo ,"mem_","email",$x[2]);
-							$fid=($x[5]-10000000000000)/13;
-							$refinfo=share_getinfo($pdo ,"mem_","memberid",$fid);
-							$mid=10000000000000+$myinfo['memberid']*13;
-							share_insert($pdo ,"reflist","refid,refname,memberid,memname,regtime,isexport","'".$x[5]."','".$refinfo['nickname']."','".$mid."','".$myinfo['nickname']."','".$myinfo['dateadd']."','0'");
-						}
-						if($x[6]){
-							$out[0]="OKFB";
-							$out[1]=$temp;
-						}else{
-							$out[0]="OK";
-							sendmail('1',$x[2],$temp);
-						}
-					}else{
-						$out[0]="ERR";
-						$out[1]="存入錯誤,請稍後在試";
-                                                $out[2]=$pdo->errorInfo();
-					}
-				}else{
-					$out[0]="ERR";
-					$out[1]="密碼與確認密碼不符合";
-				}
-				$pdo= null;
-				echo json_encode($out);
-			}else{
-				echo json_encode($test);
-			}
+			echo json_encode($test);
 		}
 	}
 	//聯絡我們
