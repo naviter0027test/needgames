@@ -127,90 +127,174 @@
 		$out=array();
 		global $conf;
 		//if($_SESSION['key']==$x[0]){
+			//這裡分兩邊..一邊是fb
 			$basp=get_awain(1);
-			if($x[5] && $x[11]){
+			if($x[8] && $x[14]){
 				$basp=$basp+get_awain(2);
 			}
-			if( $x[12] && $x[13]){
+			if($x[15]){
 				$basp=$basp+get_awain(16);
 			}
-			if($x[0] && $x[1] && $x[2] && $x[3] && $x[4] ){
+			if($x[0] && $x[1] && $x[2] && $x[3] && $x[4] && $x[5] && $x[6]){
 				$pdo = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m'] );
 				$pdo -> exec("set names ".$conf['db_encode']);
-				if($t=share_getinfo($pdo ,"mem_","actcode",$_SESSION['actcode'])){
-					$flag=0;
-					//檢查email 和nickname
-					if($x[2] && $tb=share_gettable($pdo ," mem_ WHERE email='".$x[2]."' AND actcode<>'".$_SESSION['actcode']."'")){//檢查email
-						$out[0]="ERR";
-						$out[1]="這個email已在其他會員註冊,請選用其他email".$x[2];
-					}else if($tb=share_gettable($pdo ," mem_ WHERE nickname='".$x[3]."' AND actcode<>'".$_SESSION['actcode']."'")){//檢查email
-						$out[0]="ERR";
-						$out[1]="這個暱稱已被其他會員使用,請選用其他暱稱";
-					}else{
-						if($t['email']=="" && $x[2]<>"null"){ //20190325 Pman 用FB註冊時，email會變成"null"要去掉這個寫入資料庫的情形。
-							if(share_update($pdo ,"mem_","gender='".($x[1]=="男"?"1":"2")."',email='".$x[2]."',nickname='".$x[3]."',birthday='".$x[4]."',location='".$x[5]."',game1='".$x[6]."',game1note='".$x[7]."',game2='".$x[8]."',game2note='".$x[9]."',game3='".$x[10]."',game3note='".$x[11]."',gtid='".$x[12]."',headpic='".$x[13]."',frontpic='".$x[14]."',score='".$basp."',points='".$basp."',lastIP='".GetIP()."',actcode=1","actcode='".$_SESSION['actcode']."'")){
-								$flag=1;
-							}else{
-								$out[0]="ERR";
-								$out[1]="存入錯誤";
-							}
-						}else{
-							if(share_update($pdo ,"mem_","gender='".($x[1]=="男"?"1":"2")."',nickname='".$x[3]."',birthday='".$x[4]."',location='".$x[5]."',game1='".$x[6]."',game1note='".$x[7]."',game2='".$x[8]."',game2note='".$x[9]."',game3='".$x[10]."',game3note='".$x[11]."',gtid='".$x[12]."',headpic='".$x[13]."',frontpic='".$x[14]."',score='".$basp."',points='".$basp."',lastIP='".GetIP()."',actcode=1","actcode='".$_SESSION['actcode']."'")){
-								$flag=1;
-							}else{
-								$out[0]="ERR";
-								$out[1]="存入錯誤";
-							}
-						}
-					}
-					if($flag==1){
-						$tb=share_getinfo($pdo ,"mem_","memberid",$t['memberid']);//重新抓取]
-						if($x[6]){
-							addgamerank($x[6]);
-						}
+				//檢查 及暱稱
+				/*
+				if($tb=share_gettable($pdo ," mem_ WHERE email='".$x[7]."' AND actcode<>'".$_SESSION['actcode']."'")){//檢查email
+					$out[0]="ERR";
+					$out[1]="這個email已在其他會員註冊,請選用其他email";
+				}else
+				*/
+				if($tb=share_gettable($pdo ," mem_ WHERE nickname='".$x[1]."' AND actcode<>'".$_SESSION['actcode']."'")){//檢查email
+					$out[0]="ERR";
+					$out[1]="這個暱稱已被其他會員使用,請選用其他暱稱";
+				}else{
+					if($_SESSION['actcode'] && $t=share_getinfo($pdo ,"mem_","actcode",$_SESSION['actcode'])){/*正式Email註冊*/
+						$ins="";
 						if($x[8]){
-							addgamerank($x[8]);
+							$ins.=",game1='".$x[8]."',game1note='".$x[9]."'";
 						}
 						if($x[10]){
-							addgamerank($x[10]);
+							$ins.=",game2='".$x[10]."',game2note='".$x[11]."'";
 						}
-						for($x=0;$x<count($tb);$x++){
-							unset($tb[$x]);
+						if($x[12]){
+							$ins.=",game3='".$x[12]."',game3note='".$x[13]."'";
 						}
-						unset($tb['password']);
-						$_SESSION['userid']=$t['memberid'];
-						$_SESSION['isver']=$t['phonev'];
-						if($t['refurl']){
+						if(share_update($pdo ,"mem_","gender='".$x[2]."',nickname='".$x[1]."',birthday='".$x[3]."-".$x[4]."-".$x[5]."',location='".$x[6]."',contact_email='".$x[7]."'".$ins.",gtid='".$x[14]."',headpic='".$x[15]."',score='".$basp."',points='".$basp."',lastIP='".GetIP()."',actcode=1","actcode='".$_SESSION['actcode']."'")){
+							$tb=share_getinfo($pdo ,"mem_","memberid",$t['memberid']);//重新抓取]
+							if($x[8]){
+								addgamerank($x[8]);
+							}
+							if($x[10]){
+								addgamerank($x[10]);
+							}
+							if($x[12]){
+								addgamerank($x[12]);
+							}
+							for($x=0;$x<count($tb);$x++){
+								unset($tb[$x]);
+							}
+							unset($tb['password']);
+							$_SESSION['userid']=$tb['memberid'];
+							$_SESSION['isver']=$tb['phonev'];
+							if($tb['refurl']){
+							}else{
+								$texp=getgurl((isset($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['HTTP_HOST']."/?refid=".(10000000000000+$t['memberid']*13));//20190116 Pman 改成依實際情況判斷是http還是https
+								$mt=json_decode($texp);
+								$tb['refurl']=$mt->id;;
+								share_update($pdo,"mem_","refurl='".$t['refurl']."'","memberid='".$t['memberid']."'");
+							}
+							$out[0]="OK";
+							$out[1]=$tb;
+							$out[2]=$_SESSION['userid'];
 						}else{
-							$texp=getgurl((isset($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['HTTP_HOST']."/?refid=".(10000000000000+$t['memberid']*13));//20190116 Pman 改成依實際情況判斷是http還是https
-							$mt=json_decode($texp);
-							$t['refurl']=$mt->id;;
-							share_update($pdo,"mem_","refurl='".$t['refurl']."'","memberid='".$t['memberid']."'");
+							$out[0]="ERR";
+							$out[1]="存入錯誤";
 						}
-						$out[0]="OK";
-						$out[1]=$tb;
-						$out[2]=$_SESSION['userid'];
+					}else if($_SESSION['fbid'] && $t=share_getinfo($pdo ,"mem_","fbid",$_SESSION['fbid'])){/*FB註冊*/
+						$ins="";
+						if($x[8]){
+							$ins.=",game1='".$x[8]."',game1note='".$x[9]."'";
+						}
+						if($x[10]){
+							$ins.=",game2='".$x[10]."',game2note='".$x[11]."'";
+						}
+						if($x[12]){
+							$ins.=",game3='".$x[12]."',game3note='".$x[13]."'";
+						}
+						if(share_update($pdo ,"mem_","gender='".$x[2]."',nickname='".$x[1]."',birthday='".$x[3]."-".$x[4]."-".$x[5]."',location='".$x[6]."',contact_email='".$x[7]."'".$ins.",gtid='".$x[14]."',headpic='".$x[15]."',score='".$basp."',points='".$basp."',lastIP='".GetIP()."',actcode=1","fbid='".$_SESSION['fbid']."'")){
+							$tb=share_getinfo($pdo ,"mem_","memberid",$t['memberid']);//重新抓取]
+							if($x[8]){
+								addgamerank($x[8]);
+							}
+							if($x[10]){
+								addgamerank($x[10]);
+							}
+							if($x[12]){
+								addgamerank($x[12]);
+							}
+							for($x=0;$x<count($tb);$x++){
+								unset($tb[$x]);
+							}
+							unset($tb['password']);
+							$_SESSION['userid']=$tb['memberid'];
+							$_SESSION['isver']=$tb['phonev'];
+							if($tb['refurl']){
+							}else{
+								$texp=getgurl((isset($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['HTTP_HOST']."/?refid=".(10000000000000+$t['memberid']*13));//20190116 Pman 改成依實際情況判斷是http還是https
+								$mt=json_decode($texp);
+								$tb['refurl']=$mt->id;;
+								share_update($pdo,"mem_","refurl='".$t['refurl']."'","memberid='".$t['memberid']."'");
+							}
+							$out[0]="OK";
+							$out[1]=$tb;
+							$out[2]=$_SESSION['userid'];
+						}else{
+							$out[0]="ERR";
+							$out[1]="存入錯誤";
+						}
+					}else if(($_SESSION['phonenum'] && $t=share_getinfo($pdo ,"mem_","phonenum",$_SESSION['phonenum'])) || ($_SESSION['email'] && $t=share_getinfo($pdo ,"mem_","email",$_SESSION['email']))){
+						$ins="";
+						if($x[8]){
+							$ins.=",game1='".$x[8]."',game1note='".$x[9]."'";
+						}
+						if($x[10]){
+							$ins.=",game2='".$x[10]."',game2note='".$x[11]."'";
+						}
+						if($x[12]){
+							$ins.=",game3='".$x[12]."',game3note='".$x[13]."'";
+						}
+						if(share_update($pdo ,"mem_","gender='".$x[2]."',nickname='".$x[1]."',birthday='".$x[3]."-".$x[4]."-".$x[5]."',location='".$x[6]."',contact_email='".$x[7]."' ".$ins." ,gtid='".$x[14]."',headpic='".$x[15]."',score='".$basp."',points='".$basp."',lastIP='".GetIP()."'","memberid='".$t['memberid']."'")){
+							$tb=share_getinfo($pdo ,"mem_","memberid",$t['memberid']);//重新抓取]
+							if($x[8]){
+								addgamerank($x[8]);
+							}
+							if($x[10]){
+								addgamerank($x[10]);
+							}
+							if($x[12]){
+								addgamerank($x[12]);
+							}
+							for($x=0;$x<count($tb);$x++){
+								unset($tb[$x]);
+							}
+							unset($tb['password']);
+							$_SESSION['userid']=$tb['memberid'];
+							$_SESSION['isver']=$tb['phonev'];
+							if($tb['refurl']){
+							}else{
+								$texp=getgurl((isset($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['HTTP_HOST']."/?refid=".(10000000000000+$t['memberid']*13));//20190116 Pman 改成依實際情況判斷是http還是https
+								$mt=json_decode($texp);
+								$tb['refurl']=$mt->id;;
+								share_update($pdo,"mem_","refurl='".$t['refurl']."'","memberid='".$t['memberid']."'");
+							}
+							$out[0]="OK";
+							$out[1]=$tb;
+							$out[2]=$_SESSION['userid'];
+						}else{
+							$out[0]="ERR";
+							$out[1]="存入錯誤";
+						}
+					}else if($_SESSION['actcode']){
+						$out[0]="ERR";
+						$out[1]="會員已認證完畢或認證資料不存在,請嘗試登入試試,謝謝";
+					}else if($_SESSION['fbid']){
+						$out[0]="ERR";
+						$out[1]="無法找到註冊的fb帳號,請使用fb帳號重新註冊,謝謝";
+					}else{
+						$out[0]="ERR";
+						$out[1]="不正常的錯誤,請嘗試登入試試,謝謝";
 					}
-				}else{
-					$out[0]="ERR";
-					$out[1]="會員已認證完畢或認證資料不存在,請嘗試登入試試,謝謝";
 				}
-			}else{
+ 		  }else{
 				$out[0]="ERR";
 				$out[1]="資料不足,不正常的錯誤";
 			}
-
-			//$out[0]="ERR";
-			//$out[1]="錯誤測試1";
 		//}else{
 				//$out[0]="ERR";
 				//$out[1]=$errText['reopen'];
-                                //$out[2] = $_SESSION['key'];
-                                //$out[3] = $x[0];
 		//}
-
 		echo json_encode($out);
-
 	}
 	//忘記密碼
 	function mem_forget($x){

@@ -2277,6 +2277,7 @@
 								var tempvals=Array(sessionStorage.getItem("key"),alllist.eq(0).val(),alllist.eq(1).val(),alllist.eq(2).val(),alllist.eq(3).val(),alllist.eq(4).val(),alllist.eq(5).val(),alllist.eq(6).val(),alllist.eq(7).val(),alllist.eq(8).val(),alllist.eq(9).val(),alllist.eq(10).val(),alllist.eq(11).val(),alllist.eq(12).val(),alllist.eq(13).val(),alllist.eq(14).val());
 								tempitem=ajaxarr("mem_actsave",tempvals,ajaxurl);
 								tempitem.success(function(data){//回傳 data 義
+                                                                    console.log(data);
 									me.removeClass("block");
 									if(data[0]=="ERR"){
 										swal(data[1]);
