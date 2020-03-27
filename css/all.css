@@ -212,7 +212,7 @@ textarea {
 /* FRAME ITEM */
 
 #headeroutwrap {
-    position: fixed;
+    //position: fixed;
     width: 100%;
     text-align: center;
     height: 295px;

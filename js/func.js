@@ -613,7 +613,7 @@ $(document).ready(function() {
                     });
                     });
                 }
-            }, {scope: 'email,user_birthday'});
+            }, {scope: 'email'}); //user_birthday
             //});
         });
     }
