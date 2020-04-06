@@ -8,7 +8,7 @@
 		 echo json_encode($out);
 	}	 
 	function test_capcode($val){
-		$x="";
+		$x=array();
 		 if($_SESSION['try']){
 			 $_SESSION['try']++;
 		 }else{
@@ -32,7 +32,7 @@
 		echo json_encode($x);
 	} 
 	function test_capcodesub($code){
-		$x="";
+		$x=array();
 		if($_SESSION['try']){
 			 $_SESSION['try']++;
 		}else{

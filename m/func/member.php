@@ -1174,7 +1174,7 @@
 	function mem_contact($x){
 		global $conf;
 		global $mrr;
-		$out="";
+		$out=array();
 		$test=test_capcodesub($x[7]);
 		if($test[0]=="PASS"){
 			$pdo = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
@@ -1228,6 +1228,75 @@
 		}
 		echo json_encode($out);
 	}
+
+	//更新會員資料mem版
+        function mem_useredit($x){
+            global $conf;
+            $out=array();
+            if($_SESSION['userid']==$x[0] && $_SESSION['key']==$x[1]){
+                $pdo = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m'] );
+                $pdo -> exec("set names ".$conf['db_encode']);
+                //檢查 現有
+                $org=share_getinfo($pdo ,"mem_","memberid",$_SESSION['userid']);
+                $a=0;
+                for($b=1;$b<=3;$b++){
+                    if($org['game'.$b]){
+                        $og[$a]=$org['game'.$b];
+                        $a++;
+                    }
+                }
+                $ins="";
+                if($x[7]){
+                    $flg=0;
+                    if($org){
+                        for($b=0;$b<count($org);$b++){
+                            if($x[7]==$org[$b]){$flg=1;}
+                        }
+                    }
+                    if($flg==0){addgamerank($x[7]);}
+                    $ins.=",game1='".$x[7]."',game1note='".$x[8]."'";
+                }else{
+                    $ins.=",game1=null,game1note=null";
+                }
+                if($x[9]){
+                    $flg=0;
+                    if($org){
+                        for($b=0;$b<count($org);$b++){
+                            if($x[9]==$org[$b]){$flg=1;}
+                        }
+                    }
+                    if($flg==0){addgamerank($x[9]);}
+                    $ins.=",game2='".$x[9]."',game2note='".$x[10]."'";
+                }else{
+                    $ins.=",game2=null,game2note=null";
+                }
+                if($x[11]){
+                    $flg=0;
+                    if($org){
+                        for($b=0;$b<count($org);$b++){
+                            if($x[11]==$org[$b]){$flg=1;}
+                        }
+                    }
+                    if($flg==0){addgamerank($x[11]);}
+                    $ins.=",game3='".$x[11]."',game3note='".$x[12]."'";
+                }else{
+                    $ins.=",game3=null,game3note=null";
+                }
+
+
+                if(share_update($pdo ,"mem_","gender='".$x[2]."',birthday='".$x[3]."-".$x[4]."-".$x[5]."',location='".$x[6]."'".$ins.",gtid='".$x[13]."',headpic='".$x[14]."',lastIP='".GetIP()."'","memberid='".$_SESSION['userid']."'")){
+                    $out[0]="OK";
+                }else{
+                    $out[0]="ERR";
+                    $out[1]="存入錯誤";
+                }
+            }else{
+                $out[0]="ERR";
+                $out[1]="認證錯誤，請重新登入，謝謝";
+            }
+            echo json_encode($out);
+	}
+
 	function chk_session($x){
 		if($_SESSION['userid'] && $_SESSION['key'] && $x[0]==$_SESSION['userid'] && $x[1]==$_SESSION['key']){//確認資格
 			$out[0]="OK";
