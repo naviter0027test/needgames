@@ -1375,6 +1375,33 @@
 		echo json_encode($out);
 	}
 
+	function mob_artreply($x){//手機板抓攻略回應
+		global $conf;
+                $out=array();
+		$out[0]="OK";
+		$pdom = new PDO('mysql:host='.$conf['dbhost_m'].';dbname='.$conf['dbname_m'], $conf['dbuser_m'], $conf['dbpass_m']);
+		$pdom -> exec("set names ".$conf['db_encode']);
+		$pdod = new PDO('mysql:host='.$conf['dbhost_d'].';dbname='.$conf['dbname_d'], $conf['dbuser_d'], $conf['dbpass_d']);
+		$pdod -> exec("set names ".$conf['db_encode']);
+		$temp=share_getinfo($pdod,"art_","thisid",$x[2]);
+		$out[2]=$temp['contentid'];
+		$out[1]=share_gettable($pdod,"rep_ WHERE contentid='".$temp['contentid']."' order by thisid");
+		for($b=0;$b<count($out[1]);$b++){
+			$temp=share_getinfo($pdom,"mem_","memberid",$out[1][$b]['memberid']);
+			$out[1][$b]['user']=$temp['nickname'];
+			$out[1][$b]['userpic']=$temp['headpic'];
+			$out[1][$b]['uid']=$temp['memberid'];
+			if($out[1][$b]['replyto']){
+				$tempx=share_getinfo($pdom,"mem_","memberid",$out[1][$b]['replyto']);
+				$out[1][$b]['replytoname']=$tempx['nickname'];
+			}else{
+				$out[1][$b]['replytoname']="";
+			}
+		}
+		echo json_encode($out);
+		$pdod=null;
+	}
+
 
 	//  ############  中央相關  ################################
 	function show_board($x){
