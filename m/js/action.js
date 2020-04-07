@@ -2405,6 +2405,7 @@
 								var tempvals=Array("1",mylistb.eq(0).val(),mylistb.eq(1).val(),mylistb.eq(2).val(),mylistb.eq(3).val(),mylistb.eq(4).val(),mylistb.eq(5).val(),mylistb.eq(6).val(),mylistb.eq(7).val());
 								tempitem=ajaxarr("mem_contact",tempvals,ajaxurl);
 								tempitem.success(function(data){//回傳 data 義
+                                                                    console.log(data);
 									me.removeClass("submitclicktemp");
 									me.removeClass("block");
 									if(data[0]=="ERR"){
@@ -2420,7 +2421,9 @@
 											popfullcloset();
 										 },500);
 									}
-								});
+								}).error(function(err) {
+                                                                    console.log(err);
+                                                                });
 						}else{
 							me.removeClass("block");
 						}
@@ -3207,6 +3210,7 @@
 											}
 											tempitem=ajaxarr("mem_useredit",tempvals,ajaxurl);
 											tempitem.success(function(data){//回傳 data 義
+                                                                                            console.log(data);
 												me.removeClass("block");
 												if(data[0]=="ERR"){
 													swal(data[1]);
@@ -3220,7 +3224,9 @@
 														show_mypagefront(y);//重新顯示使用者
 													},1000);
 												}
-											});
+											}).error(function(err) {
+                                                                                            console.log(err);
+                                                                                        });
 										}else{
 											me.removeClass("block");
 											swal("已登出,請重新登入");

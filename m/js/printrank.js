@@ -41,6 +41,7 @@ show_centerranklistin=function(x,y,z){
 	var tempvals=Array(1,xmonth,xtype);//人 / key / id
 	tempitem=ajaxarr("get_topranklist",tempvals,ajaxurl);
 	tempitem.success(function(data){//回傳 data --data[0]都是確認正確  data[1]就是回傳的array  data[2]-->則是未定義..測
+            console.log(data);
 		if(data[0]=="ERR"){
 		}else{
 			var tags=JSON.parse(sessionStorage.getItem("tags"));
@@ -248,7 +249,9 @@ show_centerranklistin=function(x,y,z){
 		}
 		$("#rankoverwrap").html(out);
 
-	});
+	}).error(function(err) {
+            console.log(err);
+        });
 
 }
 
