@@ -1617,9 +1617,18 @@ $(document).ready(function() {
 							//檢查驗證
 							if(sessionStorage.getItem("userid")){
 								//id,key,title,content,picid,pictype,tag
-								var tempvals=Array(sessionStorage.getItem("userid"),sessionStorage.getItem("key"),mylist.eq(0).val(),mylist.eq(1).val(),mylist.eq(2).val(),mylist.eq(3).val(),$("#q_type").val(),$("#q_open").val());
+								var tempvals=Array(sessionStorage.getItem("userid"),
+                                                                        sessionStorage.getItem("key"),
+                                                                        mylist.eq(0).val(),
+                                                                        mylist.eq(1).val(),
+                                                                        mylist.eq(2).val(),
+                                                                        mylist.eq(3).val(),
+                                                                        $("#q_type").val(),
+                                                                        $("#q_open").val());
+                                                                console.log(tempvals);
 								tempitem=ajaxarr("uploadnews",tempvals,"ajax.php");
 								tempitem.success(function(data){//回傳 data 義
+                                                                    console.log(data);
 									if(data[0]=="ERR"){
 										popnotice(data[1]);
 									}else{

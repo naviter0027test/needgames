@@ -2399,6 +2399,8 @@ $(document).ready(function(){
 										$("#"+me.data("targettype")).val("1");
 									}
 								}else if(me.data("job")=="uploadnewspicbook"){
+                                                                    console.log('uploadnewspicbook');
+                                                                    console.log(data);
 									var pout="";
 									for(var a=0;a<datax[1].length;a++){
 										pout+="<div class='temppicwrap inblock'><i class='predelclick fa fa-times' data-job='albpic'  data-albid='"+datax[0]+"' data-val='"+datax[2][a]+"' ></i><img src='uploadfile/"+datax[1][a]+"'></div>";
